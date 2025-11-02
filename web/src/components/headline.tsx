@@ -1,10 +1,15 @@
-
 export default function Headline() {
-  return (
-    <div className="max-w-4xl mx-auto text-center">
-      <h4 className="text-indigo-600">Get the help you need</h4>
-      <h1>Support Center</h1>
-      <p>Anim aute minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-  )
+	return (
+		<div className='text-center sm:text-center'>
+			<h4 className='text-indigo-600 mt-40 mb-3 font-black'>
+				Get the help you need
+			</h4>
+			<h1 className='text-black text-6xl mb-6 font-semibold'>Support center</h1>
+			<p className='text-black font-medium'>
+				Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem{' '}
+				<br />
+				cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat.
+			</p>
+		</div>
+	)
 }
