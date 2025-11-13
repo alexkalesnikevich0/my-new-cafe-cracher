@@ -1,13 +1,13 @@
 export default function footer2() {
 	return (
 		<div className='font-light'>
-			<div className='inline-block mr-30 ml-20 mt-20 ml-20 mr-30'>
+			<div className='inline-block mr-30 ml-20 mt-20'>
 				<h4 className='font-bold mb-5'>Solutions</h4>
-				<h4 className='mt-10 mb-5'>Marketing</h4>
+				<h4 className='mt-10 mb-0'>Marketing</h4>
 				<h4 className='mt-10 mb-5'>Analytics</h4>
 				<h4 className='mt-10 mb-5'>Automation</h4>
 				<h4 className='mt-10 mb-5'>Commerce</h4>
-				<h4 className='mt-10 mb-5'>Insights</h4>
+				<h4 className='mt-10'>Insights</h4>
 			</div>
 
 			<div className='inline-block mr-30'>
@@ -15,10 +15,10 @@ export default function footer2() {
 				<h4 className='mt-10 mb-0'>Submit ticket</h4>
 				<h4 className='mt-10 mb-5'>Documentation</h4>
 				<h4 className='mt-10 mb-5'>Guides</h4>
-				<h4 className='mt-10 mb-0'>
+				<h4 className='mt-10'>
 					<br />
 				</h4>
-				<h4 className='mt-10 mb-0'>
+				<h4 className='mt-10'>
 					<br />
 				</h4>
 			</div>
@@ -29,7 +29,7 @@ export default function footer2() {
 					<h4 className='mt-10 mb-5'>Blog</h4>
 					<h4 className='mt-10 mb-5'>Jobs</h4>
 					<h4 className='mt-10 mb-5'>Press</h4>
-					<h4 className='mt-10 mb-30'>
+					<h4 className='mt-10 mb-20'>
 						<br />
 					</h4>
 				</div>
@@ -38,10 +38,10 @@ export default function footer2() {
 					<h4 className='mt-10 mb-5'>Terms of service</h4>
 					<h4 className='mt-10 mb-5'>Privacy policy</h4>
 					<h4 className='mt-10 mb-5'>License</h4>
-					<h4 className='mt-10 mb-0'>
+					<h4 className='mt-10'>
 						<br />
 					</h4>
-					<h4 className='mt-10 mb-0'>
+					<h4 className='mt-10'>
 						<br />
 					</h4>
 				</div>

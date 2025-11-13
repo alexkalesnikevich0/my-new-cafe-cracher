@@ -24,7 +24,7 @@ export default function Second() {
 					cupiditate blanditiis ratione.
 				</p>
 			</div>
-			<div className='ml-20 mt-5 font-normal font-sans flex'>
+			<div className='ml-20 mt-3 font-normal font-sans flex'>
 				<Image
 					className='mr-5 mt-7'
 					src='/file.svg'
@@ -33,14 +33,14 @@ export default function Second() {
 					height={25}
 				/>
 				<p className='mt-10 font-normal font-sans'>
-					<span className='font-bold text-indigo-800'>SSL certificates.</span>{' '}
+					<span className='font-bold text-indigo-800'>SSL certificates.</span>
 					Anim aute id magna aliqua ad ad non <br />
 					deserunt sunt. Qui irure qui lorem cupidat commodo.
 				</p>
 			</div>
-			<div className='mb-5 ml-20 mt-5 font-normal font-sans flex'>
+			<div className='mb-5 ml-20 mt-3 font-normal font-sans flex'>
 				<Image
-					className='mr-5 mt-7'
+					className='mr-5 mt-3'
 					src='/globe.svg'
 					alt='File'
 					width={25}

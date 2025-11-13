@@ -12,7 +12,7 @@ import Image from 'next/image'
 export default function Home() {
 	return (
 		<div>
-			<section className='py-24 border-b border-b-gray-200'>
+			<section className='py-24 border-b border-b-gray-200 border-t'>
 				<Headline />
 			</section>
 			<section className='py-2 px-5 border-b-gray-500 mt-20'>
