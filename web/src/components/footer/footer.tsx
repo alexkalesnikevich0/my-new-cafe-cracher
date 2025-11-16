@@ -1,7 +1,7 @@
 import Image from 'next/image'
 export default function footer() {
 	return (
-		<div className='font-sans'>
+		<div className='font-sans columns-5xl'>
 			<Image
 				className='ml-15 mt-10 inline-block'
 				src='/tailwind.svg'

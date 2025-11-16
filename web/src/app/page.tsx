@@ -8,6 +8,7 @@ import Footer4 from '@/components/footer/footer4'
 import Chip from '@/components/chip'
 import Paragraph from '@/components/paragraph'
 import Image from 'next/image'
+import Mainfoot from '@/components/footer/mainfoot'
 
 export default function Home() {
 	return (
@@ -22,9 +23,7 @@ export default function Home() {
 				<Second />
 			</section>
 			<section className='py-20 border-t border-b border-b-gray-200'>
-				<Footer />
-				<Footer4 />
-				<Footer2 />
+				<Mainfoot />
 				<hr />
 				<Footer3 />
 			</section>
