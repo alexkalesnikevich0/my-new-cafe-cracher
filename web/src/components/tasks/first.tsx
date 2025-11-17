@@ -3,7 +3,7 @@ export default function First() {
 	return (
 		<div className='sm:font-medium'>
 			<h1 className='mb-15 text-5xl sm:text-6xl ml-2 mr-0 sm:mr-190 sm:ml-12'>
-				Everything you need to deploy your
+				Everything you need to deploy your app
 			</h1>
 
 			<div className='rounded-4xl border-2 border-gray-200 p-2 ml-0 sm:ml-17 bg-gray-100 w-90 h-85 sm:w-300 sm:h-190'>

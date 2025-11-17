@@ -62,7 +62,7 @@ export default function Mainfooter() {
 					<h4 className='mt-8'>Insights</h4>
 				</div>
 
-				<div className='inline-block mb-20 sm:ml-2'>
+				<div className='inline-block mb-0 sm:ml-2'>
 					<h4 className='font-semibold mb-5 text-black'>Company</h4>
 					<h4 className='mt-8 mb-0'>About</h4>
 					<h4 className='mt-8 mb-5'>Blog</h4>
@@ -74,7 +74,7 @@ export default function Mainfooter() {
 				</div>
 			</div>
 			<div className='inline-block text-gray-500'>
-				<div className='inline-block ml-8 sm:ml-0'>
+				<div className='inline-block ml-8 sm:ml-0 mt-20 sm:mt-0'>
 					<h4 className='font-semibold mb-5 text-black'>Support</h4>
 					<h4 className='mt-8 mb-5'>Submit ticket</h4>
 					<h4 className='mt-8 mb-5'>Documentation</h4>

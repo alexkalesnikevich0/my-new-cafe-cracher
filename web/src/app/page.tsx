@@ -1,18 +1,20 @@
-import Headline from '@/components/headline'
-import First from '@/components/first'
-import Second from '@/components/second'
-import Footer from '@/components/footer/footer'
-import Footer2 from '@/components/footer/footer2'
+import Headline from '@/components/tasks/headline'
+import First from '@/components/tasks/first'
+import Second from '@/components/tasks/second'
+import Navbar from '@/components/navbar/navbar'
 import Footer3 from '@/components/footer/footer3'
-import Footer4 from '@/components/footer/footer4'
-import Chip from '@/components/chip'
-import Paragraph from '@/components/paragraph'
+import Chip from '@/components/tasks/chip'
+import Paragraph from '@/components/tasks/paragraph'
 import Image from 'next/image'
 import Mainfoot from '@/components/footer/mainfoot'
+import Realnav from '@/components/navbar/realnav'
 
 export default function Home() {
 	return (
 		<div>
+			<section className='mb-40'>
+				<Realnav />
+			</section>
 			<section className='py-24 border-b border-b-gray-200 border-t'>
 				<Headline />
 			</section>
@@ -24,7 +26,7 @@ export default function Home() {
 			</section>
 			<section className='py-20 border-t border-b border-b-gray-200'>
 				<Mainfoot />
-				<hr />
+				<hr className='ml-7 mt-5 mr-7 mb-0 sm:ml-15 sm:mt-15 sm:mr-15 sm:mb-0' />
 				<Footer3 />
 			</section>
 			<section className='py-24 border-t border-b border-b-gray-200'>
