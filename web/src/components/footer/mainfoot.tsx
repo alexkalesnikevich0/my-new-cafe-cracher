@@ -4,7 +4,7 @@ export default function Mainfooter() {
 		<div className='font-sans columns-sm columns-3 sm:mt-10'>
 			<div className=''>
 				<Image
-					className=' ml-7 sm:ml-10 inline-block fill-indigo-600'
+					className='ml-7 sm:ml-10 inline-block fill-indigo-600'
 					src='/tail.svg'
 					alt='tailWind'
 					width={50}

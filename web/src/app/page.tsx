@@ -1,49 +1,18 @@
-import Headline from '@/components/tasks/headline'
-import First from '@/components/tasks/first'
-import Second from '@/components/tasks/second'
-import Navbar from '@/components/navbar/navbar'
-import Footer3 from '@/components/footer/footer3'
-import Chip from '@/components/tasks/chip'
-import Paragraph from '@/components/tasks/paragraph'
-import Image from 'next/image'
-import Mainfoot from '@/components/footer/mainfoot'
-import Realnav from '@/components/navbar/realnav'
+'use client'
+import First from '@/components/beer/assets/first'
+import Second from '@/components/beer/assets/second'
+import Third from '@/components/beer/assets/third'
+import Four from '@/components/beer/assets/four'
+import Five from '@/components/beer/assets/five'
 
 export default function Home() {
 	return (
-		<div>
-			<section className='mb-40'>
-				<Realnav />
-			</section>
-			<section className='py-24 border-b border-b-gray-200 border-t'>
-				<Headline />
-			</section>
-			<section className='py-2 px-5 border-b-gray-500 mt-20'>
-				<First />
-			</section>
-			<section className='mt-20 mb-20 border-t border-t-gray-200'>
-				<Second />
-			</section>
-			<section className='py-20 border-t border-b border-b-gray-200'>
-				<Mainfoot />
-				<hr className='ml-7 mt-5 mr-7 mb-0 sm:ml-15 sm:mt-15 sm:mr-15 sm:mb-0' />
-				<Footer3 />
-			</section>
-			<section className='py-24 border-t border-b border-b-gray-200'>
-				<Chip />
-			</section>
-			<section className=' py-24 border-b border-b-gray-200'>
-				<Image
-					src='/next.svg'
-					alt='Next.js Logo'
-					width={180}
-					height={37}
-					priority
-				/>
-			</section>
-			<section className='py-24 border-b border-b-gray-200'>
-				<Paragraph />
-			</section>
+		<div className='bg-orange-300/80'>
+			<First />
+			<Second />
+			<Third />
+			<Four />
+			<Five />
 		</div>
 	)
 }

@@ -5,7 +5,7 @@ import Modal from '@/components/navbar/Modal'
 import Navbar from './navbar'
 
 export default function Realnav() {
-	const [openModal, setOpenModal] = useState(false)
+	const [openForModal, setOpenModal] = useState(false)
 
 	return (
 		<div className=''>
@@ -44,26 +44,10 @@ export default function Realnav() {
 						<Navbar />
 					</h2>
 					<hr className='sm:hidden mt-10 sm:mt-0 mr-8 ml-8 sm:mr-0 sm:ml-0' />
-					<h2 className='inline-block mt-7 ml-9 sm:ml-70'>
-						Log in
-						<svg
-							xmlns='http://www.w3.org/2000/svg'
-							fill='none'
-							viewBox='0 0 24 24'
-							strokeWidth=''
-							stroke='currentColor'
-							className='h-4 w-4 inline-block ml-1 stroke-3 hidden'
-						>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
-							/>
-						</svg>
-					</h2>
+					<h2 className='inline-block mt-7 ml-9 sm:ml-70'>Log in</h2>
 				</div>
 			</div>
-			{openModal && <Modal closeModal={setOpenModal} />}
+			{openForModal && <Modal closeModal={setOpenModal} />}
 		</div>
 	)
 }

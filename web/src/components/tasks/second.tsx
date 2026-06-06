@@ -22,15 +22,14 @@ export default function Second() {
 						fill='currentColor'
 					>
 						<path
-							fill-rule='evenodd'
+							fillRule='evenodd'
 							d='M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 
 						4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 
-						10.5 3.75Zm2.03 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06 1.06l1.72-1.72v4.94a.75.75 0 
-						0 0 1.5 0v-4.94l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z'
-							clip-rule='evenodd'
+						10.5 3.75Zm2.03 5.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 1 0 1.06
+						1.06l1.72-1.72v4.94a.75.75 0 0 0 1.5 0v-4.94l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3Z'
+							clipRule='evenodd'
 						/>
 					</svg>
-
 					<p className='mt-12 text-slate-600'>
 						<span className='font-semibold text-black'>Push to deploy</span>
 						. Lorem ipsum, dolor sit amet consectetur <br />
@@ -46,14 +45,13 @@ export default function Second() {
 						fill='currentColor'
 					>
 						<path
-							fill-rule='evenodd'
+							fillRule='evenodd'
 							d='M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0
 						 0 3 3h10.5a3 3 0 0 0 3-3v-6.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 
 						 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z'
-							clip-rule='evenodd'
+							clipRule='evenodd'
 						/>
 					</svg>
-
 					<p className='mt-5 font-normal font-sans text-slate-600'>
 						<span className='font-semibold text-black'>SSL certificates</span>
 						. Anim aute id magna aliqua ad ad non <br />
@@ -67,14 +65,18 @@ export default function Second() {
 						viewBox='0 0 24 24'
 						fill='currentColor'
 					>
-						<path d='M4.08 5.227A3 3 0 0 1 6.979 3H17.02a3 3 0 0 1 2.9 2.227l2.113 7.926A5.228 5.228 0 0 0 18.75 12H5.25a5.228 5.228 0 0 0-3.284 1.153L4.08 5.227Z' />
 						<path
-							fill-rule='evenodd'
-							d='M5.25 13.5a3.75 3.75 0 1 0 0 7.5h13.5a3.75 3.75 0 1 0 0-7.5H5.25Zm10.5 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm3.75-.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-							clip-rule='evenodd'
+							d='M4.08 5.227A3 3 0 0 1 6.979 3H17.02a3 3 0 0 1 2.9 2.227l2.113
+						 7.926A5.228 5.228 0 0 0 18.75 12H5.25a5.228 5.228 0 0 0-3.284 1.153L4.08 5.227Z'
+						/>
+						<path
+							fillRule='evenodd'
+							d='M5.25 13.5a3.75 3.75 0 1 0 0 7.5h13.5a3.75 3.75 0 1 0 0-7.5H5.25Zm10.5 
+							4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm3.75-.75a.75.75 0 1 1-1.5 0 .75.75 
+							0 0 1 1.5 0Z'
+							clipRule='evenodd'
 						/>
 					</svg>
-
 					<p className='mb-5 mt-10 font-normal font-sans text-slate-600'>
 						<span className='font-semibold text-black'>Database backups</span>.
 						Ac tincidunt sapien vehicula erat auctor <br />
@@ -82,10 +84,9 @@ export default function Second() {
 					</p>
 				</div>
 			</div>
-
-			<div className=' w-92 h-30 ml-3 mt-0 mb-4 sm:w-150 sm:ml-0'>
+			<div className='w-92 h-30 ml-5 mt-0 mb-4 sm:w-150 sm:ml-0'>
 				<Image
-					className='border-black-500 rounded-2xl h-90 sm:h-125'
+					className='border-black-500 rounded-2xl h-90 sm:h-125 p-0 bg-gray-200'
 					src='/land.png'
 					alt='Next.js Logo'
 					width={2000}
