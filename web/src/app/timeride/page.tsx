@@ -5,12 +5,6 @@ const image = [
 		route: '/',
 	},
 ]
-const hah = [
-	{
-		title: 'home',
-		route: '/',
-	},
-]
 export default function Timeride() {
 	return (
 		<div className='bg-orange-300/80'>
@@ -23,7 +17,14 @@ export default function Timeride() {
 				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h1 className='uppercase text-4xl font-bold text-center bg-gradient-to-t from-white/80 via-white/80 to-white/90 bg-clip-text text-transparent mb-7 sm:text-3xl md:text-5xl lg:text-5xl xl:text-7xl 2xl:text-8xl 2xl:mb-9'>
+					<h1
+						className='uppercase text-4xl font-bold text-center bg-gradient-to-t from-white/80 via-white/80 to-white/90 bg-clip-text text-transparent mb-7 
+					sm:text-3xl 
+					md:text-5xl 
+					lg:text-5xl 
+					xl:text-7xl 
+					2xl:text-8xl 2xl:mb-9'
+					>
 						TimeRide VR Cöln
 					</h1>
 					<div className=''>
@@ -39,13 +40,22 @@ export default function Timeride() {
 					<div className='w-full flex-col flex lg:flex-row'>
 						<div className='justify-center flex lg:flex-col lg:w-[60%]'>
 							<img
-								className='w-[80%] mt-8 border-4 rounded-xl border-black/70 duration-600 sm:mt-15 lg:mt-0 lg:w-[85%] lg:ml-10 xl:h-[80%] xl:mt-0 2xl:h-[85%] 2xl:mt-0 flex'
+								className='w-[80%] mt-8 border-4 flex rounded-xl border-black/70 duration-600 
+								sm:mt-15 
+								lg:mt-0 lg:w-[85%] lg:ml-10 
+								xl:h-[80%] xl:mt-0
+							  2xl:h-[85%] 2xl:mt-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}
 								height={6400}
 							/>
-							<h2 className='text-gray-700/80 font-medium font-stretch-semi-expanded text-sm text-center w-[80%] sm:mt-5 md:text-base mt-5 lg:text-left hidden lg:block xl:hidden lg:text-lg pl-10 lg:mt-7 xl:mt-10'>
+							<h2
+								className='text-gray-700/80 font-medium font-stretch-semi-expanded text-sm text-center pl-10 w-[80%] mt-5 hidden 
+							  md:text-base 
+								lg:text-left lg:text-lg lg:mt-7 lg:block 
+								xl:hidden xl:mt-10'
+							>
 								Begebt euch mit TimeRide auf eine packende Zeitreise und erlebt
 								das unzerstörte Köln und das faszinierende Lebensgefühl der
 								legendären Zwanziger Jahre!
@@ -53,16 +63,34 @@ export default function Timeride() {
 						</div>
 						<div className='w-[100%] sm:w-[100%] lg:w-[50%] justify-center flex'>
 							<div className=''>
-								<h1 className='uppercase font-stretch-extra-condensed font-bold text-slate-800 text-center mt-7 pl-15 pr-15 text-xl sm:text-2xl sm:mt-10 md:mt-7 md:text-3xl lg:text-left lg:pl-0 lg:text-4xl lg:mt-10 xl:mt-15'>
+								<h1
+									className='uppercase font-stretch-extra-condensed font-bold text-slate-800 text-center mt-7 pl-15 pr-15 text-xl 
+								sm:text-2xl sm:mt-10 
+								md:mt-7 md:text-3xl 
+								lg:text-left lg:pl-0 lg:text-4xl lg:mt-10 
+								xl:mt-15'
+								>
 									Mit Virtual Reality in das Köln der Goldenen Zwanziger Jahre
 									eintauchen!
 								</h1>
-								<h2 className='text-gray-700/80 font-medium font-stretch-semi-expanded text-sm text-center pl-10 pr-10 w-[100%] sm:mt-5 sm:pl-20 sm:pr-20 md:text-base mt-5 lg:text-left lg:hidden xl:block xl:pl-0 lg:text-lg lg:mt-7 lg:w-[90%] xl:mt-10'>
+								<h2
+									className='text-gray-700/80 font-medium font-stretch-semi-expanded text-sm text-center pl-10 pr-10 w-[100%] mt-5
+								sm:pl-20 sm:pr-20 
+								md:text-base 
+								lg:text-left lg:text-lg lg:mt-7 lg:w-[90%] lg:hidden
+								xl:block xl:pl-0 xl:mt-10'
+								>
 									Begebt euch mit TimeRide auf eine packende Zeitreise und
 									erlebt das unzerstörte Köln und das faszinierende Lebensgefühl
 									der legendären Zwanziger Jahre!
 								</h2>
-								<h2 className='text-gray-700/80 font-medium font-stretch-semi-expanded mb-5 text-sm w-[100%] pl-10 pr-10 mt-5 pb-8 text-center sm:pl-20 sm:pr-20 md:text-base md:mt-5 lg:pl-0 lg:text-left lg:text-lg lg:mt-7 lg:w-[100%] xl:mt-10'>
+								<h2
+									className='text-gray-700/80 font-medium font-stretch-semi-expanded mb-5 text-sm w-[100%] pl-10 pr-10 mt-5 pb-8 text-center 
+								sm:pl-20 sm:pr-20 
+								md:text-base md:mt-5 
+								lg:pl-0 lg:text-left lg:text-lg lg:mt-7 lg:w-[100%] 
+								xl:mt-10'
+								>
 									Gemeinsam mit der charmanten Hutmacherin Tessa und dem
 									kölschen Urgestein Straßenbahnfahrer Pitter entdeckt ihr die
 									spannende Zeit nach dem Ende des ersten Weltkriegs, der
@@ -82,7 +110,7 @@ export default function Timeride() {
 						<div className='flex-col flex justify-center w-[82%] sm:w-[60%] md:w-[70%] lg:w-[44%]'>
 							{image.map(link => (
 								<Link href={`${link.route}`} key={link.route} className='w-42'>
-									<h1 className='text-red-700 font-medium font-serif cursor-pointer hover:text-red-600 sm:text-lg mt-7 sm:mt-7 md:mt-9 md:text-xl'>
+									<h1 className='text-red-700 font-medium font-serif cursor-pointer hover:text-red-600 mt-7 sm:text-lg md:mt-9 md:text-xl'>
 										TimeRide VR Cöln
 									</h1>
 								</Link>
@@ -114,7 +142,13 @@ export default function Timeride() {
 			<div className='h-40 sm:h-40 md:h-60 flex justify-center'>
 				<div className='h-full bg-white/60 rounded-b-xl border-black/70 border-l-2 border-r-2 border-b-2 w-[90%] lg:w-[90%] 2xl:w-330'>
 					<div className='flex items-center justify-center'>
-						<h1 className='font-serif italic font-light text-slate-800 w-[80%] mt-7 sm:w-[65%] sm:mt-7 sm:ml-2 sm:text-lg md:mt-15 md:ml-4 md:w-[70%] md:text-2xl lg:ml-20 lg:mt-16 lg:w-[55%] lg:text-2xl xl:mt-20 xl:w-[50%]'>
+						<h1
+							className='font-serif italic font-light text-slate-800 w-[80%] mt-7 
+						sm:w-[65%] sm:ml-2 sm:text-lg 
+						md:mt-15 md:ml-4 md:w-[70%] md:text-2xl 
+						lg:ml-20 lg:mt-16 lg:w-[55%] lg:text-2xl 
+						xl:mt-20 xl:w-[50%]'
+						>
 							Tickets gibt es jederzeit an der Tageskasse auf dem Alter Markt
 							oder im Vorverkauf unter <br />
 							<div className='w-[44%]'>

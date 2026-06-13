@@ -11,14 +11,22 @@ export default function First() {
 			<div className='mb-10 flex justify-center md:mb-25 pt-30 2xl:pt-70'>
 				<div className='w-55 h-2 bg-yellow-950/90 rounded-full md:h-4 md:w-155 2xl:w-190'></div>
 			</div>
-			<h1 className='text-center justify-center font-serif font-black text-yellow-900 text-2xl sm:text-4xl md:text-5xl lg:text-7xl 2xl:text-8xl'>
+			<h1 className='text-center justify-center font-serif font-black text-yellow-900 text-2xl 
+			sm:text-4xl 
+			md:text-5xl 
+			lg:text-7xl 
+			2xl:text-8xl'>
 				GANS SCHÖN LECKER!
 			</h1>
-			<div className='text-center text-md font-serif font-semibold mt-5 sm:text-xl md:mt-12 md:text-2xl lg:text-4xl 2xl:text-5xl'>
-				<h1 className='text-yellow-950 justify-center'>
+			<div className='text-center text-md font-serif font-semibold mt-5 
+			sm:text-xl 
+			md:mt-12 md:text-2xl 
+			lg:text-4xl 
+			2xl:text-5xl'>
+				<h2 className='text-yellow-950 justify-center'>
 					FENFRISCHE GÄNSEKEULE MIT KARTOFFELKLÖSSEN <br />
 					GÄNSE-JUS, BRATAPFEL UND ROTKOHL
-				</h1>
+				</h2>
 			</div>
 			<div className='justify-center flex'>
 				<button className='h-17 items-center justify-center md:mt-5'>
@@ -39,7 +47,7 @@ export default function First() {
 									xl:w-49 xl:group-hover:w-75 
 									2xl:w-56 2xl:group-hover:w-95'
 									>
-										<hr className='h-1 border-yellow-800 border-2 rounded-full group-hover:border-stone-300' />
+										<hr className='h-1 border-yellow-800 border-2 rounded-full group-hover:border-stone-300'></hr>
 									</article>
 								</div>
 							</h1>
@@ -49,17 +57,13 @@ export default function First() {
 			</div>
 			<div
 				className='mt-35 pb-10 duration-900 items-center justify-center flex md:mt-50 lg:mt-32 2xl:mt-105
-			[&_section]:rounded-full [&_section]:mt-2 [&_section:hover]:mt-1 [&_section]:duration-500 [&_section]:h-3 [&_section]:w-3 [&_section]:bg-yellow-800/80 
-			[&_section:hover]:h-4 [&_section:hover]:w-4 [&_section:hover]:bg-yellow-900 
+			[&_section]:rounded-full [&_section]:mt-2 [&_section]:duration-500 [&_section]:h-3 [&_section]:w-3 [&_section]:bg-yellow-800/80
+			[&_section:hover]:h-4 [&_section:hover]:mt-1 [&_section:hover]:w-4 [&_section:hover]:bg-yellow-900 
 			2xl:[&_section]:w-5 2xl:[&_section]:2xl:h-5 2xl:[&_section:hover]:w-6 2xl:[&_section:hover]:h-6
 			'
 			>
 				{base.map(link => (
-					<Link
-						href={`${link.route}`}
-						key={link.route}
-						className='flex flex-row h-2'
-					>
+					<Link href={`${link.route}`} key={link.route} className='flex h-2'>
 						<section className=''></section>
 						<section className='ml-2'></section>
 						<section className='ml-2'></section>

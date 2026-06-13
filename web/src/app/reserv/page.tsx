@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
-const res = [
+const reserv = [
 	{
-		route: '/',
+		route: 'reservierung/',
 	},
 ]
 export default function Reserv() {
@@ -18,7 +18,7 @@ export default function Reserv() {
 			</div>
 			<div className='h-20'>
 				<div className='uppercase duration-800 text-center text-white font-extrabold mt-2 mt-5 w-55 hover:h-12 hover:w-67 h-10 group duration-600 pl-3 pr-3 border-black border-1 items-center justify-center mx-auto bg-yellow-900/90 mt-7 flex rounded-sm cursor-pointer hover:bg-yellow-800/90 hover:border-2 md:hover:text-2xl hover:mt-7 md:hover:h-12 md:hover:w-80 md:w-64 md:h-12 md:group-hover:pl-0'>
-					{res.map(link => (
+					{reserv.map(link => (
 						<Link href={`${link.route}`} key={link.route} className=''>
 							<h1 className='duration-800 font-bold text-white text-sm hover:text-base md:text-lg group-hover:ml-3 group-hover:font-extrabold md:group-hover:text-xl 2xl:group-hover:font-bold flex'>
 								jetzt hier im sion

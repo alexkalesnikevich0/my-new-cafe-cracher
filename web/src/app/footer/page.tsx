@@ -9,12 +9,24 @@ export default function Footer() {
 	return (
 		<div className='bg-yellow-950/90'>
 			<div className='pt-20 md:flex md:justify-center 2xl:pt-40'>
-				<h1 className='mb-20 text-4xl mt-0 font-serif text-center text-white/90 font-extrabold md:w-[50%] md:mb-0 md:mt-10 md:h-50 md:text-5xl lg:text-6xl 2xl:text-7xl 2xl:ml-5'>
+				<h1
+					className='mb-20 text-4xl mt-0 font-serif text-center text-white/90 font-extrabold 
+				md:w-[50%] md:mb-0 md:mt-10 md:h-50 md:text-5xl 
+				lg:text-6xl 
+				2xl:text-7xl 2xl:ml-5'
+				>
 					SO KOMMEN <br />
 					SIE ZU UNS
 				</h1>
 				<div className='flex justify-center md:w-[50%]'>
-					<div className='text-xl text-white/70 font-extrabold font-serif sm:text-2xl md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl'>
+					<div
+						className='text-xl text-white/70 font-extrabold font-serif 
+					sm:text-2xl 
+					md:text-xl 
+					lg:text-2xl 
+					xl:text-3xl 
+					2xl:text-4xl'
+					>
 						<h1 className='flex cursor-pointer hover:text-white'>
 							ANFAHRT MIT BUS UND BAHN
 							<div className='font-black cursor-pointer ml-5 2xl:ml-15'>+</div>
@@ -43,7 +55,14 @@ export default function Footer() {
 			</div>
 			<div className='md:flex md:w-full'>
 				<div className='md:w-[60%] lg:w-[60%] 2xl:w-[60%] flex justify-center items-center'>
-					<h1 className='w-[80%] mt-10 md:ml-10 text-3xl text-white/90 font-extrabold text-center font-serif sm:text-4xl sm:w-[80%] md:w-[100%] md:text-6xl lg:text-6xl xl:text-5xl 2xl:text-7xl 2xl:w-[70%]'>
+					<h1
+						className='w-[80%] mt-10 md:ml-10 text-3xl text-white/90 font-extrabold text-center font-serif 
+					sm:text-4xl sm:w-[80%] 
+					md:w-[100%] md:text-6xl 
+					lg:text-6xl 
+					xl:text-5xl 
+					2xl:text-7xl 2xl:w-[70%]'
+					>
 						DAS BRAUHAUS SION FREUT SICH AUF SIE!
 					</h1>
 				</div>
@@ -141,10 +160,10 @@ export default function Footer() {
 				<div className='w-[90%] h-3 bg-white/60 rounded-full mt-20 mb-10'></div>
 			</div>
 			<div
-				className='font-extrabold font-serif flex items-center flex-col md:flex-row justify-center md:justify-start text-white/60 text-xl [&_h1]:pt-2 [&_h1]:pb-2 [&_h1]:duration-200 [&_h1]: [&_h1]:
-				[&_h1:hover]:font-black [&_h1:hover]:text-white md:[&_h1:hover]:bg-yellow-950/0
+				className='font-extrabold font-serif flex items-center flex-col justify-center text-white/60 text-xl pb-6
+			[&_h1]:pt-2 [&_h1]:pb-2 [&_h1]:duration-200 [&_h1:hover]:font-black [&_h1:hover]:text-white
 			 sm:text-xl 
-			 md:text-xl 
+			 md:text-xl md:flex-row md:justify-start md:[&_h1:hover]:bg-yellow-950/0
 			 lg:text-2xl
 			 xl:text-2xl'
 			>
@@ -172,7 +191,6 @@ export default function Footer() {
 					))}
 				</div>
 			</div>
-			<br />
 		</div>
 	)
 }

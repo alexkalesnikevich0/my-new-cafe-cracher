@@ -19,11 +19,23 @@ export default function Feiern() {
 				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h2 className='uppercase text-4xl text-center bg-gradient-to-t from-white/90 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 sm:text-3xl md:text-5xl lg:text-5xl xl:text-7xl 2xl:text-7xl 2xl:mb-9'>
+					<h2
+						className='uppercase text-4xl text-center bg-gradient-to-t from-white/90 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
+					sm:text-3xl 
+					md:text-5xl 
+					lg:text-5xl 
+					xl:text-7xl 
+					2xl:text-7xl 2xl:mb-9'
+					>
 						Im Brauhaus feiern!
 					</h2>
 					<div className=''>
-						<h1 className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl md:text-2xl lg:text-4xl 2xl:text-5xl'>
+						<h1
+							className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl 
+						md:text-2xl 
+						lg:text-4xl 
+						2xl:text-5xl'
+						>
 							Wir wissen, wie's geht
 						</h1>
 					</div>
@@ -31,11 +43,20 @@ export default function Feiern() {
 				</div>
 			</div>
 			<div
-				className='[&_img]:border-blue-950/80 [&_span]:text-red-500/90 [&_span]:duration-400 [&_span]:hover:text-red-700/90 [&_p]:font-stretch-semi-expanded [&_p]:pt-2 [&_p]:font-semibold 
-			[&_p]:text-black/70 [&_p]:text-sm sm:[&_img]:w-[100%] [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:font-stretch-semi-condensed [&_h1]:text-blue-900/90 sm:[&_p]:text-base sm:[&_h1]:text-3xl 
-			md:[&_img]:w-[70%] md:[&_p]:text-base md:[&_h1]:text-3xl lg:[&_img]:w-[100%] md:[&_img]:mt-8 lg:[&_p]:text-base xl:[&_p]:text-lg xl:[&_h1]:text-4xl xl:[&_p]:mt-4 xl:[&_h1]:mt-14 2xl:[&_p]:text-xl'
+				className='[&_img]:border-blue-950/80 sm:[&_img]:w-[100%] md:[&_img]:w-[70%] md:[&_img]:mt-8 lg:[&_img]:w-[100%]
+				[&_span]:text-red-500/90 [&_span]:duration-200 [&_span]:hover:text-blue-700/90 
+				[&_p]:font-stretch-semi-expanded [&_p]:pt-2 [&_p]:font-semibold [&_p]:text-black/70 [&_p]:text-sm sm:[&_p]:text-base xl:[&_p]:text-lg xl:[&_p]:mt-4 2xl:[&_p]:text-xl
+			  [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:font-stretch-semi-condensed [&_h1]:text-blue-900/90 sm:[&_h1]:text-3xl md:[&_h1]:text-3xl xl:[&_h1]:text-4xl xl:[&_h1]:mt-14
+			
+			'
 			>
-				<div className='border-2 border-black/80 rounded-md bg-white/60 mx-auto max-w-[85%] md:max-w-[75%] mt-20 lg:max-w-[85%] xl:max-w-[90%] 2xl:w-[60%]'>
+				<div
+					className='border-2 border-black/80 rounded-md bg-white/60 mx-auto max-w-[85%] mt-20
+				md:max-w-[75%] 
+				lg:max-w-[85%] 
+				xl:max-w-[90%] 
+				2xl:w-[60%]'
+				>
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
 						<div className='sm:flex sm:justify-center lg:ml-10'>
 							<img
@@ -100,10 +121,21 @@ export default function Feiern() {
 							<div className='duration-800 '>
 								{back.map(link => (
 									<Link href={`${link.route}`} key={link.route}>
-										<h3 className='uppercase flex justify-center group/main font-bold duration-700 border-2 border-black/80 text-base rounded-lg cursor-pointer p-2 text-white/90 flex text-center bg-yellow-900/90 hover:bg-yellow-800/90 duration-500 hover:border-black hover:text-white sm:hover:text-lg md:text-lg md:hover:text-xl md:hover:font-extrabold xl:hover:text-xl xl:hover:pl-2 xl:hover:pr-2 2xl:hover'>
+										<h3
+											className='uppercase flex justify-center group/main font-bold duration-700 border-2 border-black/80 text-base rounded-lg p-2 text-white/90 text-center bg-yellow-900/90 hover:bg-yellow-800/90 hover:border-black hover:text-white 
+										sm:hover:text-lg 
+										md:text-lg md:hover:text-xl md:hover:font-extrabold 
+										xl:hover:text-xl xl:hover:pl-2 xl:hover:pr-2'
+										>
 											HOME
 											<div className='flex items-center justify-center'>
-												<div className='duration-500 w-9 group-hover:w-12 flex h-1 bg-black/40 ml-3 rounded-xl group-hover/main:bg-black/70 sm:mt-0 sm:ml-3 sm:group-hover/main:ml-3 sm:w-9 sm:group-hover/main:w-12 md:group-hover/main:w-14 md:group-hover/main:ml-3 md:w-9 xl:w-10 xl:group-hover/main:w-13 2xl:w-10 2xl:group-hover/main:w-14'></div>
+												<div
+													className='duration-500 w-9 group-hover:w-12 flex h-1 bg-black/40 ml-3 rounded-xl group-hover/main:bg-black/70 
+												sm:mt-0 sm:ml-3 sm:group-hover/main:ml-3 sm:w-9 sm:group-hover/main:w-12 
+												md:group-hover/main:w-14 md:group-hover/main:ml-3 md:w-9 
+												xl:w-10 xl:group-hover/main:w-13
+												2xl:w-10 2xl:group-hover/main:w-14'
+												></div>
 											</div>
 										</h3>
 									</Link>

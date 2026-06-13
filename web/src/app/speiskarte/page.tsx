@@ -1,7 +1,7 @@
 import Reserv from '@/app/reserv/page'
 import Link from 'next/link'
 
-const raumlichkeiten = [
+const home = [
 	{
 		route: '/',
 	},
@@ -19,12 +19,20 @@ export default function Speiskarte() {
 				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h2 className='uppercase text-4xl text-center bg-gradient-to-t from-white/90 via-white/90 font-bold to-white/90 bg-clip-text text-transparent mb-7 sm:text-3xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl 2xl:mb-9'>
+					<h2 className='uppercase text-4xl text-center bg-gradient-to-t from-white/90 via-white/90 font-bold to-white/90 bg-clip-text text-transparent mb-7 
+					sm:text-3xl 
+					md:text-5xl 
+					lg:text-5xl 
+					xl:text-6xl 
+					2xl:text-7xl 2xl:mb-9'>
 						Frisch aus der <br />
 						Brauhaus-Küche
 					</h2>
 					<div className=''>
-						<h1 className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl md:text-2xl lg:text-4xl 2xl:text-5xl'>
+						<h1 className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl
+						md:text-2xl 
+						lg:text-4xl 
+						2xl:text-5xl'>
 							die vielfalt unserer speisekarte <br />
 							trifft jeden geschmack
 						</h1>
@@ -33,18 +41,16 @@ export default function Speiskarte() {
 				</div>
 			</div>
 			<div
-				className='border-2 border-black/80 mt-20 rounded-md bg-white/80 mx-auto max-w-[85%] md:max-w-[75%] lg:max-w-[85%] xl:max-w-[90%] 2xl:w-[60%] [&_h1]:text-2xl [&_h1]:font-stretch-ultra-condensed [&_h1]:font-bold [&_h1]:uppercase [&_h1]:text-blue-950 [&_h2]:text-orange-800 [&_h2]:font-stretch-semi-condensed [&_h2]:mb-1 [&_h3]:text-blue-950 [&_h3]:uppercase [&_h3]:font-stretch-ultra-condensed [&_h3]:font-bold
-				[&_h3]:text-3xl
-				sm:[&_h3]:text-3xl
-				md:[&_h3]:text-3xl
-				lg:[&_h1]:text-3xl lg:[&_h2]:text-xl lg:[&_h3]:text-4xl
-			  xl:[&_h1]:text-3xl xl:[&_h2]:font-semibold xl:[&_h2]:text-lg xl:[&_h3]:text-5xl xl:[&_h3]:text-4xl'
+				className='border-2 border-black/80 mt-20 rounded-md bg-white/80 mx-auto max-w-[85%] 2xl:w-[60%] xl:max-w-[90%] md:max-w-[75%] lg:max-w-[85%] 
+			  [&_h1]:text-2xl [&_h1]:font-stretch-ultra-condensed [&_h1]:font-bold [&_h1]:uppercase [&_h1]:text-blue-950 lg:[&_h1]:text-3xl  xl:[&_h1]:text-3xl
+				[&_h2]:text-orange-800 [&_h2]:font-stretch-semi-condensed [&_h2]:mb-1 lg:[&_h2]:text-xl xl:[&_h2]:text-lg xl:[&_h2]:font-semibold
+				[&_h3]:text-blue-950 [&_h3]:uppercase [&_h3]:font-stretch-ultra-condensed [&_h3]:font-bold [&_h3]:text-3xl sm:[&_h3]:text-3xl md:[&_h3]:text-3xl lg:[&_h3]:text-4xl xl:[&_h3]:text-5xl'
 			>
 				<div className='flex flex-col items-center'>
 					<div className='flex-col sm:flex sm:flex-row w-full sm:justify-between pt-2 items-center'>
 						<div className='[&_h2]:hover:text-orange-700/60 text-center flex flex-col sm:w-1/2 justify-center items-center'>
 							<h1 className='mt-10 sm:mt-14'>Speisen</h1>
-							{raumlichkeiten.map(link => (
+							{home.map(link => (
 								<Link href={`${link.route}`} key={link.route}>
 									<h2 className='mt-3'>Hauseigene Spezialität</h2>
 									<h2 className=''>Tipp der Woche</h2>
@@ -58,7 +64,7 @@ export default function Speiskarte() {
 						</div>
 						<div className='[&_h2]:hover:text-orange-700/60 text-center flex flex-col sm:w-1/2 justify-center items-center'>
 							<h1 className='mt-13 sm:mt-14'>Getränke</h1>
-							{raumlichkeiten.map(link => (
+							{home.map(link => (
 								<Link href={`${link.route}`} key={link.route}>
 									<h2 className='mt-3'>Heißgetränke</h2>
 									<h2 className=''>Wein</h2>
@@ -74,10 +80,9 @@ export default function Speiskarte() {
 					<h3 className='mt-15 mb-10 text-center'>Hauseigene Spezialität</h3>
 					<div
 						className='p-10 w-full bg-yellow-900/80 flex flex-col items-center justify-center
-						[&_h4]:text-black/80 [&_h4]:font-bold [&_h6]:font-bold [&_h6]:text-black/60 [&_h5]:text-center [&_h4]:text-center [&_h6]:text-center
-						[&_h4]:text-base [&_h5]:text-xl [&_h6]:text-base
-						lg:[&_h4]:text-lg lg:[&_h5]:text-2xl lg:[&_h6]:text-lg
-				  	xl:[&_h5]:text-3xl xl:[&_h4]:text-xl xl:[&_h6]:text-xl'
+						[&_h4]:text-center [&_h4]:text-black/80 [&_h4]:font-bold [&_h4]:text-base lg:[&_h4]:text-lg xl:[&_h4]:text-xl
+						[&_h5]:text-center [&_h5]:text-xl lg:[&_h5]:text-2xl xl:[&_h5]:text-3xl
+				  	[&_h6]:font-bold [&_h6]:text-black/60 [&_h6]:text-center [&_h6]:text-base lg:[&_h6]:text-lg xl:[&_h6]:text-xl'
 					>
 						<h5 className='text-white font-bold mb-3'>
 							Sion Sud­pfannen­putzer
@@ -94,10 +99,10 @@ export default function Speiskarte() {
 				</div>
 				<div
 					className='p-5
-					[&_h4]:text-blue-950 [&_h1]:bg-gray-300 [&_h4]:mb-1 [&_h4]:mt-7 [&_h4]:font-semibold [&_h4]:font-stretch-condensed [&_h5]:font-medium [&_h5]:text-black/90 [&_h5]:mb-2 [&_h5]:font-stretch-semi-condensed [&_h6]:font-black [&_h6]:text-blue-950 
-          md:[&_h4]:text-xl md:[&_h5]:text-base md:[&_h6]:text-lg 
-				  lg:[&_h4]:text-2xl lg:[&_h5]:text-lg lg:[&_h6]:text-xl 
-				  xl:[&_h4]:text-2xl xl:[&_h5]:text-lg xl:[&_h6]:text-xl xl:[&_h6]:'
+				  [&_h1]:bg-gray-300
+          [&_h4]:text-blue-950 [&_h4]:mb-1 [&_h4]:mt-7 [&_h4]:font-semibold [&_h4]:font-stretch-condensed md:[&_h4]:text-xl lg:[&_h4]:text-2xl xl:[&_h4]:text-2xl
+				  [&_h5]:font-medium [&_h5]:text-black/90 [&_h5]:mb-2 md:[&_h5]:text-base [&_h5]:font-stretch-semi-condensed lg:[&_h5]:text-lg xl:[&_h5]:text-lg
+				  [&_h6]:font-black [&_h6]:text-blue-950  md:[&_h6]:text-lg lg:[&_h6]:text-xl xl:[&_h6]:text-xl'
 				>
 					<div className='flex w-full justify-between px-5'>
 						<div className='flex-col justify-start items-center'>

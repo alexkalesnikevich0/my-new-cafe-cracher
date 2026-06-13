@@ -12,11 +12,23 @@ export default function Tradition() {
 				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h2 className='uppercase text-4xl text-center bg-gradient-to-t from-white/80 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 sm:text-3xl md:text-5xl lg:text-5xl xl:text-7xl 2xl:text-7xl 2xl:mb-9'>
+					<h2
+						className='uppercase text-4xl text-center bg-gradient-to-t from-white/80 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
+					sm:text-3xl 
+					md:text-5xl 
+					lg:text-5xl 
+					xl:text-7xl 
+					2xl:text-7xl 2xl:mb-9'
+					>
 						Brautradition seit 1318
 					</h2>
 					<div className=''>
-						<h1 className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl md:text-2xl lg:text-4xl 2xl:text-5xl'>
+						<h1
+							className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl 
+						md:text-2xl 
+						lg:text-4xl 
+						2xl:text-5xl'
+						>
 							Der Qualität und der eigenen <br />
 							Geschichte verpflichtet
 						</h1>
@@ -26,13 +38,9 @@ export default function Tradition() {
 			</div>
 			<div
 				className='border-2 border-black/80 mt-20 rounded-md bg-white/80 mx-auto max-w-[85%] md:max-w-[75%] lg:max-w-[85%] xl:max-w-[90%] 2xl:w-[60%] 
-				[&_h1]:text-2xl [&_h1]:font-stretch-ultra-condensed [&_h1]:font-bold [&_h1]:uppercase [&_h1]:text-blue-950 [&_h2]:text-black/70 [&_h2]:font-stretch-condensed [&_h2]:mb-1 
-				[&_svg]:h-10 [&_svg]:w-10 [&_svg]:mt-7 [&_svg]:text-orange-950 [&_h2]:text-sm [&_h2]:p-3
-        sm:[&_h1]:text-xl sm:[&_h2]:text-base
-        lg:[&_h2]:text-lg
-				lg:[&_h1]:text-3xl
-			  xl:[&_h1]:text-4xl xl:[&_svg]:h-15 xl:[&_svg]:w-15 xl:[&_h2]:text-xl
-        '
+				[&_h1]:text-2xl [&_h1]:font-stretch-ultra-condensed [&_h1]:font-bold [&_h1]:uppercase [&_h1]:text-blue-950 sm:[&_h1]:text-xl lg:[&_h1]:text-3xl xl:[&_h1]:text-4xl 
+				[&_h2]:text-black/70 [&_h2]:font-stretch-condensed [&_h2]:mb-1 [&_h2]:text-sm [&_h2]:p-3 sm:[&_h2]:text-base lg:[&_h2]:text-lg xl:[&_h2]:text-xl
+				[&_svg]:h-10 [&_svg]:w-10 [&_svg]:mt-7 [&_svg]:text-orange-950 xl:[&_svg]:h-15 xl:[&_svg]:w-15'
 			>
 				<div className='flex-col sm:flex sm:flex-row w-full sm:justify-between gap-3 lg:gap-9 p-5 items-center'>
 					<div className='flex flex-col sm:w-1/2 justify-center items-center'>

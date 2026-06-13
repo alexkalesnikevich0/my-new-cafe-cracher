@@ -1,5 +1,5 @@
 import Link from 'next/link'
-const image = [
+const home = [
 	{
 		route: '/',
 	},
@@ -18,11 +18,22 @@ export default function Raumlichkeiten() {
 				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h1 className='text-2xl font-bold text-center bg-gradient-to-t from-white/90 via-white/80 to-white/90 bg-clip-text text-transparent mb-10 sm:text-3xl md:text-4xl lg:text-6xl 2xl:text-6xl 2xl:mb-13'>
+					<h1
+						className='text-2xl font-bold text-center bg-gradient-to-t from-white/90 via-white/80 to-white/90 bg-clip-text text-transparent mb-10 
+					sm:text-3xl
+					md:text-4xl 
+					lg:text-6xl 
+					2xl:text-6xl 2xl:mb-13'
+					>
 						GROSSES BRAUHAUS MIT <br />
 						GROSSER VIELFALT
 					</h1>
-					<h2 className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 ml-15 mr-15 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl md:text-2xl lg:text-4xl 2xl:text-5xl'>
+					<h2
+						className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 ml-15 mr-15 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl 
+					md:text-2xl 
+					lg:text-4xl 
+					2xl:text-5xl'
+					>
 						DIE TOLLE ATMOSPHARE IN DER SCHANKE DER <br />
 						ALTEN BRAUEREI ODER DEEN KLEINEN <br />
 						STUBEN ERLEBEN
@@ -31,7 +42,7 @@ export default function Raumlichkeiten() {
 				</div>
 			</div>
 			<div
-				className='[&_section]:bg-white/70 [&_section]:border-4 [&_section]:rounded-xl [&_section]:border-black [&_section]:w-[85%] sm:[&_section]:w-[65%] md:[&_section]:w-[90%] lg:[&_section]:w-[85%]  md:[&_section]:hidden:flex-col md:[&_section]:flex 2xl:[&_section]:w-300 2xl:[&_section]:h-120
+				className='[&_section]:bg-white/70 [&_section]:border-4 [&_section]:rounded-xl [&_section]:border-black [&_section]:w-[85%] sm:[&_section]:w-[65%] md:[&_section]:w-[90%] lg:[&_section]:w-[85%] md:[&_section]:hidden:flex-col md:[&_section]:flex 2xl:[&_section]:w-300 2xl:[&_section]:h-120
 				[&_h1]:text-blue-950 [&_h1]:uppercase [&_h1]:font-extrabold [&_h1]:text-2xl sm:[&_h1]:text-2xl md:[&_h1]:text-2xl lg:[&_h1]:text-3xl xl:[&_h1]:text-4xl 2xl:[&_h1]:text-5xl 
 				[&_h2]:font-semibold [&_h2]:text-black/60 [&_h2]:text-sm sm:[&_h2]:text-base xl:[&_h2]:text-lg 2xl:[&_h2]:text-xl
 				[&_h3]:font-semibold [&_h3]:text-black/40 [&_h3]:text-sm md:[&_h3]:text-base
@@ -43,7 +54,8 @@ export default function Raumlichkeiten() {
 					<section className=''>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='h-70 border-b-3 md:border-b-0 rounded-md rounded-b-none md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
+								className='h-70 border-b-3 md:border-b-0 rounded-md rounded-b-none 
+								md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -81,11 +93,12 @@ export default function Raumlichkeiten() {
 							</h3>
 							<div className='flex justify-center lg:justify-end px-8'>
 								<div
-									className='group duration-600 mt-4 mb-10 hover:bg-yellow-800/90 border-black bg-yellow-900/90 flex rounded-sm cursor-pointer justify-center pl-2 pr-2 pt-2 pb-2 border-2 
-								md:pr-3 md:w-46 md:hover:w-50 md:h-12 2xl:mt-5 md:hover:h-12'
+									className='group duration-600 mt-4 mb-10 hover:bg-yellow-800/90 border-black bg-yellow-900/90 flex rounded-sm justify-center pl-2 pr-2 pt-2 pb-2 border-2 
+								md:pr-3 md:w-46 md:hover:w-50 md:h-12 md:hover:h-12
+								2xl:mt-5'
 								>
 									<div className='group text-center text-white items-center flex'>
-										{image.map(link => (
+										{home.map(link => (
 											<Link href={`${link.route}`} key={link.route}>
 												<h5
 													className='duration-500 font-bold flex group-hover:text-white 
@@ -105,7 +118,8 @@ export default function Raumlichkeiten() {
 						</div>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-t-3 rounded-md rounded-t-none md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
+								className='border-t-3 rounded-md rounded-t-none 
+								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -118,7 +132,8 @@ export default function Raumlichkeiten() {
 					<section className=''>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='rounded-md rounded-b-none border-b-3 md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
+								className='rounded-md rounded-b-none border-b-3 
+								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -157,7 +172,8 @@ export default function Raumlichkeiten() {
 						</div>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-t-3 rounded-md rounded-t-none md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
+								className='border-t-3 rounded-md rounded-t-none 
+								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -170,7 +186,8 @@ export default function Raumlichkeiten() {
 					<section className=''>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='rounded-md rounded-b-none border-b-3 md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
+								className='rounded-md rounded-b-none border-b-3 
+								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -212,7 +229,8 @@ export default function Raumlichkeiten() {
 						</div>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-t-3 rounded-md rounded-t-none md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
+								className='border-t-3 rounded-md rounded-t-none 
+								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -225,7 +243,8 @@ export default function Raumlichkeiten() {
 					<section className=''>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-b-3 rounded-md rounded-b-none md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
+								className='border-b-3 rounded-md rounded-b-none 
+								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -265,7 +284,8 @@ export default function Raumlichkeiten() {
 						</div>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-t-3 rounded-md rounded-t-none md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
+								className='border-t-3 rounded-md rounded-t-none 
+								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -278,7 +298,8 @@ export default function Raumlichkeiten() {
 					<section className=''>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-b-3 rounded-md rounded-b-none md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
+								className='border-b-3 rounded-md rounded-b-none 
+								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
 								src='land.png'
 								alt='tailWind'
 								width={27}
@@ -300,7 +321,7 @@ export default function Raumlichkeiten() {
 					</section>
 				</div>
 				<div className='flex justify-center mt-10'>
-					<article className='w-[90%] sm:w-[75%] md:hidden:flex-col  md:flex md:w-[80%] 2xl:w-350 2xl:h-120 '>
+					<article className='w-[90%] sm:w-[75%] md:hidden:flex-col md:flex md:w-[80%] 2xl:w-350 2xl:h-120 '>
 						<div className='w-[100%] md:w-[50%]'>
 							<h1 className='text-center text-2xl mt-10 lg:mt-10 sm:text-4xl lg:text-5xl lg:mt-25 2xl:mt-34 2xl:text-5xl'>
 								360°-Tour
@@ -312,7 +333,8 @@ export default function Raumlichkeiten() {
 						</div>
 						<div className='w-[100%] md:w-[50%]'>
 							<img
-								className='border-t-3 rounded-md rounded-t-none md:border-l-3 md:border-t-0 md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0'
+								className='border-t-3 rounded-md rounded-t-none 
+								md:border-l-3 md:border-t-0 md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0'
 								src='land.png'
 								alt='tailWind'
 								width={27}

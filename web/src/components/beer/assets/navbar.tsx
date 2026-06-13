@@ -109,7 +109,7 @@ export default function Navbar() {
 		<div className='bg-yellow-950/90 pt-6 pb-6 lg:items-center lg:flex lg:justify-end'>
 			<div className='flex flex-col lg:flex-row justify-between w-full'>
 				<div className='md:hidden md:inline-block md:items-center md:flex md:justify-center md:pb-3 lg:pb-0'>
-					<div className='flex  justify-between items-center px-10 md:justify-center'>
+					<div className='flex justify-between items-center px-10 md:justify-center'>
 						<div className=''>
 							{base.map(link => (
 								<Link href={`${link.route}`} key={link.route}>
@@ -149,7 +149,6 @@ export default function Navbar() {
 					className='hidden md:inline-block font-extrabold text-lg font-mono text-stone-300 mx-auto md:text-sm lg:text-md xl:text-lg lg:mr-10 items-center flex-row
 				[&_button]:bg-yellow-700/70 [&_button]:rounded-full [&_button]:ml-2 [&_button]:cursor-pointer md:[&_button]:pr-2 md:[&_button]:pt-2 md:[&_button]:pb-3 md:[&_button]:pl-2 lg:[&_button]:pt-3 lg:[&_button]:pb-4 lg:[&_button]:pr-3 lg:[&_button]:pl-3
 				[&_section]:rounded-full [&_section]:bg-yellow-900 [&_section]:h-1 
-				[&_h1]: 
 				[&_article]:inline-block 
 				[&_li]:text-white/60 [&_li:hover]:text-white [&_li]:mt-2 [&_li]:p-1 [&_li]:justify-center [&_li]:flex [&_li:hover]:bg-yellow-200/20 
 				[&_ul]:rounded-xl [&_ul]:duration-700 [&_ul]:text-md [&_ul]:shadow-xl [&_ul]:border-2 [&_ul]:border-black/80 [&_ul]:opacity-0 [&_ul]:invisible [&_ul]:bg-yellow-900/80 [&_ul]:mt-2 [&_ul]:z-50 xl:[&_ul]:text-lg'
@@ -162,7 +161,7 @@ export default function Navbar() {
 						</button>
 						<ul className='absolute group-hover:opacity-100 group-hover:visible md:w-39 md:h-48 md:group-hover:w-42 xl:w-50 xl:h-58 xl:group-hover:w-53'>
 							{events.map(link => (
-								<li className='flex' key={link.route}>
+								<li className='flex ' key={link.route}>
 									<Link href={`${link.route}`}>{link.title}</Link>
 								</li>
 							))}
