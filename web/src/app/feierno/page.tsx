@@ -1,6 +1,10 @@
 import Link from 'next/link'
 import Reserv from '@/app/reserv/page'
 
+import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
+import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
+import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
+
 const back = [
 	{
 		route: '/',
@@ -10,38 +14,45 @@ const back = [
 export default function Feiern() {
 	return (
 		<div className='bg-orange-300/80'>
-			<div className='relative h-screen'>
-				<img
-					src='land.png'
-					alt='Background'
-					className='absolute inset-0 w-full h-full object-cover'
-				/>
-				<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
-				<div className='relative z-10 flex flex-col items-center justify-center h-full'>
-					<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4'></div>
-					<h2
-						className='uppercase text-4xl text-center bg-gradient-to-t from-white/90 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
+			<ZoomOutImage>
+				<div className='relative h-screen w-full'>
+					<img
+						src='land.png'
+						alt='Background'
+						className='absolute inset-0 w-full h-full object-cover'
+					/>
+					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
+					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
+						<FadeInFromTop delay={1600} threshold={0.2}>
+							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<h2
+								className='uppercase text-3xl text-center bg-gradient-to-t from-white/90 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
 					sm:text-3xl 
 					md:text-5xl 
 					lg:text-5xl 
 					xl:text-7xl 
 					2xl:text-7xl 2xl:mb-9'
-					>
-						Im Brauhaus feiern!
-					</h2>
-					<div className=''>
-						<h1
-							className='uppercase text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent text-xl 
+							>
+								Im Brauhaus feiern!
+							</h2>
+						</FadeInFromTop>
+						<FadeInFromBottom delay={1600} threshold={0.3}>
+							<div className=''>
+								<h1
+									className='uppercase text-base text-center px-4 font-serif font-black bg-orange-300/30 text-white rounded-md w-fit from-white/90 via-white/70 to-white/80 text-transparent 
 						md:text-2xl 
 						lg:text-4xl 
 						2xl:text-5xl'
-						>
-							Wir wissen, wie's geht
-						</h1>
+								>
+									Wir wissen, wie's geht
+								</h1>
+							</div>
+
+							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
+						</FadeInFromBottom>
 					</div>
-					<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
 				</div>
-			</div>
+			</ZoomOutImage>
 			<div
 				className='[&_img]:border-blue-950/80 sm:[&_img]:w-[100%] md:[&_img]:w-[70%] md:[&_img]:mt-8 lg:[&_img]:w-[100%]
 				[&_span]:text-red-500/90 [&_span]:duration-200 [&_span]:hover:text-blue-700/90 
@@ -59,59 +70,67 @@ export default function Feiern() {
 				>
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
 						<div className='sm:flex sm:justify-center lg:ml-10'>
-							<img
-								className='w-full rounded-t-sm md:border-4 md:rounded-xl'
-								src='land.png'
-								alt='tailWind'
-								width={27}
-								height={6400}
-							/>
+							<FadeInFromTop delay={100} threshold={0.2}>
+								<img
+									className='w-full rounded-t-sm md:border-4 md:rounded-xl'
+									src='land.png'
+									alt='tailWind'
+									width={27}
+									height={6400}
+								/>
+							</FadeInFromTop>
 						</div>
-						<div className='p-8'>
-							<h1 className='uppercase'>Private Feiern</h1>
-							<p className=''>
-								Ob Geburtstag, Taufe, Kommunion oder auch ein Wiedersehensfest
-								mit den besten Freunden. Es gibt viele Gründe zum Feiern. Und
-								wir haben immer den passenden Rahmen für Sie. Feiern Sie doch
-								Ihren nächsten Geburtstag im Herzen Kölns in der{' '}
-								{back.map(link => (
-									<Link href={`${link.route}`} key={link.route}>
-										<span className=''>Altstadtstube</span>!
-									</Link>
-								))}
-							</p>
-						</div>
+						<FadeInFromBottom delay={100} threshold={0.3}>
+							<div className='p-8'>
+								<h1 className='uppercase'>Private Feiern</h1>
+								<p className=''>
+									Ob Geburtstag, Taufe, Kommunion oder auch ein Wiedersehensfest
+									mit den besten Freunden. Es gibt viele Gründe zum Feiern. Und
+									wir haben immer den passenden Rahmen für Sie. Feiern Sie doch
+									Ihren nächsten Geburtstag im Herzen Kölns in der{' '}
+									{back.map(link => (
+										<Link href={`${link.route}`} key={link.route}>
+											<span className=''>Altstadtstube</span>!
+										</Link>
+									))}
+								</p>
+							</div>
+						</FadeInFromBottom>
 					</div>
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
-						<div className='p-8'>
-							<h1 className='uppercase text-right'>Hochzeiten</h1>
-							<p className=' text-right'>
-								Ihr großer Tag soll richtig kölsch und besonders sein? Nach der
-								standesamtlichen Trauung im Kölner Rathaus finden Sie im
-								Brauhaus die perfekte{' '}
-								{back.map(link => (
-									<Link href={`${link.route}`} key={link.route}>
-										<span className=''> Hochzeitsfeier-Location</span>
-									</Link>
-								))}
-								. Für Ihr außergewöhnliches Fest sind wir gerne Gastgeber.
-								Planen Sie Ihre Hochzeit doch bei uns in der{' '}
-								{back.map(link => (
-									<Link href={`${link.route}`} key={link.route}>
-										<span className=''>Alten Brauerei</span>!
-									</Link>
-								))}
-							</p>
-						</div>
-						<div className='sm:flex sm:justify-center lg:mr-10'>
-							<img
-								className='w-full md:border-4 md:rounded-xl'
-								src='land.png'
-								alt='tailWind'
-								width={27}
-								height={6400}
-							/>
-						</div>
+						<FadeInFromBottom delay={100} threshold={0.3}>
+							<div className='p-8'>
+								<h1 className='uppercase text-right'>Hochzeiten</h1>
+								<p className=' text-right'>
+									Ihr großer Tag soll richtig kölsch und besonders sein? Nach
+									der standesamtlichen Trauung im Kölner Rathaus finden Sie im
+									Brauhaus die perfekte{' '}
+									{back.map(link => (
+										<Link href={`${link.route}`} key={link.route}>
+											<span className=''> Hochzeitsfeier-Location</span>
+										</Link>
+									))}
+									. Für Ihr außergewöhnliches Fest sind wir gerne Gastgeber.
+									Planen Sie Ihre Hochzeit doch bei uns in der{' '}
+									{back.map(link => (
+										<Link href={`${link.route}`} key={link.route}>
+											<span className=''>Alten Brauerei</span>!
+										</Link>
+									))}
+								</p>
+							</div>
+						</FadeInFromBottom>
+						<FadeInFromTop delay={100} threshold={0.2}>
+							<div className='sm:flex sm:justify-center lg:mr-10'>
+								<img
+									className='w-full md:border-4 md:rounded-xl'
+									src='land.png'
+									alt='tailWind'
+									width={27}
+									height={6400}
+								/>
+							</div>
+						</FadeInFromTop>
 					</div>
 					<div className='lg:hidden'>
 						<div className='flex items-center justify-center mt-15'>
@@ -148,56 +167,64 @@ export default function Feiern() {
 					</div>
 
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
-						<div className='sm:flex sm:justify-center lg:ml-10'>
-							<img
-								className='w-full md:border-4 md:rounded-xl'
-								src='land.png'
-								alt='tailWind'
-								width={27}
-								height={6400}
-							/>
-						</div>
-						<div className='p-8'>
-							<h1 className='uppercase'>Firmenevents</h1>
-							<p className=''>
-								Wie wäre es mit einem Firmenmeeting, Seminar, Messeevent oder
-								auch einer Konferenz im besonderen Ambiente? Wir haben die
-								passende Location für Sie! Ob großer oder kleiner Rahmen – so
-								macht Business richtig Spaß. Wir empfehlen Ihnen für Ihre
-								Konferenz die{' '}
-								{back.map(link => (
-									<Link href={`${link.route}`} key={link.route}>
-										<span className=''>Alte Brauerei</span>!
-									</Link>
-								))}
-							</p>
-						</div>
+						<FadeInFromTop delay={100} threshold={0.2}>
+							<div className='sm:flex sm:justify-center lg:ml-10'>
+								<img
+									className='w-full md:border-4 md:rounded-xl'
+									src='land.png'
+									alt='tailWind'
+									width={27}
+									height={6400}
+								/>
+							</div>
+						</FadeInFromTop>
+						<FadeInFromBottom delay={100} threshold={0.3}>
+							<div className='p-8'>
+								<h1 className='uppercase'>Firmenevents</h1>
+								<p className=''>
+									Wie wäre es mit einem Firmenmeeting, Seminar, Messeevent oder
+									auch einer Konferenz im besonderen Ambiente? Wir haben die
+									passende Location für Sie! Ob großer oder kleiner Rahmen – so
+									macht Business richtig Spaß. Wir empfehlen Ihnen für Ihre
+									Konferenz die{' '}
+									{back.map(link => (
+										<Link href={`${link.route}`} key={link.route}>
+											<span className=''>Alte Brauerei</span>!
+										</Link>
+									))}
+								</p>
+							</div>
+						</FadeInFromBottom>
 					</div>
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
-						<div className='p-8'>
-							<h1 className='uppercase text-right'>Weihnachtsfeiern</h1>
-							<p className=' text-right'>
-								Gemeinsam das Jahr Revue passieren lassen und die
-								Weihnachtsfeier in besonderer Atmosphäre erleben. Hier fühlen
-								Sie sich wohl und stoßen mit leckerem Sion Kölsch miteinander
-								an. Und das mitten im Herzen der Kölns. Wie wäre es mit dem
-								gelungenen Jahresabschluss in unserer{' '}
-								{back.map(link => (
-									<Link href={`${link.route}`} key={link.route}>
-										<span className=''>Ratsstube</span>!
-									</Link>
-								))}
-							</p>
-						</div>
-						<div className='sm:flex sm:justify-center lg:mr-10 lg:mb-10'>
-							<img
-								className='w-full rounded-b-sm md:mb-10 lg:mb-0 md:border-4 md:rounded-xl'
-								src='land.png'
-								alt='tailWind'
-								width={27}
-								height={6400}
-							/>
-						</div>
+						<FadeInFromBottom delay={100} threshold={0.3}>
+							<div className='p-8'>
+								<h1 className='uppercase text-right'>Weihnachtsfeiern</h1>
+								<p className=' text-right'>
+									Gemeinsam das Jahr Revue passieren lassen und die
+									Weihnachtsfeier in besonderer Atmosphäre erleben. Hier fühlen
+									Sie sich wohl und stoßen mit leckerem Sion Kölsch miteinander
+									an. Und das mitten im Herzen der Kölns. Wie wäre es mit dem
+									gelungenen Jahresabschluss in unserer{' '}
+									{back.map(link => (
+										<Link href={`${link.route}`} key={link.route}>
+											<span className=''>Ratsstube</span>!
+										</Link>
+									))}
+								</p>
+							</div>
+						</FadeInFromBottom>
+						<FadeInFromTop delay={100} threshold={0.2}>
+							<div className='sm:flex sm:justify-center lg:mr-10 lg:mb-10'>
+								<img
+									className='w-full rounded-b-sm md:mb-10 lg:mb-0 md:border-4 md:rounded-xl'
+									src='land.png'
+									alt='tailWind'
+									width={27}
+									height={6400}
+								/>
+							</div>
+						</FadeInFromTop>
 					</div>
 				</div>
 			</div>

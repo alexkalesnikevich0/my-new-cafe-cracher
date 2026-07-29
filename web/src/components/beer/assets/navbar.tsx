@@ -1,7 +1,8 @@
 'use client'
 import Link from 'next/link'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
+import Forbutt from './forbutt'
 
 export default function Navbar() {
 	const events = [
@@ -50,7 +51,8 @@ export default function Navbar() {
 
 	const ogo = [
 		{
-			route: '/empthy',
+			title: 'anfahrt',
+			route: '/?scroll=anfahrt',
 		},
 	]
 
@@ -61,14 +63,20 @@ export default function Navbar() {
 		},
 	]
 
+	const toFooter = [
+		{
+			route: '/?scroll=footer',
+		},
+	]
+
 	const speisen = [
 		{
-			title: 'SPEISKARTE',
-			route: '/speiskarte',
+			title: 'SPEISEKARTE',
+			route: '/speisekarte',
 		},
 		{
-			title: 'GETRÄNKEKARTE',
-			route: '/',
+			title: 'FLAMMKUCHEN',
+			route: '/speisekarte?scroll=flammkuchen',
 		},
 	]
 
@@ -95,7 +103,8 @@ export default function Navbar() {
 		},
 		{
 			title: 'HOTEL SION',
-			route: '/',
+			route: '/restaurant',
+			target: '_blank',
 		},
 	]
 
@@ -106,44 +115,74 @@ export default function Navbar() {
 	}
 
 	return (
-		<div className='bg-yellow-950/90 pt-6 pb-6 lg:items-center lg:flex lg:justify-end'>
-			<div className='flex flex-col lg:flex-row justify-between w-full'>
+		<div className='bg-yellow-900 pt-6 pb-6 lg:items-center lg:flex lg:justify-end fixed top-0 left-0 right-0 z-50 shadow-xl'>
+			<div className='flex flex-col lg:flex-row justify-between w-full  '>
 				<div className='md:hidden md:inline-block md:items-center md:flex md:justify-center md:pb-3 lg:pb-0'>
 					<div className='flex justify-between items-center px-10 md:justify-center'>
-						<div className=''>
+						<div className='relative z-50 p-1 pb-2 pl-2 pr-2 bg-yellow-950/60 rounded-lg'>
 							{base.map(link => (
 								<Link href={`${link.route}`} key={link.route}>
-									<svg
-										key={link.route}
-										xmlns='http://www.w3.org/2000/svg'
-										viewBox='0 0 24 24'
-										fill='currentColor'
-										className='text-yellow-700 h-14 w-14'
-									>
-										<path d='M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 0 1-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004ZM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 0 1-.921.42Z' />
-										<path
-											fillRule='evenodd'
-											d='M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v.816a3.836 3.836 0 0 0-1.72.756c-.712.566-1.112 1.35-1.112 2.178 0 .829.4 1.612 1.113 2.178.502.4 1.102.647 1.719.756v2.978a2.536 2.536 0 0 1-.921-.421l-.879-.66a.75.75 0 0 0-.9 1.2l.879.66c.533.4 1.169.645 1.821.75V18a.75.75 0 0 0 1.5 0v-.81a4.124 4.124 0 0 0 1.821-.749c.745-.559 1.179-1.344 1.179-2.191 0-.847-.434-1.632-1.179-2.191a4.122 4.122 0 0 0-1.821-.75V8.354c.29.082.559.213.786.393l.415.33a.75.75 0 0 0 .933-1.175l-.415-.33a3.836 3.836 0 0 0-1.719-.755V6Z'
-											clipRule='evenodd'
-										/>
-									</svg>
+									<img
+										src='/icon.png'
+										alt='Cafe Cracher'
+										className='h-13 w-13 cursor-pointer'
+									/>
 								</Link>
 							))}
 						</div>
-						<div className='justify-end items-center'>
+						<div className='justify-end items-center '>
 							<div className='justify-between w-full [&_section]:h-2 [&_section]:w-10 [&_section]:bg-white/90 [&_section]:rounded-full [&_section]:'>
 								<button
 									onClick={() => setIsOpen(!isOpen)}
-									className='md:hidden h-14 w-14 bg-yellow-700 rounded-md hover:border-3 border-black group duration-700 flex-col flex items-center justify-center'
+									className={`md:hidden h-14 w-14 relative cursor-pointer z-50 rounded-md flex items-center justify-center duration-300 border-2 transition-all ${
+										isOpen
+											? 'bg-yellow-600 border-white'
+											: 'bg-yellow-700 border-transparent hover:border-white/50'
+									}`}
 								>
-									{isOpen}
-									<section className='group-hover:w-11 mb-2 duration-400'></section>
-									<section className='group-hover:w-11 mb-2 duration-400'></section>
-									<section className='group-hover:w-11 duration-400'></section>
+									<svg viewBox='0 0 24 24' className='w-11 h-11'>
+										<rect
+											x='3'
+											y='5'
+											width='18'
+											height='2.5'
+											rx='1'
+											className='fill-white transition-all duration-600'
+											style={{
+												transform: isOpen ? 'rotate(90deg)' : 'rotate(0)',
+												transformOrigin: 'center',
+											}}
+										/>
+										<rect
+											x='3'
+											y='11'
+											width='18'
+											height='2.5'
+											rx='1'
+											className='fill-white transition-all duration-600'
+											style={{
+												transform: isOpen ? 'rotate(90deg)' : 'rotate(0)',
+												transformOrigin: 'center',
+											}}
+										/>
+										<rect
+											x='3'
+											y='17'
+											width='18'
+											height='2.5'
+											rx='1'
+											className='fill-white transition-all duration-600'
+											style={{
+												transform: isOpen ? 'rotate(90deg)' : 'rotate(0)',
+												transformOrigin: 'center',
+											}}
+										/>
+									</svg>
 								</button>
 							</div>
 						</div>
 					</div>
+					{isOpen && <Forbutt closeForbutt={setIsOpen} />}
 				</div>
 				<div
 					className='hidden md:inline-block font-extrabold text-lg font-mono text-stone-300 mx-auto md:text-sm lg:text-md xl:text-lg lg:mr-10 items-center flex-row
@@ -151,7 +190,7 @@ export default function Navbar() {
 				[&_section]:rounded-full [&_section]:bg-yellow-900 [&_section]:h-1 
 				[&_article]:inline-block 
 				[&_li]:text-white/60 [&_li:hover]:text-white [&_li]:mt-2 [&_li]:p-1 [&_li]:justify-center [&_li]:flex [&_li:hover]:bg-yellow-200/20 
-				[&_ul]:rounded-xl [&_ul]:duration-700 [&_ul]:text-md [&_ul]:shadow-xl [&_ul]:border-2 [&_ul]:border-black/80 [&_ul]:opacity-0 [&_ul]:invisible [&_ul]:bg-yellow-900/80 [&_ul]:mt-2 [&_ul]:z-50 xl:[&_ul]:text-lg'
+				[&_ul]:rounded-xl [&_ul]:duration-700 [&_ul]:text-md [&_ul]:shadow-xl [&_ul]:border-2 [&_ul]:border-black/80 [&_ul]:opacity-0 [&_ul]:invisible [&_ul]:bg-yellow-900 [&_ul]:mt-2 [&_ul]:z-50 xl:[&_ul]:text-lg'
 				>
 					<article className='group relative'>
 						<article className='w-7 lg:w-6 xl:w-8'></article>
@@ -161,8 +200,13 @@ export default function Navbar() {
 						</button>
 						<ul className='absolute group-hover:opacity-100 group-hover:visible md:w-39 md:h-48 md:group-hover:w-42 xl:w-50 xl:h-58 xl:group-hover:w-53'>
 							{events.map(link => (
-								<li className='flex ' key={link.route}>
-									<Link href={`${link.route}`}>{link.title}</Link>
+								<li className='flex' key={link.route}>
+									<Link
+										className='w-full h-full block text-center'
+										href={`${link.route}`}
+									>
+										{link.title}
+									</Link>
 								</li>
 							))}
 						</ul>
@@ -175,7 +219,12 @@ export default function Navbar() {
 						<ul className='absolute group-hover:opacity-100 group-hover:visible md:w-20 md:h-31 md:group-hover:w-39 xl:w-40 xl:h-37 xl:group-hover:w-50'>
 							{feste.map(link => (
 								<li className='' key={link.route}>
-									<Link href={`${link.route}`}>{link.title}</Link>
+									<Link
+										className='w-full h-full block text-center'
+										href={`${link.route}`}
+									>
+										{link.title}
+									</Link>
 								</li>
 							))}
 						</ul>
@@ -191,7 +240,12 @@ export default function Navbar() {
 									className='justify-center flex mt-6 p-1 hover:bg-yellow-200/20 hover:text-white mb-6'
 									key={link.route}
 								>
-									<Link href={`${link.route}`}>{link.title}</Link>
+									<Link
+										className='w-full h-full block text-center'
+										href={`${link.route}`}
+									>
+										{link.title}
+									</Link>
 								</ol>
 							))}
 						</ul>
@@ -205,7 +259,12 @@ export default function Navbar() {
 							<ul className='absolute group-hover:opacity-100 group-hover:visible md:w-30 md:group-hover:w-40 md:h-22 lg:group-hover:w-42 xl:w-50 xl:group-hover:w-57 xl:group-hover:ml-3 xl:h-27'>
 								{speisen.map(link => (
 									<li className='' key={link.route}>
-										<Link href={`${link.route}`}>{link.title}</Link>
+										<Link
+											className='w-full h-full block text-center'
+											href={`${link.route}`}
+										>
+											{link.title}
+										</Link>
 									</li>
 								))}
 							</ul>
@@ -220,18 +279,40 @@ export default function Navbar() {
 							<ul className='absolute flex flex-col justify-center mt-10 group-hover:opacity-100 group-hover:visible md:w-32 md:h-70 md:group-hover:w-40 lg:group-hover:w-37 xl:w-50 xl:group-hover:w-55 xl:h-83'>
 								{sion.map(link => (
 									<li className='' key={link.route}>
-										<Link href={`${link.route}`}>{link.title}</Link>
+										<Link
+											target={link.target || '_self'}
+											className='w-full h-full block text-center'
+											href={`${link.route}`}
+										>
+											{link.title}
+										</Link>
 									</li>
 								))}
-								<div className='group/main'>
-									{ogo.map(link => (
-										<Link href={`${link.route}`} key={link.route}>
-											<div className='text-white/70 flex mt-2 mb-3 justify-center p-1 hover:bg-yellow-200/20 hover:text-white'>
-												KONTAKT
-												<div className='h-1 w-7 mt-2 rounded-full bg-black/50 ml-3 duration-500 group-hover/main:bg-black/80 xl:group-hover/main:w-12 xl:group-hover/main:ml-3 xl:w-10 xl:mt-3'></div>
-											</div>
-										</Link>
+								<div className='group/kontakt relative'>
+									{toFooter.map(link => (
+										<div
+											key={link.route}
+											className='text-white/70 flex mt-2 mb-3 justify-center p-1 hover:bg-yellow-200/20 hover:text-white cursor-pointer'
+										>
+											<Link href={`${link.route}`}>KONTAKT</Link>
+											<div className='h-1 w-7 mt-2 rounded-full bg-black/50 ml-3 duration-500 group-hover/kontakt:bg-black/80 xl:group-hover/kontakt:w-12 xl:group-hover/kontakt:ml-3 xl:w-10 xl:mt-3'></div>
+										</div>
 									))}
+									<ul
+										className='absolute right-full top-0 mr-2 w-40 opacity-0 invisible uppercase bg-yellow-900 pt-0 pb-2 rounded-sm border-2 border-black/80 shadow-xl transition-all duration-300
+											group-hover/kontakt:opacity-100 group-hover/kontakt:visible '
+									>
+										{ogo.map(link => (
+											<li key={link.route} className='hover:bg-yellow-200/20'>
+												<Link
+													href={link.route}
+													className='block w-full h-full text-white/70 hover:text-white text-center'
+												>
+													anfahrt
+												</Link>
+											</li>
+										))}
+									</ul>
 								</div>
 							</ul>
 						</div>

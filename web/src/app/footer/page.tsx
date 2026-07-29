@@ -1,52 +1,227 @@
+'use client'
+
 import Link from 'next/link'
 
-const base = [
-	{
-		route: '/',
-	},
-]
+import Accordion from '@/app/booking/components/Accordion'
+
+import { useState } from 'react'
+
+import ScrollToSection from '@/app/booking/components/ScrollToSection'
+
 export default function Footer() {
+	const [openIndex, setOpenIndex] = useState(null)
+
 	return (
 		<div className='bg-yellow-950/90'>
-			<div className='pt-20 md:flex md:justify-center 2xl:pt-40'>
+			<div className='pt-20 md:flex md:justify-start 2xl:pt-40'>
 				<h1
 					className='mb-20 text-4xl mt-0 font-serif text-center text-white/90 font-extrabold 
-				md:w-[50%] md:mb-0 md:mt-10 md:h-50 md:text-5xl 
+				md:w-[50%] md:mb-0 md:mt-10 md:h-50 md:text-5xl pl-5 pr-5
 				lg:text-6xl 
 				2xl:text-7xl 2xl:ml-5'
 				>
 					SO KOMMEN <br />
 					SIE ZU UNS
 				</h1>
-				<div className='flex justify-center md:w-[50%]'>
+				<div className='flex justify-center md:w-[60%]'>
 					<div
-						className='text-xl text-white/70 font-extrabold font-serif 
-					sm:text-2xl 
+						className='text-white/70 font-extrabold font-serif flex flex-col justify-start items-center
+						[&_p]:text-base
+					sm:text-2xl  sm:[&_p]:text-base
 					md:text-xl 
-					lg:text-2xl 
+					lg:text-2xl lg:[&_p]:text-lg
 					xl:text-3xl 
 					2xl:text-4xl'
 					>
-						<h1 className='flex cursor-pointer hover:text-white'>
-							ANFAHRT MIT BUS UND BAHN
-							<div className='font-black cursor-pointer ml-5 2xl:ml-15'>+</div>
-						</h1>
-						<h1 className='mt-9 flex cursor-pointer hover:text-white'>
-							ANFAHRT MIT DEM FAHRRAD
-							<div className='font-black cursor-pointer ml-6 2xl:ml-17'>+</div>
-						</h1>
-						<h1 className='mt-9 flex cursor-pointer hover:text-white'>
-							ANFAHRT MIT DEM AUTO
-							<div className='font-black cursor-pointer ml-18 sm:ml-21 md:ml-18 lg:ml-21 xl:ml-24 2xl:ml-28 2xl:ml-39'>
-								+
-							</div>
-						</h1>
-						<h1 className='mt-9 flex cursor-pointer hover:text-white'>
-							ANFAHRT MIT IN KÖLN
-							<div className='font-black cursor-pointer ml-24 sm:ml-28 md:ml-24 lg:ml-28 xl:ml-33 2xl:ml-50'>
-								+
-							</div>
-						</h1>
+						<div className='flex justify-center items-center'>
+							<Accordion
+								title='ANFHART MIT BUS UND BAHN'
+								open={openIndex === 0}
+								onToggle={() => setOpenIndex(openIndex === 0 ? null : 0)}
+							>
+								<div className='text-white/40 text-lg pb-4 w-[80%] mx-auto'>
+									<p className='pb-4 mt-3'>
+										Anfahrt mit Bus und Bahn Das Brauhaus Sion ist ideal mit
+										öffentlichen Verkehrsmitteln zu erreichen und ca. 5
+										Gehminuten vom Kölner Hauptbahnhof entfernt.
+									</p>
+									<p className='pb-4'>
+										Anfahrt mit Bus und Bahn Das Brauhaus Sion ist ideal mit
+										öffentlichen Verkehrsmitteln zu erreichen und ca. 5
+										Gehminuten vom Kölner Hauptbahnhof entfernt. Ihre Anreise
+										mit Bus und Bahn können Sie auch individuell planen mit der
+										Online-Fahrplanauskunft.
+									</p>
+									<div className='text-orange-300/60 text-lg uppercase'>
+										<p className='hover:text-orange-300/80 pr-4 pb-4 group'>
+											<Link href='/timeride' className='flex flex-row'>
+												timeride
+												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 24 24'
+													fill='currentColor'
+													className='size-7 ml-5'
+												>
+													<path
+														fillRule='evenodd'
+														d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+														clipRule='evenodd'
+													/>
+												</svg>
+											</Link>
+										</p>
+										<p className='hover:text-orange-300/80 pr-4 pb-4 group'>
+											<Link href='/galerie' className='flex flex-row'>
+												galerie
+												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 24 24'
+													fill='currentColor'
+													className='size-7 ml-5'
+												>
+													<path
+														fillRule='evenodd'
+														d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+														clipRule='evenodd'
+													/>
+												</svg>
+											</Link>
+										</p>
+										<p className='hover:text-orange-300/80 pr-4 group'>
+											<Link href='/speisekarte' className='flex flex-row'>
+												speisekarte
+												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 24 24'
+													fill='currentColor'
+													className='size-7 ml-5'
+												>
+													<path
+														fillRule='evenodd'
+														d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+														clipRule='evenodd'
+													/>
+												</svg>
+											</Link>
+										</p>
+									</div>
+								</div>
+							</Accordion>
+						</div>
+						<div className='mt-10'>
+							<Accordion
+								title='ANFAHRT MIT DEM FAHRRAD'
+								open={openIndex === 1}
+								onToggle={() => setOpenIndex(openIndex === 1 ? null : 1)}
+							>
+								<div className='text-white/40 text-lg pb-4 w-[100%] mx-auto'>
+									<p className='pb-4 mt-3'>
+										Einen Link zu Ihrer Routenplanung finden Sie hier:
+									</p>
+									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 group'>
+										<Link href='/tradition' className='flex flex-row'>
+											tradition
+											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 24 24'
+												fill='currentColor'
+												className='size-7 ml-5'
+											>
+												<path
+													fillRule='evenodd'
+													d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+										</Link>
+									</p>
+								</div>
+							</Accordion>
+						</div>
+						<div className='mt-10'>
+							<Accordion
+								title='ANFAHRT MIT DEM AUTO'
+								open={openIndex === 2}
+								onToggle={() => setOpenIndex(openIndex === 2 ? null : 2)}
+							>
+								<div className='text-white/40 text-lg pb-4 w-[75%] mx-auto'>
+									<p className='pb-4 mt-3'>
+										Es sind ausreichen Parkplätze in der Tiefgarage am Dom oder
+										in den weiteren umliegenden Parkhäusern vorhanden.
+									</p>
+									<p className='pb-4'>
+										Einen Link zu Ihrer Routenplanung finden Sie hier:
+									</p>
+									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 group'>
+										<Link href='/jobs' className='flex flex-row'>
+											jobs
+											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 24 24'
+												fill='currentColor'
+												className='size-7 ml-5'
+											>
+												<path
+													fillRule='evenodd'
+													d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+										</Link>
+									</p>
+								</div>
+							</Accordion>
+						</div>
+						<div className='mt-10'>
+							<Accordion
+								title='UNTERKOMMEN IN KÖLN'
+								open={openIndex === 3}
+								onToggle={() => setOpenIndex(openIndex === 3 ? null : 3)}
+							>
+								<div className='text-white/40 text-lg pb-4 w-[80%] mx-auto'>
+									<p className='pb-4 mt-3'>
+										Inmitten der historischen Kölner Altstadt, zwischen Dom und
+										Rathaus, zwischen Einkaufsstraßen und Rhein liegt das rundum
+										sanierte und von uns neu eröffnete.
+									</p>
+									<p className='pb-4'>
+										Wir freuen uns darauf, Sie in gemütlicher Atmosphäre
+										begrüßen zu dürfen und versprechen Ihnen eine moderne
+										Ausstattung in unseren 25 Ein-, Zwei- und Dreibettzimmern
+										sowie in unserem wunderschönen Frühstücksraum – alles in
+										freundlichem 3-Sterne-Format.
+									</p>
+									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 pb-4 group'>
+										<Link
+											href='/restaurant'
+											className='flex flex-row'
+											target='_blank'
+										>
+											restaurant
+											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 24 24'
+												fill='currentColor'
+												className='size-7 ml-5 
+											'
+											>
+												<path
+													fillRule='evenodd'
+													d='M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+										</Link>
+									</p>
+								</div>
+							</Accordion>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -80,7 +255,11 @@ export default function Footer() {
 					</h1>
 					<h2 className='text-white/70 text-md md:text-xl mb-13 font-bold mt-3 2xl:mb-22 2xl:text-2xl'>
 						Telefon +49 0221/2578540 <br />
-						Reservierung
+						<ScrollToSection targetId='anfahrt'>
+							<span className='text-orange-300/60 hover:text-orange-300/80 cursor-pointer'>
+								Reservierung
+							</span>
+						</ScrollToSection>
 					</h2>
 					<h1 className='font-extrabold text-2xl text-white/90 sm:text-4xl md:text-2xl 2xl:text-6xl'>
 						ÖFFNUNGSZEITEN
@@ -160,7 +339,7 @@ export default function Footer() {
 				<div className='w-[90%] h-3 bg-white/60 rounded-full mt-20 mb-10'></div>
 			</div>
 			<div
-				className='font-extrabold font-serif flex items-center flex-col justify-center text-white/60 text-xl pb-6
+				className='font-extrabold font-serif flex items-center gap-10 flex-col justify-center text-white/60 text-xl pb-6
 			[&_h1]:pt-2 [&_h1]:pb-2 [&_h1]:duration-200 [&_h1:hover]:font-black [&_h1:hover]:text-white
 			 sm:text-xl 
 			 md:text-xl md:flex-row md:justify-start md:[&_h1:hover]:bg-yellow-950/0
@@ -168,29 +347,33 @@ export default function Footer() {
 			 xl:text-2xl'
 			>
 				<div className='md:ml-15 flex'>
-					{base.map(link => (
-						<Link href={`${link.route}`} key={link.route}>
-							<div className=''>
-								<h1>HOME</h1>
-							</div>
-						</Link>
-					))}
+					<ScrollToSection targetId='up'>
+						<div className='cursor-pointer'>
+							<h1>HOME</h1>
+						</div>
+					</ScrollToSection>
 				</div>
 				<div className='md:ml-5'>
-					{base.map(link => (
-						<Link href={`${link.route}`} key={link.route}>
-							<h1 className=''>IMPRESSUM</h1>
-						</Link>
-					))}
+					<Link href='/restaurant' target='_blank'>
+						<h1 className='uppercase'>hotel</h1>
+					</Link>
 				</div>
 				<div className='md:ml-5'>
-					{base.map(link => (
-						<Link href={`${link.route}`} key={link.route}>
-							<h1 className=''>DATENSCHUTZEKLÄRUNG</h1>
-						</Link>
-					))}
+					<Link href='/jobs'>
+						<h1 className='uppercase'>jobs</h1>
+					</Link>
+				</div>
+				<div className='uppercase md:ml-5'>
+					<Link href='/admin'>
+						<h1>Admin Page</h1>
+					</Link>
 				</div>
 			</div>
+			<footer className='flex items-center justify-center md:justify-start md:pl-20 gap-4 pb-6 '>
+				<p className='text-xl font-semibold font-serif text-white/40'>
+					cafe cracher © {new Date().getFullYear()}
+				</p>
+			</footer>
 		</div>
 	)
 }

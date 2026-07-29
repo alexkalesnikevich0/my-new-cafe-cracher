@@ -29,11 +29,14 @@
 		".next/types/**/*.ts",
 		"src/components/navbar/navbar.js",
 		"src/components/navbar/realnav.tsx",
-		"src/components/beer/assets/forbutt.js",
+		"src/components/beer/assets/forbutt.jsx",
 		"src/components/beer/assets/navbar.tsx",
 		"src/components/beer/assets/navbar.tsx",
-		"src/components/beer/assets/forbutt.js",
-		"src/components/beer/assets/Logo.js"
+		"src/components/beer/assets/forbutt.jsx",
+		"src/components/beer/assets/Logo.js",
+		"src/components/beer/assets/second.tsx",
+		"src/app/trying/AdminWrapper.jsx",
+		"src/app/trying/page.jsx"
 	],
 	"exclude": ["node_modules"]
 }

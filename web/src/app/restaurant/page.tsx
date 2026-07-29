@@ -10,7 +10,7 @@ import Image from 'next/image'
 
 export default function Restaurant() {
 	return (
-		<div>
+		<div className='pt-20'>
 			<section className='mb-40'>
 				<Realnav />
 			</section>
@@ -27,21 +27,6 @@ export default function Restaurant() {
 				<Mainfoot />
 				<hr className='ml-7 mt-5 mr-7 mb-0 sm:ml-15 sm:mt-15 sm:mr-15 sm:mb-0' />
 				<Footer3 />
-			</section>
-			<section className='py-24 border-t border-b border-b-gray-200'>
-				<Chip />
-			</section>
-			<section className=' py-24 border-b border-b-gray-200'>
-				<Image
-					src='/next.svg'
-					alt='Next.js Logo'
-					width={180}
-					height={37}
-					priority
-				/>
-			</section>
-			<section className='py-24 border-b border-b-gray-200'>
-				<Paragraph />
 			</section>
 		</div>
 	)
