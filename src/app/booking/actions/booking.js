@@ -3,7 +3,7 @@
 import prisma from '@/app/booking/lib/prisma'
 
 const MY_EMAIL = 'alexkalesnikevich@gmail.com'
-const RESEND_KEY = 're_jbrcMM7v_6Zmmeuy5KSuGm845ExGXFfnx'
+const RESEND_KEY = process.env.RESEND_KEY || 're_jbrcMM7v_6Zmmeuy5KSuGm845ExGXFfnx'
 
 const TOKEN = '8994213134:AAEbOsKFy_ZSQ7_pEev4WpDJilw2KF5XRuM'
 const CHAT_ID = '848006170'
