@@ -12,7 +12,7 @@ export default function Footer() {
 	const [openIndex, setOpenIndex] = useState(null)
 
 	return (
-		<div className='bg-yellow-950/90'>
+		<div suppressHydrationWarning className='bg-yellow-950/90'>
 			<div className='pt-20 md:flex md:justify-start 2xl:pt-40'>
 				<h1
 					className='mb-20 text-4xl mt-0 font-serif text-center text-white/90 font-extrabold 

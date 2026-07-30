@@ -34,7 +34,6 @@ export default function MobileMenu({ closeForbutt }) {
 						BEZZER QUIZZER
 						<div className='block h-1 rounded-full transition-all duration-1200 mx-auto w-20 group-hover:w-full bg-orange-300'></div>
 					</Link>
-
 					<Link
 						href='/wicky'
 						onClick={() => closeForbutt(false)}
@@ -78,7 +77,9 @@ export default function MobileMenu({ closeForbutt }) {
 				className={`'mb-6 duration-600 uppercase cursor-pointer block hover:text-white pt-2 pb-4 pr-3 pl-3 group rounded-3xl ring-2 ring-offset-2 ring-offset-yellow-600/80 hover:ring-offset-white/70 transition-all  ${openSection === 'feste feiern' ? 'bg-yellow-600 text-white ring-white' : 'ring-transparent bg-yellow-700/80 hover:bg-yellow-600'}`}
 			>
 				feste feiern
-				<div className='duration-800 w-55 group-hover:w-60 rounded-full h-1 bg-yellow-900 group-hover:bg-white'></div>
+				<div
+					className={`rounded-full h-1 transition-all duration-1000 mx-auto  ${openSection === 'feste feiern' ? 'w-60 bg-white' : 'w-55 bg-yellow-900 group-hover:bg-white/80 group-hover:w-60'}`}
+				></div>
 			</button>
 			<div
 				className={`overflow-hidden transition-all duration-1200 ease-in-out ${openSection === 'feste feiern' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
@@ -119,7 +120,9 @@ export default function MobileMenu({ closeForbutt }) {
 				className={`'mb-6 duration-600 uppercase cursor-pointer block hover:text-white pt-2 pb-4 pr-3 pl-3 group rounded-3xl ring-2 ring-offset-2 ring-offset-yellow-600/80 hover:ring-offset-white/70 transition-all  ${openSection === 'reservierung' ? 'bg-yellow-600 text-white ring-white' : 'ring-transparent bg-yellow-700/80 hover:bg-yellow-600'}`}
 			>
 				reservierung
-				<div className='duration-800 w-55 group-hover:w-60 rounded-full h-1 bg-yellow-900 group-hover:bg-white'></div>
+				<div
+					className={`rounded-full h-1 transition-all duration-1000 mx-auto  ${openSection === 'reservierung' ? 'w-60 bg-white' : 'w-55 bg-yellow-900 group-hover:bg-white/80 group-hover:w-60'}`}
+				></div>
 			</button>
 			<div
 				className={`overflow-hidden transition-all duration-1200 ease-in-out ${openSection === 'reservierung' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
@@ -141,7 +144,9 @@ export default function MobileMenu({ closeForbutt }) {
 				className={`'mb-6 duration-600 uppercase cursor-pointer block hover:text-white pt-2 pb-4 pr-3 pl-3 group rounded-3xl ring-2 ring-offset-2 ring-offset-yellow-600/80 hover:ring-offset-white/70 transition-all  ${openSection === 'speisen' ? 'bg-yellow-600 text-white ring-white' : 'ring-transparent bg-yellow-700/80 hover:bg-yellow-600'}`}
 			>
 				SPEISEN & GERTRÄNKE
-				<div className='duration-800 w-55 group-hover:w-60 rounded-full h-1 bg-yellow-900 group-hover:bg-white'></div>
+				<div
+					className={`rounded-full h-1 transition-all duration-1000 mx-auto  ${openSection === 'speisen' ? 'w-60 bg-white' : 'w-55 bg-yellow-900 group-hover:bg-white/80 group-hover:w-60'}`}
+				></div>
 			</button>
 			<div
 				className={`overflow-hidden transition-all duration-1200 ease-in-out ${openSection === 'speisen' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
@@ -173,7 +178,9 @@ export default function MobileMenu({ closeForbutt }) {
 				className={`'mb-6 duration-600 uppercase cursor-pointer block hover:text-white pt-2 pb-4 pr-3 pl-3 group rounded-3xl ring-2 ring-offset-2 ring-offset-yellow-600/80 hover:ring-offset-white/70 transition-all  ${openSection === 'sion' ? 'bg-yellow-600 text-white ring-white' : 'ring-transparent bg-yellow-700/80 hover:bg-yellow-600'}`}
 			>
 				brauhaus sion
-				<div className='duration-800 w-55 group-hover:w-60 rounded-full h-1 bg-yellow-900 group-hover:bg-white'></div>
+				<div
+					className={`rounded-full h-1 transition-all duration-1000 mx-auto  ${openSection === 'sion' ? 'w-60 bg-white' : 'w-55 bg-yellow-900 group-hover:bg-white/80 group-hover:w-60'}`}
+				></div>
 			</button>
 			<div
 				className={`overflow-hidden transition-all duration-1200 ease-in-out ${openSection === 'sion' ? 'max-h-[650px] opacity-100' : 'max-h-0 opacity-0'}`}
@@ -240,20 +247,22 @@ export default function MobileMenu({ closeForbutt }) {
 							e.stopPropagation()
 							setOpenSubSection(openSubSection === 'kontakt' ? null : 'kontakt')
 						}}
-						className='w-55 bg-yellow-800 cursor-pointer flex uppercase flex-col items-center justify-center bg-yellow-800 hover:bg-yellow-900 duration-1000 pl-4 pr-4 pt-2 pb-2 rounded-full group mx-auto
-            ring-2 ring-offset-2 ring-offset-yellow-600 ring-transparent hover:ring-offset-0 hover:ring-white/70 transition-all'
+						className={`w-55 cursor-pointer flex uppercase flex-col items-center justify-center duration-1000 pl-4 pr-4 pt-2 pb-2 rounded-full group mx-auto
+            ring-2 ring-offset-2 ring-offset-yellow-600 transition-all ${openSubSection === 'kontakt' ? 'bg-yellow-600 text-white ring-white' : 'bg-yellow-800 hover:bg-yellow-900 ring-transparent hover:ring-offset-0 hover:ring-white/70'}`}
 					>
 						kontakt
-						<div className='block h-1 rounded-full transition-all duration-1200 mx-auto w-20 group-hover:w-full bg-orange-300'></div>
+						<div
+							className={`rounded-full h-1 transition-all duration-1000 mx-auto  ${openSubSection === 'kontakt' ? 'w-43 bg-white/90' : 'w-20 bg-orange-300 group-hover:bg-black group-hover:w-40'}`}
+						></div>
 					</button>
 					<div
-						className={`overflow-hidden transition-all duration-1200 ease-in-out ${openSubSection === 'kontakt' ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}
+						className={`overflow-hidden transition-all duration-1500 ease-in-out ${openSubSection === 'kontakt' ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}`}
 					>
 						{' '}
 						<Link
 							href='/?scroll=anfahrt'
 							onClick={() => closeForbutt(false)}
-							className='w-35 bg-yellow-800 flex uppercase flex-col items-center  justify-center bg-yellow-800 hover:bg-yellow-900 duration-1000 pl-4 pr-4 pt-2 pb-2 rounded-full group mx-auto border-2 border-yellow-600 hover:border-white
+							className='w-35 bg-yellow-800 flex uppercase flex-col items-center  justify-center bg-yellow-800 hover:bg-yellow-900 duration-2000 pl-4 pr-4 pt-2 pb-2 rounded-full group mx-auto border-2 border-yellow-600 hover:border-white
                '
 						>
 							anfahrt
