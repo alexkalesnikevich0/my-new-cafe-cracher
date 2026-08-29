@@ -7,7 +7,7 @@ import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
 export default function FirstSlide() {
 	return (
 		<ZoomOutImage delay={100} threshold={0.2}>
-			<div className='relative w-full h-screen '>
+			<div className='relative w-full h-screen select-none'>
 				<img
 					src='land.png'
 					alt='Background'

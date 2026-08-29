@@ -2,19 +2,34 @@
 
 import prisma from '@/app/booking/lib/prisma'
 
-const RESEND_KEY =
-	process.env.RESEND_KEY || 're_jbrcMM7v_6Zmmeuy5KSuGm845ExGXFfnx'
+// ===== КОНФИГУРАЦИЯ: КЛЮЧИ ДЛЯ ОТПРАВКИ УВЕДОМЛЕНИЙ =====
 
-const TOKEN = '8994213134:AAEbOsKFy_ZSQ7_pEev4WpDJilw2KF5XRuM'
-const CHAT_ID = '848006170'
+// API-КЛЮЧ RESEND ДЛЯ ОТПРАВКИ ПИСЕМ
+const RESEND_KEY = process.env.RESEND_KEY
 
+// ТОКЕН И CHAT_ID ДЛЯ ОТПРАВКИ УВЕДОМЛЕНИЙ В TELEGRAM
+const TOKEN = process.env.TELEGRAM_BOT_TOKEN
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID
+
+/**
+ * СЕРВЕРНЫЙ ЭКШЕН — ВЫЗЫВАЕТСЯ ПРИ НАЖАТИИ CONFIRM ИЛИ CANCEL В ТАБЛИЦЕ.
+ * 1. ОБНОВЛЯЕТ СТАТУС БРОНИ В БАЗЕ ДАННЫХ
+ * 2. ОТПРАВЛЯЕТ УВЕДОМЛЕНИЕ В TELEGRAM
+ * 3. ОТПРАВЛЯЕТ HTML ПИСЬМО ГОСТЮ (ЗЕЛЁНОЕ ДЛЯ CONFIRM, КРАСНОЕ ДЛЯ CANCEL)
+ *
+ * @param {number} bookingId - ID БРОНИ
+ * @param {string} newStatus - НОВЫЙ СТАТУС ('confirmed' ИЛИ 'cancelled')
+ */
 export async function updateBookingStatus(bookingId, newStatus) {
 	console.log('updateBookingStatus called:', bookingId, newStatus)
+
+	// ===== 1. ОБНОВЛЯЕМ СТАТУС В БАЗЕ ДАННЫХ =====
 	const booking = await prisma.booking.update({
 		where: { id: bookingId },
 		data: { status: newStatus },
 	})
 
+	// ===== 2. ФОРМИРУЕМ ТЕКСТ В ЗАВИСИМОСТИ ОТ СТАТУСА =====
 	let statusText, message
 	if (newStatus === 'confirmed') {
 		statusText = 'CONFIRMED'
@@ -47,6 +62,7 @@ export async function updateBookingStatus(bookingId, newStatus) {
   CRACHER cafe wid love <3`
 	}
 
+	// ===== 3. ОТПРАВКА УВЕДОМЛЕНИЯ В TELEGRAM =====
 	try {
 		await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
 			method: 'POST',
@@ -57,6 +73,8 @@ export async function updateBookingStatus(bookingId, newStatus) {
 			}),
 		})
 	} catch (error) {}
+
+	// ===== 4. ОТПРАВКА HTML ПИСЬМА ГОСТЮ =====
 	try {
 		const response = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
@@ -68,6 +86,7 @@ export async function updateBookingStatus(bookingId, newStatus) {
 				from: 'cafe@kolsell.store',
 				to: booking.email,
 				subject: `Reservation ${statusText} - #${booking.id}`,
+				// ВЫБИРАЕМ ШАБЛОН ПИСЬМА: ЗЕЛЁНЫЙ ДЛЯ CONFIRM, КРАСНЫЙ ДЛЯ CANCEL
 				html:
 					newStatus === 'confirmed'
 						? `
@@ -75,50 +94,50 @@ export async function updateBookingStatus(bookingId, newStatus) {
     <html>
 
     <head>
-		<meta charset="utf-8">
-		</head>
-		
+    <meta charset="utf-8">
+    </head>
+    
     <body style="font-family: Arial, sans-serif; background: #f0fdf4; padding: 20px;">
 
       <div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; 
-			box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 4px solid #16a34a;">
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 4px solid #16a34a;">
 
         <h1 style="color: #16a34a; font-size: 27px;">
-				Reservation Confirmed!
-				</h1>
+        Reservation Confirmed!
+        </h1>
 
         <p style="color: #555; font-size: 16px;">
-				Dear guest,
-				</p>
+        Dear guest,
+        </p>
         <p style="color: #555; font-size: 16px;">
-				Your reservation has been confirmed. We are waiting for you!
-				</p>
+        Your reservation has been confirmed. We are waiting for you!
+        </p>
 
         <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Guests:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.guests}</td></tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Guests:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.guests}</td></tr>
 
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Date:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date}</td>
-					</tr>
-					
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Date:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date}</td>
+          </tr>
+          
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Time:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time}</td>
-					</tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Time:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time}</td>
+          </tr>
         </table>
 
         <p style="color: #555; font-size: 15px;">
-				We will be glad to see you!
-				</p>
-				
+        We will be glad to see you!
+        </p>
+        
         <div style="text-align: center; margin-top: 25px;">
 
           <span style="background: #16a34a; color: white; padding: 10px 25px; border-radius: 5px; font-size: 14px;">
-					CAFE CRACHER
-					</span>
+          CAFE CRACHER
+          </span>
 
         </div>
       </div>
@@ -130,51 +149,51 @@ export async function updateBookingStatus(bookingId, newStatus) {
     <html>
 
     <head>
-		<meta charset="utf-8">
-		</head>
+    <meta charset="utf-8">
+    </head>
 
     <body style="font-family: Arial, sans-serif; background: #fef2f2; padding: 20px;">
 
       <div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; 
-			box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 4px solid #dc2626;">
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1); border: 4px solid #dc2626;">
 
         <h1 style="color: #dc2626; font-size: 27px;">
-				Reservation Cancelled
-				</h1>
-				
+        Reservation Cancelled
+        </h1>
+        
         <p style="color: #555; font-size: 16px;">
-				Dear guest,
-				</p>
-				
+        Dear guest,
+        </p>
+        
         <p style="color: #555; font-size: 16px;">
-				Unfortunately, your reservation are cancelled. All tables are booked for this time.
-				</p>
+        Unfortunately, your reservation are cancelled. All tables are booked for this time.
+        </p>
         <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
 
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Guests:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.guests}</td>
-					</tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Guests:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.guests}</td>
+          </tr>
 
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Date:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date}</td>
-					</tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Date:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.date}</td>
+          </tr>
 
           <tr>
-					<td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Time:</td>
-					<td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time}</td>
-					</tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Time:</td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">${booking.time}</td>
+          </tr>
         </table>
 
         <p style="color: #555; font-size: 15px;">
-				We apologize for the inconvenience!
-				</p>
+        We apologize for the inconvenience!
+        </p>
         <div style="text-align: center; margin-top: 25px;">
 
           <span style="background: #dc2626; color: white; padding: 10px 25px; border-radius: 5px; font-size: 14px;">
-					CAFE CRACHER
-					</span>
+          CAFE CRACHER
+          </span>
 
         </div>
       </div>

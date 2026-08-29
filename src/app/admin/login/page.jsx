@@ -1,3 +1,10 @@
+/**
+ * ФАЙЛ: app/admin/login/page.jsx
+ *
+ * СТРАНИЦА ВХОДА В АДМИНКУ.
+ * ПОЛЬЗОВАТЕЛЬ ВВОДИТ ПАРОЛЬ, ФОРМА ОТПРАВЛЯЕТ ЕГО В /admin/admin-login.
+ * ПРИ УСПЕХЕ — ПЕРЕНОСИТ НА /admin, ПРИ ОШИБКЕ — ПОКАЗЫВАЕТ СООБЩЕНИЕ.
+ */
 'use client'
 
 import { useState } from 'react'
@@ -8,6 +15,7 @@ export default function LoginPage() {
 	const [error, setError] = useState('')
 	const router = useRouter()
 
+	// ОТПРАВКА ПАРОЛЯ НА СЕРВЕР
 	async function handleLogin(e) {
 		e.preventDefault()
 		const res = await fetch('/admin/admin-login', {
@@ -17,9 +25,9 @@ export default function LoginPage() {
 		})
 
 		if (res.ok) {
-			router.push('/admin')
+			router.push('/admin') // УСПЕХ — ПЕРЕХОДИМ В АДМИНКУ
 		} else {
-			setError('Wrong password')
+			setError('Wrong password') // ОШИБКА — ПОКАЗЫВАЕМ СООБЩЕНИЕ
 		}
 	}
 
@@ -37,6 +45,7 @@ export default function LoginPage() {
 					placeholder='Password'
 					className='w-full border-2 border-gray-300 rounded-md px-3 py-2 mb-4'
 				/>
+				{/* СООБЩЕНИЕ ОБ ОШИБКЕ (ПОКАЗЫВАЕТСЯ ТОЛЬКО ЕСЛИ error НЕ ПУСТОЕ) */}
 				{error && <p className='text-red-500 text-sm mt-2'>{error}</p>}
 			</form>
 		</div>

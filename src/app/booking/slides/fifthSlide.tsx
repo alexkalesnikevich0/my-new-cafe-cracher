@@ -7,7 +7,7 @@ import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
 export default function FirstSlide() {
 	return (
 		<ZoomOutImage delay={100} threshold={0.2}>
-			<div className='relative w-full h-screen '>
+			<div className='relative w-full h-screen select-none'>
 				<img
 					src='land.png'
 					alt='Background'
@@ -35,7 +35,7 @@ export default function FirstSlide() {
                 lg:text-4xl 
                 2xl:text-5xl'
 					>
-						<h2 className='text-white/70 justify-center bg-orange-300/30 px-10 w-fit rounded-lg uppercase'>
+						<h2 className='text-white/70 justify-center bg-orange-300/30 px-5 w-fit rounded-lg uppercase'>
 							im historischen zentrum kölns
 						</h2>
 					</div>

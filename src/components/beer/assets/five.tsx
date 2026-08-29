@@ -5,6 +5,7 @@ import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 export default function Five() {
 	return (
 		<div className='flex flex-col items-center'>
+			{/* КНОПКА ВЫЕЗЖАЕТ СВЕРХУ */}
 			<FadeInFromTop delay={100} threshold={0.5}>
 				<div className='group mt-19 h-10 mb-10'>
 					<Link href='/jobs'>
@@ -19,6 +20,7 @@ export default function Five() {
 							2xl:group-hover:font-bold'
 							>
 								alle jobs
+								{/* АНИМИРОВАННАЯ ЛИНИЯ СПРАВА ОТ ТЕКСТА  */}
 								<div className='flex items-center justify-center'>
 									<div className='duration-500 w-10 flex h-1 bg-black/50 ml-3 rounded-xl md:group-hover:ml-3 group-hover:bg-black/80 md:group-hover:w-18 md:w-13'></div>
 								</div>
@@ -27,9 +29,11 @@ export default function Five() {
 					</Link>
 				</div>
 			</FadeInFromTop>
+			{/* ДЕКОРАТИВНАЯ ЛИНИЯ РАЗДЕЛИТЕЛЬ */}
 			<FadeInFromBottom delay={100} threshold={0.3}>
 				<div className='mt-5 h-3 w-81 bg-yellow-900/90 rounded-full mx-auto mb-25 md:mt-10 md:w-100'></div>
 			</FadeInFromBottom>
+			{/* === ВСЯ КАРТОЧКА ВЫЕЗЖАЕТ СНИЗУ === */}
 			<FadeInFromBottom delay={100} threshold={0.2}>
 				<div
 					className='w-90 h-155 duration-600 border-2 rounded-xl bg-white/60 border-black/70 hover:bg-white/80 group-hover:border-3 
@@ -38,8 +42,10 @@ export default function Five() {
 			xl:w-240 xl:group-hover:h-110 xl:h-100 
 			2xl:h-130 2xl:w-310'
 				>
+					{/* НА ДЕСКТОПЕ ТЕКСТ И КНОПКА СЛЕВА А КАРТИНКА СПРАВА  */}
 					<div className='group '>
 						<div className='md:w-full md:flex'>
+							{/* ЛЕВАЯ КОЛОНКА ТЕКСТ И КНОПКА  */}
 							<div className='md:w-[50%] group'>
 								<h1
 									className='mt-12 text-center duration-600 text-3xl text-blue-950 font-bold font-mono items-center 
@@ -70,6 +76,7 @@ export default function Five() {
 											xl:group-hover/main:text-xl 2xl:group-hover:font-bold 2xl:mt-2'
 											>
 												hotel
+												{/* КНОПКА С АНИМИРОВАННОЙ ЛИНИЕЙ СПРАВА  */}
 												<div className='flex justify-center items-center'>
 													<div
 														className='duration-500 w-9 flex h-1 bg-black/90 ml-3 rounded-xl group-hover:ml-4
@@ -83,6 +90,7 @@ export default function Five() {
 									</div>
 								</div>
 							</div>
+							{/* ПРАВАЯ КОЛОНКА КАРТИНКА */}
 							<div className='md:w-[50%] group'>
 								<img
 									className='h-70 w-70 ml-10 xl:ml-10 mt-8 border-2 duration-600 border-black/70 rounded-xl 

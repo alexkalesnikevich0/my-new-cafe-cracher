@@ -3,6 +3,7 @@ import Link from 'next/link'
 export default function Navigation() {
 	return (
 		<div className='bg-orange-300/80 pt-20 2xl:h-160'>
+			{/* ДЕКОРАТИВНАЯ ЛИНИЯ СВЕРХУ */}
 			<div className='flex justify-center'>
 				<div
 					className='w-80 mt-10 h-4 bg-yellow-950/90 rounded-full mb-10 
@@ -13,7 +14,9 @@ export default function Navigation() {
 				2xl:w-370'
 				></div>
 			</div>
+			{/* ОСНОВНОЙ КОНТЕНТ ТЕКСТ СЛЕВА + КНОПКИ СПРАВА (НА ДЕСКТОПЕ В РЯД НА МОБИЛЬНЫХ КОЛОНКА) */}
 			<div className='mt-10 flex flex-col md:flex-row md:w-full md:gap-10'>
+				{/* ЛЕВАЯ КОЛОНКА ТЕКСТ */}
 				<div className='md:w-[50%] lg:w-[60%] xl:w-[50%] 2xl:w-[60%]'>
 					<div className='justify-center flex'>
 						<h1
@@ -29,6 +32,7 @@ export default function Navigation() {
 							Drittanbieter weitergegeben werden.
 						</h1>
 					</div>
+					{/* ССЫЛКА ПОД ТЕКСТОМ */}
 					<div className='flex justify-center h-15 items-center'>
 						<section
 							className='lg:p-4 text-blue-700/90 font-extrabold duration-500 text-lg 
@@ -44,6 +48,7 @@ export default function Navigation() {
 					</div>
 				</div>
 				<div className='flex flex-col justify-center items-center h-70 flex-shrink-0 w-full md:w-[45%]'>
+					{/* КНОПКА 1 speisekarte */}
 					<div className='md:pt-28 2xl:mt-17 '>
 						<Link href='/speisekarte'>
 							<div
@@ -61,6 +66,7 @@ export default function Navigation() {
 											2xl:text-2xl 2xl:group-hover:text-3xl 2xl:group-hover:font-semibold 2xl:font-semibold 2xl:mb-1'
 									>
 										speisekarte
+										{/* АНИМИРОВАННАЯ ЛИНИЯ СПРАВА ОТ ТЕКСТА - УДЛИНЯЕТСЯ ПРИ НАВЕДЕНИИ */}
 										<div className='flex justify-center items-center'>
 											<div
 												className='duration-500 w-12 flex h-1 bg-black/40 ml-5 group-hover:ml-8 rounded-xl mt-1
@@ -75,6 +81,7 @@ export default function Navigation() {
 							</div>
 						</Link>
 					</div>
+					{/* КНОПКА 2 flammkuchen */}
 					<div className='mt-5 pb-20 md:mb-30'>
 						<Link href='/speisekarte?scroll=flammkuchen'>
 							<div
@@ -92,6 +99,7 @@ export default function Navigation() {
 											2xl:text-2xl 2xl:group-hover:text-2xl 2xl:group-hover:font-semibold 2xl:font-semibold'
 									>
 										flammkuchen
+										{/* АНИМИРОВАННАЯ ЛИНИЯ СПРАВА ОТ ТЕКСТА - УДЛИНЯЕТСЯ ПРИ НАВЕДЕНИИ */}
 										<div
 											className='duration-500 w-12 h-1 bg-black/40 ml-3 rounded-full group-hover:bg-black/80
 												md:group-hover:ml-6 md:ml-4 md:group-hover:ml-7 md:group-hover:w-17 

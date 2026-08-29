@@ -7,7 +7,7 @@ import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
 export default function FirstSlide() {
 	return (
 		<ZoomOutImage delay={100} threshold={0.2}>
-			<div className='relative w-full h-screen '>
+			<div className='relative w-full h-screen select-none'>
 				<img
 					src='land.png'
 					alt='Background'
@@ -45,6 +45,7 @@ export default function FirstSlide() {
 								<h1
 									className='duration-900 group text-sm font-bold rounded-lg mt-10 text-white/80 pl-2 pr-2 text-center pt-1 pb-1 text-lg uppercase
                       hover:bg-yellow-900/70 hover:text-orange-400/90 hover:text-base
+											active:bg-yellow-900/70 active:text-orange-400/90 active:text-base
                       md:text-lg md:hover:text-xl 
                       xl:hover:pl-2 xl:hover:pr-2 xl:mt-15 xl:text-xl xl:hover:text-2xl 
                       2xl:text-2xl 2xl:hover:text-3xl 2xl:hover:font-black 2xl:font-extrabold 2xl:mt-30'

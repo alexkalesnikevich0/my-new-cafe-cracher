@@ -121,53 +121,82 @@
 	}
 }
 
+/* code --- 5 file FadeInFromBottom
+ВЫЕЗД СНИЗУ: ЭЛЕМЕНТ НАЧИНАЕТ НА 40px НИЖЕ И ПОЛНОСТЬЮ ПРОЗРАЧНЫМ */
 @keyframes fadeInUp {
 	from {
 		opacity: 0;
-		transform: translateY(40px);
+		transform: translateY(40px); /* СМЕЩЕНИЕ ВНИЗ */
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translateY(0); /* ВОЗВРАЩАЕТСЯ НА СВОЁ МЕСТО */
 	}
 }
+
+/* КЛАСС, ЗАПУСКАЮЩИЙ АНИМАЦИЮ */
 .animate-fade-in-up {
 	animation: fadeInUp 1s ease-out forwards;
+	/*
+    1s — ДЛИТЕЛЬНОСТЬ 1 СЕКУНДА
+    ease-out — ПЛАВНОЕ ЗАМЕДЛЕНИЕ В КОНЦЕ
+    forwards — СОХРАНЯЕТ КОНЕЧНОЕ СОСТОЯНИЕ ПОСЛЕ АНИМАЦИИ
+  */
 }
 
+/*  * code - 1 file scrollToTop 
+		* ВЫЕЗД СВЕРХУ - ЭЛЕМЕНТ НАЧИНАЕТ НА 40РХ ВЫШЕ И ПОЛНОСТЬЮ ПРОЗРАЧНЫМ
+*/
 @keyframes fadeInDown {
 	from {
 		opacity: 0;
-		transform: translateY(-40px);
+		transform: translateY(-40px); /* СМЕЩЕНИЕ ВВЕРХ */
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translateY(0); /* ВОЗВРАЩАЕТСЯ НА СВОЕ МЕСТО */
 	}
 }
+
+/*  - КЛАСС ЗАПУСКАЮЩИЙ АНИМАЦИЮ 
+		- 1s длительность 1 секунда
+		- ease-out плавное замедление в конце
+		- forwards сохраняет конечное состояние после анимации
+*/
 .animate-fade-in-down {
 	animation: fadeInDown 1s ease-out forwards;
 }
 
+/* code --- 4 file ZoomOutImage
+ZOOM-OUT + РАССВЕТЛЕНИЕ: КАРТИНКА ОТДАЛЯЕТСЯ И СТАНОВИТСЯ ЯРЧЕ */
 @keyframes zoomOut {
 	0% {
-		opacity: 0;
-		transform: scale(1.2);
-		filter: brightness(0.6);
+		opacity: 0; /* ПОЛНОСТЬЮ ПРОЗРАЧНА */
+		transform: scale(1.15); /* УВЕЛИЧЕНА НА 15% */
+		filter: brightness(0.6); /* ЗАТЕМНЕНА НА 40% */
 	}
 	30% {
-		opacity: 1;
-		filter: brightness(1);
+		opacity: 1; /* СТАЛА ВИДИМОЙ */
 	}
 	100% {
-		opacity: 1;
-		transform: scale(1);
+		opacity: 1; /* ОСТАЁТСЯ ВИДИМОЙ */
+		transform: scale(1); /* ВОЗВРАЩАЕТСЯ К НОРМАЛЬНОМУ РАЗМЕРУ */
+		filter: brightness(1); /* ПОЛНАЯ ЯРКОСТЬ */
 	}
 }
+
 .animate-zoom-out {
-	animation: zoomOut 2.5s ease-in-out forwards;
+	animation: zoomOut 2.5s ease-out forwards;
+	/*
+    2.5s — ДЛИТЕЛЬНОСТЬ 2.5 СЕКУНДЫ
+    ease-out — ПЛАВНОЕ ЗАМЕДЛЕНИЕ В КОНЦЕ
+    forwards — СОХРАНЯЕТ КОНЕЧНОЕ СОСТОЯНИЕ
+  */
 }
 
+/* code --- 2 file SlowZoomBackground
+	*. МЕДЛЕННОЕ ПРИБЛИЖЕНИЕ ОТ 100% ДО 108% ЗА 8 СЕКУНД ТУДА-ОБРАТНО БЕСКОНЕЧНО 
+*/
 @keyframes slowZoom {
 	0% {
 		transform: scale(1);
@@ -179,8 +208,16 @@
 
 .animate-slow-zoom {
 	animation: slowZoom 4s ease-in-out infinite alternate;
+	/* 
+	* 8 СЕКУНД - ОЧЕНЬ МЕДЛЕННО 
+	* ease-in-out - ПЛАВНЫЙ РАЗГОН И ПЛАВНОЕ ТОРМОЖЕНИЕ 
+	* infinite - ТУДА-ОБРАТНО
+	* alternative - ТУДА-ОБРАТНО (ПРИБЛИЖАЕТСЯ -> ОТДАЛЯЕТСЯ -> СНОВА ПРИБЛИЖАЕТСЯ)
+*/
 }
 
+/* code --- 3 file ZoomInView
+ЗУМ ПРИ ПРОСМОТРЕ: ОТ 100% ДО 115% ЗА 12 СЕКУНД */
 @keyframes slowZoomInView {
 	0% {
 		transform: scale(1);
@@ -192,47 +229,34 @@
 
 .animate-slow-zoom-in-view {
 	animation: slowZoomInView 12s ease-out forwards;
+	/*
+    12s — ОЧЕНЬ МЕДЛЕННО (12 СЕКУНД)
+    ease-out — ПЛАВНОЕ ЗАМЕДЛЕНИЕ В КОНЦЕ
+    forwards — СОХРАНЯЕТ КОНЕЧНОЕ СОСТОЯНИЕ (НЕ ВОЗВРАЩАЕТСЯ ОБРАТНО)
+  */
 }
 
-@keyframes fadeInQuickFast {
-	from {
-		opacity: 0.5;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-.animate-fade-in-quick-fast {
-	animation: fadeInQuickFast 150ms ease-out;
-}
-
+/**
+ * АНИМАЦИЯ: ПЛАВНОЕ ПОЯВЛЕНИЕ МОБИЛЬНОГО МЕНЮ СВЕРХУ ВНИЗ
+ * ИСПОЛЬЗУЕТСЯ В: app/booking/components/forbutt.jsx (Forbutt)
+ */
+/* ВЫЕЗД СВЕРХУ ВНИЗ: МЕНЮ НАЧИНАЕТ ЗА ПРЕДЕЛАМИ ЭКРАНА И ОПУСКАЕТСЯ */
 @keyframes slideDown {
 	from {
 		opacity: 0;
-		transform: translateY(-100%);
+		transform: translateY(-100%); /* НАЧИНАЕТ НА 100% ВЫШЕ ЭКРАНА */
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translateY(0); /* ОПУСКАЕТСЯ НА СВОЁ МЕСТО */
 	}
 }
-
+/* КЛАСС, ЗАПУСКАЮЩИЙ АНИМАЦИЮ */
 .animate-slide-down {
 	animation: slideDown 1s ease-out forwards;
-}
-
-@keyframes slideUp {
-	from {
-		transform: translateY(0);
-		opacity: 1;
-	}
-	to {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
-}
-
-.animate-slide-up {
-	animation: slideUp 1s ease-in forwards;
+	/*
+    1s — ДЛИТЕЛЬНОСТЬ 1 СЕКУНДА
+    ease-out — ПЛАВНОЕ ЗАМЕДЛЕНИЕ В КОНЦЕ
+    forwards — СОХРАНЯЕТ КОНЕЧНОЕ СОСТОЯНИЕ
+  */
 }

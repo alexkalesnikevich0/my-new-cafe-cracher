@@ -9,8 +9,7 @@ export default function FirstSlide() {
 	return (
 		<ZoomOutImage delay={100} threshold={0.2}>
 			<ScrollToHash />
-			<div className='relative w-full h-screen '
-			id='up'>
+			<div className='relative w-full h-screen select-none ' id='up'>
 				<img
 					src='land.png'
 					alt='Background'
@@ -39,8 +38,8 @@ export default function FirstSlide() {
                 2xl:text-5xl'
 					>
 						<h2 className='text-white/70 justify-center bg-orange-300/30 px-10 w-fit rounded-lg'>
-							FENFRISCHE GÄNSEKEULE MIT KARTOFFELKLÖSSEN <br />
-							GÄNSE-JUS, BRATAPFEL UND ROTKOHL
+							FENFRISCHE GÄNSEKEULE MIT <br />
+							KARTOFFELKLÖSSEN GÄNSE-JUS
 						</h2>
 					</div>
 					<div className='justify-center flex'>

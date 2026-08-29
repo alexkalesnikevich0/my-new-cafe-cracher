@@ -1,39 +1,34 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { createBooking } from '@/app/booking/actions/booking'
-import Link from 'next/link'
 
 import FadeInFromBottom from '../animations/FadeInFromBottom'
-import FadeInFromTop from '../animations/FadeInfromTop'
-
-const home = [
-	{
-		route: '/',
-	},
-]
 
 export default function Menu() {
-	const [message, setMessage] = useState(null)
+	// --- 	СОСТОЯНИЕ ДЛЯ СООБЩЕНИЙ ПОЛЬЗОВАТЕЛЮ ---
+	const [message, setMessage] = useState(null) // { success: '...' } or { error: '...' }
 
+	// --- ОТПРАВКА ФОРМЫ НА СЕРВЕР --- //
 	async function handleSubmit(formData) {
 		const date = formData.get('date')
 		const time = formData.get('time')
-
 		const guests = formData.get('guests')
+
+		// --- ПРОВЕРКА НА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО ГОСТЕЙ (ДУБЛИРУЕТСЯ С max='8'. в input ) --- //
 		if (parseInt(guests) > 8) {
 			setMessage({ error: 'Maximum 8 guests for table!' })
 			return
 		}
 
+		// --- ВЫЗЫВАЕМ СЕРВЕРНЫЙ ЭКШЕН - ОН СОХРАНЯЕТ БРОНЬ В БАЗУ ДАННЫХ И ОТПРАВЛЯЕТ ПИСЬМА --- //
 		const result = await createBooking(formData)
-		setMessage(result)
-		if (result?.success) {
-			setTimeout(() => window.location.reload(), 200)
-		}
+		setMessage(result) // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЮ
 	}
 
+	// --- СОСТОЯНИЕ ДЛЯ ДИНАМИЧЕСКОГО СПИСКА ВРЕМЕНИ --- //
 	const [selectedDate, setSelectedDate] = useState('')
 
+	// ЗАГРУЖАЕМ УЖЕ ЗАНЯТЫЕ СЛОТЫ С СЕРВЕРА
 	const [occupiedSlots, setOccupiedSlots] = useState([])
 	useEffect(() => {
 		fetch('/booking/api/occupied-slots')
@@ -41,6 +36,7 @@ export default function Menu() {
 			.then(setOccupiedSlots)
 	}, [])
 
+	// --- ГЕНЕРИРУЕМ СПИСОК ДОСТУПНОГО ВРЕМЕНИ С 10:00 - 22:00 ТОЛЬКО СВОБОДНЫЕ СЛОТЫ --- //
 	const timeOptions = (() => {
 		const options = []
 		const now = new Date()
@@ -51,9 +47,11 @@ export default function Menu() {
 			const time = `${String(h).padStart(2, '0')}:00`
 			const slotTotalMinutes = h * 60
 
+			// ПРОПУСКАЕМ СЛОТЫ ДО КОТОРЫХ МЕНЬШЕ ЧАСА (ДЛЯ СЕГОДНЯШНЕЙ ДАТЫ)
 			if (selectedDate === today && slotTotalMinutes - currentTotalMinutes < 60)
 				continue
 
+			// ПРОПУСКАЕМ УЖЕ ЗАНЯТЫЕ СЛОТЫ
 			const isOccupied = occupiedSlots.some(
 				slot => slot.date === selectedDate && slot.time === time,
 			)
@@ -64,26 +62,48 @@ export default function Menu() {
 		return options
 	})()
 
+	// --- ЛОГИКА БЛОКИРОВКИ КНОПОК --- //
+
+	const [isEmpty, setIsEmpty] = useState(true) // ПРОВЕРЯЕМ ПУСТАЯ ЛИ ФОРМА (ДЛЯ КНОПКИ RESET)
+
+	// ПРОВЕРЯЕМ ВАЛИДНА ЛИ ФОРМА (ДЛЯ КНОПКИ SUBMIT) - ВСЕ ПОЛЯ ДОЛЖНЫ БЫТЬ ЗАПОЛНЕНЫ
+	const checkForm = () => {
+		const guests = document.querySelector('input[name="guests"]')?.value
+
+		const date = document.querySelector('input[name="date"]')?.value
+
+		const time = document.querySelector('select[name="time"]')?.value
+
+		const email = document.querySelector('input[name="email"]')?.value
+
+		setIsEmpty(!(guests || date || time || email)) // TRUE ЕСЛИ ВСЕ ПОЛЯ ПУСТЫЕ
+		setIsValid(!!(guests && date && time && email)) // TRUE ЕСЛИ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ
+	}
+
+	const [isValid, setIsValid] = useState(false)
+
 	return (
 		<div className='flex justify-center items-center'>
 			<FadeInFromBottom delay={100} threshold={0.2}>
 				<div className='group'>
 					<div
-						className='duration-600 w-80 mt-20 mb-20 border-2 rounded-xl bg-orange-100/80 border-slate-700 
-					md:group-hover:border-3 md:w-165 md:h-220 md:group-hover:h-225 
-					lg:group-hover:h-230 lg:h-220 lg:w-220'
+						className='duration-600 mt-20 mb-20 border-2 rounded-xl bg-orange-100/80 border-slate-700 
+					md:group-hover:border-3 
+					'
 					>
+						{/* === ЗАГОЛОВОК ФОРМЫ === */}
 						<div>
 							<div
-								className='flex justify-center sm:ml-17 text-xl mt-5 font-black text-slate-900 
-							md:flex md:text-center md:mt-14 md:text-2xl md:ml-0 md:justify-center 
+								className='flex justify-center text-xl mt-5 font-black text-slate-900 
+							md:flex md:text-center md:mt-14 md:text-2xl md:justify-center 
 							lg:text-3xl lg:mt-25'
 							>
 								TABLE RESERVIERUNG
 							</div>
+							{/* ИНДИКАТОР ШАГОВ (1 - ЗАПОЛНЕНИЕ 2 - ПОДТВЕРЖДЕНИЕ) */}
 							<div className='flex gap-1 md:h-20'>
 								<div
-									className='ml-1 mr-4 text-xl rounded-full bg-blue-900 h-9 w-8 mt-5 md:mt-2 lg:mt-6 justify-center items-center flex text-white/90 font-black font-mono 
+									className='ml-2 mr-4 text-xl rounded-full bg-blue-900 h-9 w-8 mt-5 md:mt-2 lg:mt-6 justify-center items-center flex text-white/90 font-black font-mono 
 								md:mr-15 md:ml-18 md:text-2xl 
 								lg:mr-15 lg:ml-29'
 								>
@@ -98,6 +118,7 @@ export default function Menu() {
 									2
 								</div>
 							</div>
+							{/* ОПИСАНИЕ */}
 							<div className='flex justify-center items-center'>
 								<div
 									className='w-70 text-center mt-12 font-extrabold border-gray-900 border-3 duration-700 rounded-xl p-3 
@@ -110,6 +131,7 @@ export default function Menu() {
 									Vorschriften. Wir haben durchgängig für Sie geöffnet.
 								</div>
 							</div>
+							{/* == САМА ФОРМА БРОНИРОВАНИЯ == */}
 							<form action={handleSubmit}>
 								<div
 									className='mt-14 flex-col flex justify-center items-center
@@ -118,9 +140,11 @@ export default function Menu() {
 						[&_input]:bg-gray-800/10 [&_input]:border-blue-950 [&_input]:pl-2 [&_input]:pr-2 [&_input]:border-2 [&_input]:h-12 [&_input]:w-40 [&_input]:rounded md:[&_input]:ml-0 md:[&_input]:w-35 lg:[&_input]:w-40
 						[&_section]:flex-col [&_section]:flex [&_section]:font-extrabold [&_section]: [&_section]:text-xl md:[&_section]:ml-0 2xl:[&_section]:font-bold'
 								>
+									{/* ПОЛЕ КОЛИЧЕСТВО ГОСТЕЙ */}
 									<section className=''>
 										Person:
 										<input
+											onChange={checkForm}
 											name='guests'
 											placeholder='fill the gap'
 											type='number'
@@ -130,6 +154,7 @@ export default function Menu() {
 											className='md:ml-2 text-center '
 										></input>
 									</section>
+									{/* ПОЛЕ ДАТА (ПРИ ИЗМЕНЕНИИ ОБНОВЛЯЕТ selectedDate И СПИСОК ВРЕМЕНИ)*/}
 									<section className='mt-7 md:mt-0'>
 										Date:
 										<input
@@ -138,12 +163,17 @@ export default function Menu() {
 											required
 											min={new Date().toISOString().split('T')[0]}
 											className='md:ml-10'
-											onChange={e => setSelectedDate(e.target.value)}
+											onChange={e => {
+												setSelectedDate(e.target.value)
+												checkForm()
+											}}
 										></input>
 									</section>
+									{/* ПОЛЕ ВРЕМЯ (ДИНАМИЧЕСКИЙ СПИСОК ЗАВИСИТ ОТ ВЫБРАННОЙ ДАТЫ) */}
 									<section className='mt-7 md:mt-0'>
 										Time:
 										<select
+											onChange={checkForm}
 											name='time'
 											required
 											className='bg-gray-800/10 border-blue-950 pl-2 pr-2 border-2 h-12 w-40 rounded md:ml-0 md:w-35 lg:w-40'
@@ -156,9 +186,11 @@ export default function Menu() {
 											))}
 										</select>
 									</section>
+									{/* ПОЛЕ ЕМАЙЛ (ДЛЯ ОТПРАВКИ СООБЩЕНИЯ НА ПОЧТУ ГОСТЮ) */}
 									<section className='mt-7 md:mt-0'>
 										Email:
 										<input
+											onChange={checkForm}
 											name='email'
 											placeholder='your@gmail'
 											type='email'
@@ -167,40 +199,49 @@ export default function Menu() {
 										></input>
 									</section>
 								</div>
-								<div className=''>
-									<div className='items-center justify-center flex flex-col pt-10 h-35 gap-5 md:flex-row md:gap-50 lg:gap-90'>
-										<div className='group/main'>
-											<button
-												onClick={() => {
-													setMessage(null)
-													setSelectedDate('')
-												}}
-												className='flex items-center justify-center cursor-pointer bg-gray-400/20 border-red-600/90 border-2 w-30 h-12 rounded-sm duration-600 
-											group-hover/main:bg-red-700 group-hover/main:border-black/70 group-hover/main:rounded-md group-hover/main:border-2 
-											  md:h-12 md:w-35 group-hover/main:scale-110 items-center uppercase text-red-600/90 font-extrabold duration-700 
-												group-hover/main:text-white group-hover/main:font-extrabold group-hover/main:text-lg
-												2xl:group-hover:font-semibold'
-												type='reset'
-											>
-												reset
-											</button>
-										</div>
-										<div className='group/main'>
-											<button
-												type='submit'
-												className='flex items-center justify-center cursor-pointer bg-gray-400/20 border-blue-600/90 border-2 w-55 h-12 rounded-sm duration-600 
-											
-											group-hover/main:bg-blue-700 group-hover/main:border-black/70 group-hover/main:rounded-md group-hover/main:border-2 
-											  md:h-12 md:w-57 group-hover/main:scale-110 items-center uppercase text-blue-600/90 font-extrabold duration-700 
-												group-hover/main:text-white group-hover/main:font-extrabold group-hover/main:text-lg
-												2xl:group-hover:font-semibold'
-											>
-												submit reservation
-											</button>
-										</div>
-									</div>
+								{/* КНОПКИ RESET И SUBMIT */}
+
+								<div className='items-center justify-center flex flex-col pt-10 h-35 gap-5 md:flex-row md:gap-50 lg:gap-90'>
+									{/* КНОПКА RESET - АКТИВНА ТОЛЬКО ЕСЛИ ФОРМА НЕ ПУСТАЯ */}
+									<button
+										type='button'
+										disabled={isEmpty}
+										onClick={() => {
+											setMessage(null)
+											setSelectedDate('')
+
+											document.querySelector('form')?.reset()
+											setIsEmpty(true)
+
+											setIsValid(false)
+										}}
+										className={`select-none flex items-center justify-center bg-red-800 border-black/70 border-2 w-30 h-12 rounded-sm
+											  md:h-12 md:w-35 items-center uppercase font-extrabold duration-700 
+												${
+													isEmpty
+														? 'opacity-70 cursor-not-allowed text-white/70'
+														: 'cursor-pointer border-black scale-110 border-2 font-extrabold text-lg text-white/80 hover:bg-red-700 hover:text-white active:text-white active:bg-red-700'
+												}`}
+									>
+										reset
+									</button>
+									{/* КНОПКА SUBMIT - АКТИВНА ТОЛЬКО ВСЕ ПОЛЯ ЗАПОЛНЕНЫ */}
+									<button
+										type='submit'
+										disabled={!isValid}
+										className={`select-none flex items-center justify-center w-55 h-12 rounded-sm border-2 border-black/40
+												md:h-12 md:w-57 items-center uppercase font-extrabold duration-700 
+												${
+													isValid
+														? 'cursor-pointer bg-blue-800 scale-110 text-white/60 hover:text-white hover:bg-blue-700 hover:border-black active:text-white active:bg-blue-700 active:border-black '
+														: 'border-black/50 opacity-70 text-white/60 cursor-not-allowed bg-blue-900 scale-100'
+												}`}
+									>
+										submit reservation
+									</button>
 								</div>
 							</form>
+							{/* СООБЩЕНИЯ ОБ УСПЕХЕ ЛИБО ОШИБКЕ БРОНИРОВАНИЯ */}
 							<div className='flex justify-center items-center pl-0 pt-5 font-bold duration-700'>
 								{message?.error && (
 									<p style={{ color: 'red' }}>{message.error}</p>
@@ -209,24 +250,31 @@ export default function Menu() {
 									<p style={{ color: 'green' }}>{message.success}</p>
 								)}
 							</div>
+							{/* НИЖНИЙ ТЕКСТ */}
 							<div className='md:text-center'>
 								<div className='flex justify-center'>
-									<div
+									<h2
 										className='text-xl w-80 mt-10 text-center text-slate-900 font-serif font-black 
 									md:text-2xl md:w-100 md:mt-15 
 									lg:text-3xl lg:w-220'
 									>
 										RESERVIERUNGS-ANFRAGE AB 8 PERSONEN
-									</div>
+									</h2>
 								</div>
 								<div className='flex justify-center'>
-									<div
-										className='text-md text-bold mt-2 text-slate-900/90 font-serif mb-10
+									<h2
+										className='text-md text-bold mt-2 text-slate-900/90 font-serif mb-5
 									md:text-xl md:mt-5 md:font-medium 
 									lg:text-2xl'
 									>
 										Wir freuen uns auf Ihre Anfrage
-									</div>
+									</h2>
+								</div>
+								<div className='font-serif flex flex-col justify-center items-center'>
+									<h2 className='text-xl'>ordering by phone</h2>
+									<h3 className='text-lg text-black/60 hover:text-black p-1 cursor-pointer mb-10'>
+										+375-33-918-4970
+									</h3>
 								</div>
 							</div>
 						</div>

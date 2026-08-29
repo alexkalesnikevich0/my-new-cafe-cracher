@@ -9,6 +9,7 @@ import ForthSlide from '../slides/forthSlide'
 import FifthSlide from '../slides/fifthSlide'
 import SixSlide from '../slides/sixSlide'
 
+// Массив компонентов слайдов в порядке отображения
 const slides = [
 	FirstSlide,
 	SecondSlide,
@@ -17,60 +18,87 @@ const slides = [
 	FifthSlide,
 	SixSlide,
 ]
+// чтобы добавить новый слайд, просто импортировать его и добавить в массив slides
 
 export default function HeroSlider() {
-	const [current, setCurrent] = useState(0)
+	// --- состояние для переключения слайдов ---
+	const [current, setCurrent] = useState(0) // индекс текущего слайда
 
-	const goTo = index => setCurrent(index)
+	const goTo = index => setCurrent(index) // перейти к конкретному слайду используя точки внизу
 
-	const next = () => setCurrent(current === slides.length - 1 ? 0 : current + 1)
-	const prev = () => setCurrent(current === 0 ? slides.length - 1 : current - 1)
+	const next = () => setCurrent(current === slides.length - 1 ? 0 : current + 1) // переключение на следующий слайд
+	const prev = () => setCurrent(current === 0 ? slides.length - 1 : current - 1) // переключение на предыдущий слайд
 
-	const [dragging, setDragging] = useState(false)
-	const [dragStart, setDragStart] = useState(null)
-	const [dragOffset, setDragOffset] = useState(0)
+	// --- состояние для перетаскивания мышкой drag
+	const [dragging, setDragging] = useState(false) // зажата ли мышь
+	const [dragStart, setDragStart] = useState(null) // координата начала перетаскивания мыши
+	const [dragOffset, setDragOffset] = useState(0) // смещение от начала перетаскивания
+	// ---
 
+	// запоминаем где зажали мышь
 	const handleMouseDown = e => {
 		setDragging(true)
 		setDragStart(e.clientX)
 	}
 
 	const handleMouseMove = e => {
-		if (!dragging) return
-		setDragOffset(e.clientX - dragStart)
+		if (!dragging) return // если мышь не зажата - ничего не делаем
+		setDragOffset(e.clientX - dragStart) // считаем смещение
 	}
 
 	const handleMouseUp = () => {
 		if (!dragging) return
 		setDragging(false)
-		if (dragOffset < -50) next()
+		if (dragOffset < -50)
+			next() // если смещение больше 50px - переключаем слайд
 		else if (dragOffset > 50) prev()
-		else goTo(current)
+		else goTo(current) // иначе возвращаем на текущий
+		//сбрасываем состояние перетаскивания
 		setDragOffset(0)
 		setDragStart(null)
 	}
 
+	// --- состояние для сенсорного перетаскивания телефона ---
+	const [touchStart, setTouchStart] = useState(null)
+	const [touchEnd, setTouchEnd] = useState(null)
+
+	const handleTouchStart = e => setTouchStart(e.targetTouches[0].clientX)
+	const handleTouchMove = e => setTouchEnd(e.targetTouches[0].clientX)
+	const handleTouchEnd = () => {
+		if (!touchStart || !touchEnd) return
+		const distance = touchStart - touchEnd
+		if (distance > 50) next()
+		if (distance < -50) prev()
+		setTouchStart(null)
+		setTouchEnd(null)
+	}
+
 	return (
 		<div
-			className='relative w-full h-screen overflow-hidden active:cursor-grabbing select-none'
+			className='relative w-full h-screen overflow-hidden active:cursor-grabbing'
 			onMouseDown={handleMouseDown}
 			onMouseMove={handleMouseMove}
 			onMouseUp={handleMouseUp}
 			onMouseLeave={handleMouseUp}
+			onTouchStart={handleTouchStart}
+			onTouchEnd={handleTouchEnd}
+			onTouchMove={handleTouchMove}
 		>
+			{/* контейнер который двигает все слайды */}
 			<div
 				className={`flex h-full ${dragging ? '' : 'transition-transform duration-1300 ease-in-out'}`}
 				style={{
 					transform: `translateX(calc(-${current * 100}% + ${dragging ? dragOffset : 0}px))`,
 				}}
 			>
+				{/* рендерим все слайды в ряд */}
 				{slides.map((Slide, index) => (
 					<div key={index} className='w-full h-full flex-shrink-0'>
 						<Slide />
 					</div>
 				))}
 			</div>
-
+			{/* стрелка назад */}
 			<button
 				onClick={prev}
 				className='absolute left-4 top-1/2 -translate-y-1/2 text-white text-5xl hover:text-gray-300 z-30'
@@ -88,6 +116,7 @@ export default function HeroSlider() {
 					/>
 				</svg>
 			</button>
+			{/* стрелка вперед */}
 			<button
 				onClick={next}
 				className='absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl hover:text-gray-300 z-30'
@@ -105,7 +134,7 @@ export default function HeroSlider() {
 					/>
 				</svg>
 			</button>
-
+			{/* точки индикаторы какой слайд активен*/}
 			<div className='absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-3 z-30 '>
 				{slides.map((_, index) => (
 					<button

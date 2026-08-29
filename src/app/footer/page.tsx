@@ -6,13 +6,18 @@ import Accordion from '@/app/booking/components/Accordion'
 
 import { useState } from 'react'
 
-import ScrollToSection from '@/app/booking/components/ScrollToSection'
+// scrollToSection - КНОПКА КОТОРАЯ ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ЭЛЕМЕНТУ С УКАЗАННЫМ id
+import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection'
 
 export default function Footer() {
+	// openIndex ХРАНИТ ИНДЕКС ОТКРЫТОГО АККОРДЕОНА (или null, если все закрыты)
+	// БЛАГОДАРЯ ЭТОМУ ОДНОВРЕМЕННО ОТКРЫТ ТОЛЬКО ОДИН БЛОК
 	const [openIndex, setOpenIndex] = useState(null)
 
 	return (
+		// suppressHydrationsWarning - ОТКЛЮЧАЕТ ПРЕДУПРЕЖДЕНИЕ REACT О НЕСОВПАДЕНИИ СЕРВЕРНОГО И КЛИЕНТСКОГО РЕНДЕРА
 		<div suppressHydrationWarning className='bg-yellow-950/90'>
+			{/* ==== ВЕРХНЯЯ СЕКЦИЯ - ЗАГОЛОВОК + АККОРДЕОНЫ ==== */}
 			<div className='pt-20 md:flex md:justify-start 2xl:pt-40'>
 				<h1
 					className='mb-20 text-4xl mt-0 font-serif text-center text-white/90 font-extrabold 
@@ -33,6 +38,7 @@ export default function Footer() {
 					xl:text-3xl 
 					2xl:text-4xl'
 					>
+						{/* == АККОРДЕОН 1 ANFHART MIT BUS UND BAHN == */}
 						<div className='flex justify-center items-center'>
 							<Accordion
 								title='ANFHART MIT BUS UND BAHN'
@@ -52,11 +58,21 @@ export default function Footer() {
 										mit Bus und Bahn können Sie auch individuell planen mit der
 										Online-Fahrplanauskunft.
 									</p>
+									{/* = ССЫЛКИ С АНИМИРОВАННОЙ СТРЕЛКОЙ (УЛЕТАЕТ ВПРАВО ПРИ НАВЕДЕНИИ) = */}
 									<div className='text-orange-300/60 text-lg uppercase'>
-										<p className='hover:text-orange-300/80 pr-4 pb-4 group'>
+										<p
+											className='pr-4 pb-4 group
+										hover:text-orange-300/80
+										active:text-orange-300/80'
+										>
 											<Link href='/timeride' className='flex flex-row'>
 												timeride
-												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+												<span
+													className='grow-0 transition-all duration-1200 
+												group-hover:grow
+												group-active:grow'
+												></span>
 												<svg
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 24 24'
@@ -71,10 +87,19 @@ export default function Footer() {
 												</svg>
 											</Link>
 										</p>
-										<p className='hover:text-orange-300/80 pr-4 pb-4 group'>
+										<p
+											className='pr-4 pb-4 group
+											hover:text-orange-300/80
+											active:text-orange-300/80'
+										>
 											<Link href='/galerie' className='flex flex-row'>
 												galerie
-												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+												<span
+													className='grow-0 transition-all duration-1200
+												group-hover:grow
+												group-active:grow'
+												></span>
 												<svg
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 24 24'
@@ -89,10 +114,19 @@ export default function Footer() {
 												</svg>
 											</Link>
 										</p>
-										<p className='hover:text-orange-300/80 pr-4 group'>
+										<p
+											className='pr-4 group
+											hover:text-orange-300/80
+										active:text-orange-300/80'
+										>
 											<Link href='/speisekarte' className='flex flex-row'>
 												speisekarte
-												<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+												{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+												<span
+													className='grow-0 transition-all duration-1200
+												group-hover:grow
+												group-active:grow'
+												></span>
 												<svg
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 24 24'
@@ -111,6 +145,7 @@ export default function Footer() {
 								</div>
 							</Accordion>
 						</div>
+						{/* == АККОРДЕОН 2 ANFAHRT MIT DEM FAHRRAD == */}
 						<div className='mt-10'>
 							<Accordion
 								title='ANFAHRT MIT DEM FAHRRAD'
@@ -121,10 +156,19 @@ export default function Footer() {
 									<p className='pb-4 mt-3'>
 										Einen Link zu Ihrer Routenplanung finden Sie hier:
 									</p>
-									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 group'>
+									<p
+										className='text-orange-300/60 text-lg uppercase pr-4 group
+									hover:text-orange-300/80
+									active:text-orange-300/80'
+									>
 										<Link href='/tradition' className='flex flex-row'>
 											tradition
-											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+											<span
+												className='grow-0 transition-all duration-1200
+											group-hover:grow
+												group-active:grow'
+											></span>
 											<svg
 												xmlns='http://www.w3.org/2000/svg'
 												viewBox='0 0 24 24'
@@ -142,6 +186,7 @@ export default function Footer() {
 								</div>
 							</Accordion>
 						</div>
+						{/* == АККОРДЕОН 3 ANFAHRT MIT DEM AUTO == */}
 						<div className='mt-10'>
 							<Accordion
 								title='ANFAHRT MIT DEM AUTO'
@@ -156,10 +201,19 @@ export default function Footer() {
 									<p className='pb-4'>
 										Einen Link zu Ihrer Routenplanung finden Sie hier:
 									</p>
-									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 group'>
+									<p
+										className='text-orange-300/60 text-lg uppercase pr-4 group
+									hover:text-orange-300/80
+									active:text-orange-300/80'
+									>
 										<Link href='/jobs' className='flex flex-row'>
 											jobs
-											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+											<span
+												className='grow-0 transition-all duration-1200
+											group-hover:grow
+											group-active:grow'
+											></span>
 											<svg
 												xmlns='http://www.w3.org/2000/svg'
 												viewBox='0 0 24 24'
@@ -177,6 +231,7 @@ export default function Footer() {
 								</div>
 							</Accordion>
 						</div>
+						{/* == АККОРДЕОН 4 UNTERKOMMEN IN KÖLN == */}
 						<div className='mt-10'>
 							<Accordion
 								title='UNTERKOMMEN IN KÖLN'
@@ -196,14 +251,23 @@ export default function Footer() {
 										sowie in unserem wunderschönen Frühstücksraum – alles in
 										freundlichem 3-Sterne-Format.
 									</p>
-									<p className='text-orange-300/60 text-lg uppercase hover:text-orange-300/80 pr-4 pb-4 group'>
+									<p
+										className='text-orange-300/60 text-lg uppercase pr-4 pb-4 group
+									hover:text-orange-300/80
+									active:text-orange-300/80'
+									>
 										<Link
 											href='/restaurant'
 											className='flex flex-row'
 											target='_blank'
 										>
 											restaurant
-											<span className='grow-0 group-hover:grow transition-all duration-1200'></span>
+											{/* = ПУСТОЙ span, КОТОРЫЙ РАСШИРЯЕТСЯ ПРИ НАВЕДЕНИИ ТОЛКАЯ SVG К ПРАВОМУ КРАЮ = */}
+											<span
+												className='grow-0 transition-all duration-1200
+											group-hover:grow
+											group-active:grow'
+											></span>
 											<svg
 												xmlns='http://www.w3.org/2000/svg'
 												viewBox='0 0 24 24'
@@ -225,9 +289,11 @@ export default function Footer() {
 					</div>
 				</div>
 			</div>
+			{/* = ДЕКОРАТИВНАЯ ЛИНИЯ = */}
 			<div className='flex justify-center'>
 				<div className='mt-25 w-[85%] h-3 bg-white/60 rounded-full md:mt-30 md:mb-10'></div>
 			</div>
+			{/* == СРЕДНЯЯ СЕКЦИЯ ЗАГОЛОВОК + КОНТАКТЫ == */}
 			<div className='md:flex md:w-full'>
 				<div className='md:w-[60%] lg:w-[60%] 2xl:w-[60%] flex justify-center items-center'>
 					<h1
@@ -255,6 +321,7 @@ export default function Footer() {
 					</h1>
 					<h2 className='text-white/70 text-md md:text-xl mb-13 font-bold mt-3 2xl:mb-22 2xl:text-2xl'>
 						Telefon +49 0221/2578540 <br />
+						{/* = КНОПКА ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ФОРМЕ БРОНИРОВАНИЯ = */}
 						<ScrollToSection targetId='anfahrt'>
 							<span className='text-orange-300/60 hover:text-orange-300/80 cursor-pointer'>
 								Reservierung
@@ -267,6 +334,7 @@ export default function Footer() {
 					<h2 className='text-white/70 mb-13 text-md md:text-xl font-bold mt-3 2xl:text-2xl 2xl:mb-22'>
 						Mo-So: ab 12:00 Uhr geöffnet
 					</h2>
+					{/* = СОЦИАЛЬНЫЕ СЕТИ = */}
 					<div className='group'>
 						<div className=''>
 							<a
@@ -335,9 +403,11 @@ export default function Footer() {
 					</div>
 				</div>
 			</div>
+			{/* = ДЕКОРАТИВНАЯ ЛИНИЯ= */}
 			<div className='flex justify-center'>
 				<div className='w-[90%] h-3 bg-white/60 rounded-full mt-20 mb-10'></div>
 			</div>
+			{/* === НИЖНЯЯ НАВИГАЦИЯ === */}
 			<div
 				className='font-extrabold font-serif flex items-center gap-10 flex-col justify-center text-white/60 text-xl pb-6
 			[&_h1]:pt-2 [&_h1]:pb-2 [&_h1]:duration-200 [&_h1:hover]:font-black [&_h1:hover]:text-white
@@ -369,6 +439,7 @@ export default function Footer() {
 					</Link>
 				</div>
 			</div>
+			{/* = КОПИРАЙТ = */}
 			<footer className='flex items-center justify-center md:justify-start md:pl-20 gap-4 pb-6 '>
 				<p className='text-xl font-semibold font-serif text-white/40'>
 					cafe cracher © {new Date().getFullYear()}

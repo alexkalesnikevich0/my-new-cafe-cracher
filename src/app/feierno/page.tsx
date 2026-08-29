@@ -70,7 +70,7 @@ export default function Feiern() {
 				>
 					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
 						<div className='sm:flex sm:justify-center lg:ml-10'>
-							<FadeInFromTop delay={100} threshold={0.2}>
+							<FadeInFromBottom delay={100} threshold={0.2}>
 								<img
 									className='w-full rounded-t-sm md:border-4 md:rounded-xl'
 									src='land.png'
@@ -78,7 +78,7 @@ export default function Feiern() {
 									width={27}
 									height={6400}
 								/>
-							</FadeInFromTop>
+							</FadeInFromBottom>
 						</div>
 						<FadeInFromBottom delay={100} threshold={0.3}>
 							<div className='p-8'>

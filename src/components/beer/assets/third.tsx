@@ -4,34 +4,45 @@ import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
 
-import SlowZoomInView from '@/app/booking/animations/SlowZoomInView'
-import ScrollToSection from '@/app/booking/components/ScrollToSection'
+import SlowZoomInView from '@/app/booking/animations/SlowZoomInView' // МЕДЛЕННО ПРИБЛИЖАЕТ КАРТИНКУ ПОКА ПОЛЬЗОВАТЕЛЬ СМОТРИТ НА СЛАЙД
+import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection' // ПЛАВНО ПРОКРУЧИВАЕТ К ЭЛЕМЕНТУ С УКАЗАННЫМ id 
 
 export default function Third() {
 	return (
 		<div className='mt-20 text-center flex justify-center items-center'>
+			{/* ЗАПУСКАЕТ ПРИБЛИЖЕНИЕ КОГДА СЛАЙД В ОБЛАСТИ ВИДИМОСТИ */}
 			<SlowZoomInView threshold={0.1}>
+				{/* ЭФФЕКТ ОТДАЛЕНИЯ КАРТИНКИ ПРИ ПЕРВОЙ ЗАГРУЗКЕ */}
 				<ZoomOutImage>
 					<div className='relative h-screen w-full'>
+						{/* ФОНОВАЯ КАРТИНКА НА ВЕСЬ ЭКРАН */}
+
 						<img
 							src='land.png'
 							alt='Background'
 							className='absolute inset-0 w-full h-full object-cover'
 						/>
 						<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
+						{/* ТЕКСТ ПОВЕРХ КАРТИНКИ z-10 ЧТОБЫ БЫТЬ НАД ЗАТЕМНЕНИЕМ */}
+
 						<div className='relative z-10 flex flex-col items-center justify-center h-full'>
+							{/* ЗАГОЛОВОК ВЫЕЗЖАЕТ СВЕРХУ */}
+
 							<FadeInFromTop delay={100} threshold={0.5}>
 								<div className='mt-5 h-3 w-[80%] bg-yellow-700/60 rounded-full mx-auto md:mt-20 md:w-100'></div>
 								<div className='text-4xl mt-10 text-yellow-600/80 font-serif font-black md:text-7xl md:mt-20 lg:text-8xl'>
 									TOP EVENTS
 								</div>
 							</FadeInFromTop>
+							{/* ПОДЗАГОЛОВОК ВЫЕЗЖАЕТ СНИЗУ */}
 							<FadeInFromBottom delay={100} threshold={0.6}>
 								<div className='text-2xl mt-7 pl-10 pr-10 font-extrabold text-yellow-700/80 font-serif md:mt-10 md:text-4xl lg:text-5xl'>
 									MUSIK, SPASS UND LECKER KÖLSCH
 								</div>
 							</FadeInFromBottom>
+							{/* КНОПКА  ВЫЕЗЖАЕТ СНИЗУ С ЗАДЕРЖКОЙ  */}
 							<FadeInFromBottom delay={100} threshold={0.6}>
+								{/* scrollToSection ПРИ КЛИКЕ ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ЭЛЕМЕНТУ С ЯКОРЕМ id='up' */}
 								<ScrollToSection targetId='up'>
 									<div
 										className='text-white flex justify-center items-center font-extrabold mt-2 mt-8 group duration-600 pt-1 pb-1 pl-3 pr-3 border-black border-1 text-xl bg-yellow-900/90 cursor-pointer uppercase rounded-sm

@@ -4,22 +4,13 @@ import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 
 export default function Second() {
-	const raumlichkeiten = [
-		{
-			route: '/raumlichkeiten',
-		},
-	]
-
-	const home = [
-		{
-			route: '/',
-		},
-	]
 	return (
 		<div className=''>
+			{/* декоративная линия сверху */}
 			<div className='items-center flex justify-center pt-15'>
 				<div className='w-70 h-2 bg-yellow-950/90 mt-15 rounded-full md:w-100 2xl:mt-0 2xl:w-190 2xl:h-4'></div>
 			</div>
+			{/* [&_...] - стили для всех элементов этого типа внутри контейнера */}
 			<div
 				className='[&_section]:bg-white/60 [&_section]:rounded-2xl [&_section]:border-2 [&_section]:border-black/70 [&_section]:h-110 md:[&_section:hover]:border-black md:[&_section]:flex md:[&_section:hover]:border-3 md:[&_section]:w-133 md:[&_section]:h-68 md:[&_section:hover]:h-72 lg:[&_section]:h-68 lg:[&_section]:w-121 xl:[&_section]:xl:h-70 xl:[&_section]:xl:w-130 xl:[&_section:hover]:h-75 xl:[&_section:hover]:w-145 2xl:[&_section]:w-180 2xl:[&_section]:xl:h-110 2xl:[&_section:hover]:h-115 2xl:[&_section:hover]:w-190
 			[&_img]:border-2 [&_img]:border-black/70 [&_img]:rounded-xl 
@@ -28,6 +19,7 @@ export default function Second() {
 			[&_h2]:font-bold [&_h2]:text-sm [&_h2]:text-black/70
 			[&_figcaption]:bg-yellow-800/90 [&_figcaption]:border-black/90 [&_figcaption]:rounded-lg [&_figcaption]:font-bold [&_figcaption]:duration-600 [&_figcaption:hover]:text-white [&_figcaption]:text-lg [&_figcaption]:flex [&_figcaption]:text-white/70 [&_figcaption:hover]:border-2'
 			>
+				{/* === верхний ряд карточек выезжающий сверху === */}
 				<FadeInFromTop delay={100} threshold={0.3}>
 					<div className='justify-center items-center flex-col flex'>
 						<div
@@ -36,6 +28,7 @@ export default function Second() {
 					lg:flex lg:hidden:items-center lg:hidden:flex-col lg:hidden:justify-center lg:hidden:flex lg:columns-2 lg:gap-8 
 					xl:gap-15'
 						>
+							{/* ! КАРТОЧКА 1 КАРТИНКА СЛЕВА + ТЕКСТ СПРАВА ! */}
 							<section className='group duration-900 xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
 									<img
@@ -65,6 +58,8 @@ export default function Second() {
 										>
 											Nubbelverbrennung 2023
 										</h2>
+										{/* ! КНОПКА MEHR С АНИМИРОВАННОЙ ЛИНИЕЙ ! */}
+
 										<div className='flex items-center justify-center md:justify-start'>
 											<div className='group/lol duration-300'>
 												<Link href='/bezzer'>
@@ -83,6 +78,7 @@ export default function Second() {
 									</div>
 								</article>
 							</section>
+							{/* ! КАРТОЧКА 2 КАРТИНКА СПРАВА + ТЕКСТ СЛЕВА. ЗЕРКАЛЬНО ПЕРВОЙ ! */}
 							<section className='group duration-900 mt-15 lg:mt-0'>
 								<article className='group duration-900 justify-center flex md:w-[50%]'>
 									<div className='group duration-900 md:py-10 text-center md:text-right'>
@@ -131,6 +127,7 @@ export default function Second() {
 						</div>
 					</div>
 				</FadeInFromTop>
+				{/* === НИЖНИЙ РЯД КАРТОЧЕК ВЫЕЗЖАЮТ СНИЗУ === */}
 				<FadeInFromBottom delay={100} threshold={0.4}>
 					<div className='justify-center items-center flex-col flex'>
 						<div
@@ -138,6 +135,7 @@ export default function Second() {
 					lg:flex lg:hidden:items-center lg:hidden:flex-col lg:hidden:justify-center lg:hidden:flex lg:columns-2 lg:gap-8 
 					xl:gap-15'
 						>
+							{/* ! 3 КАРТОЧКА  ! */}
 							<section className='group duration-900 xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
 									<img
@@ -185,6 +183,7 @@ export default function Second() {
 									</div>
 								</div>
 							</section>
+							{/* ! 3 КАРТОЧКА  ! */}
 							<section className='group duration-900 mt-15 lg:mt-0'>
 								<article className='group duration-900 justify-center flex md:w-[50%]'>
 									<div className='group duration-900 md:py-10 text-center md:text-right'>
@@ -238,7 +237,7 @@ export default function Second() {
 					</div>
 				</FadeInFromBottom>
 			</div>
-
+			{/* ДЕКОРАТИВНАЯ ЛИНИЯ ПОСЛЕ КАРТОЧЕК */}
 			<div className='flex justify-center mt-25'>
 				<div className='h-2 w-80 bg-yellow-950/90 rounded-full 2xl:h-4'></div>
 			</div>
@@ -264,6 +263,7 @@ export default function Second() {
 					</FadeInFromBottom>
 				</div>
 			</div>
+			{/* ДЕКОРАТИВНАЯ ЛИНИЯ СНИЗУ */}
 			<div className='w-screen flex justify-center'>
 				<div className='w-60 h-2 bg-yellow-950/90 rounded-full md:w-160 2xl:h-4'></div>
 			</div>

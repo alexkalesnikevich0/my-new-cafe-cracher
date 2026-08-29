@@ -44,3 +44,6 @@ next-env.d.ts
 storybook-static
 
 /src/generated/prisma
+
+
+prisma/dev.db

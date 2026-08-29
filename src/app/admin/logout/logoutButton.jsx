@@ -1,11 +1,22 @@
+/**
+ * ФАЙЛ: app/admin/logout/LogoutButton.jsx
+ *
+ * КНОПКА «LOGOUT» В АДМИНКЕ.
+ * ПРИ НАЖАТИИ ОТПРАВЛЯЕТ POST-ЗАПРОС НА /admin/logout,
+ * СЕРВЕР УДАЛЯЕТ КУКУ admin_token,
+ * ПОЛЬЗОВАТЕЛЬ ПЕРЕНОСИТСЯ НА СТРАНИЦУ ЛОГИНА.
+ */
 'use client'
 
 import { useRouter } from 'next/navigation'
 
 export default function LogoutButton() {
 	const router = useRouter()
+
 	async function handleLogout() {
+		// ОТПРАВЛЯЕМ ЗАПРОС НА УДАЛЕНИЕ КУКИ
 		await fetch('/admin/logout', { method: 'POST' })
+		// ПЕРЕНОСИМ НА СТРАНИЦУ ЛОГИНА
 		router.push('/admin/login')
 	}
 

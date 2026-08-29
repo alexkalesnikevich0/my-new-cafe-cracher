@@ -1,5 +1,4 @@
 import PaginationBooking from '../booking/V2/PoginationBooking'
-import LogoutButton from './logout/logoutButton'
 
 export default function AdminPage() {
 	return (

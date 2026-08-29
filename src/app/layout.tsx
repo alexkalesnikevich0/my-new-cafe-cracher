@@ -4,8 +4,7 @@ import './globals.css'
 import Navbar from '@/components/beer/assets/navbar'
 import Footer from '@/app/footer/page'
 import Navigation from '@/components/beer/assets/navigation'
-import Chevron from '@/app/chevron/page'
-import ScrollToTop from '@/app/booking/components/scrollToTop'
+import ScrollToTop from '@/app/booking/components/scroll/scrollToTop'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
