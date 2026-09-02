@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -9,15 +10,18 @@ export default function Hoosch() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='text-4xl font-bold text-center bg-gradient-to-t from-white/80 via-white/80 to-white/90 bg-clip-text text-transparent mb-7 
 					sm:text-3xl 
@@ -39,7 +43,7 @@ export default function Hoosch() {
 								Die Kölsche Milljö-Sitzung <br />
 								im Brauhaus Sion
 							</h2>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -188,12 +192,13 @@ export default function Hoosch() {
 								<div className='sm:w-[51%] group md:w-[60%]'>
 									<div className='flex-col justify-center flex items-center px-10 sm:justify-start sm:flex-col sm:px-3'>
 										<div className='w-[100%] lg:w-[95%] xl:w-[85%]'>
-											<img
+											<Image
 												className='w-[100%] h-[100%] mt-8 md:h-80 lg:h-100 border-4 duration-600 border-black/80 rounded-xl'
-												src='land.png'
+												src='/land.png'
 												alt='tailWind'
-												width={27}
-												height={6400}
+												unoptimized
+												width={270}
+												height={640}
 											/>
 										</div>
 										<div
@@ -358,7 +363,7 @@ export default function Hoosch() {
 						<div className='flex-col justify-center mt-10 sm:gap-3 sm:flex sm:flex-row md:gap-5 lg:gap-7 xl:gap-10 2xl:gap-8'>
 							<div className='sm:inline-block'>
 								<Link href='/timeride'>
-									<img
+									<Image
 										className='h-60 w-60 mt-6 ml-14 border-4 duration-600 border-black/80 rounded-xl 
 										hover:border-6 hover:h-65 hover:w-65 hover:ml-12 hover:mt-3 
 										sm:h-44 sm:w-44 sm:mt-3 sm:ml-0 sm:hover:ml-0 sm:hover:h-48 sm:hover:w-48 sm:hover:mt-1 
@@ -366,16 +371,17 @@ export default function Hoosch() {
 										lg:hover:border-6 lg:mt-12 lg:w-65 lg:h-64 lg:hover:w-70 lg:hover:h-69 lg:hover:mt-10 
 										xl:w-70 xl:h-65 xl:hover:h-70 xl:hover:w-75 xl:hover:mt-10 xl:mt-12 
 										2xl:w-80 2xl:h-80 2xl:mt-12 2xl:hover:h-90 2xl:hover:w-90 2xl:hover:mt-8'
-										src='land.png'
+										src='/land.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
 							<div className='sm:inline-block'>
 								<Link href='/bezzer'>
-									<img
+									<Image
 										className='h-60 w-60 mt-10 ml-14 border-4 duration-600 border-black/80 rounded-xl 
 									  hover:border-6 hover:h-65 hover:w-65 hover:ml-12 hover:mt-8 
 										sm:h-44 sm:w-44 sm:mt-3 sm:ml-0 sm:hover:ml-0 sm:hover:h-48 sm:hover:w-48 sm:hover:mt-1 
@@ -383,16 +389,17 @@ export default function Hoosch() {
 										lg:hover:border-6 lg:mt-12 lg:w-65 lg:h-64 lg:hover:w-70 lg:hover:h-69 lg:hover:mt-10 
 										xl:w-70 xl:mt-12 xl:h-65 xl:hover:h-70 xl:hover:w-75 xl:hover:mt-10 
 										2xl:w-80 2xl:h-80 2xl:mt-12 2xl:hover:h-90 2xl:hover:w-90 2xl:hover:mt-8'
-										src='land.png'
+										src='/land.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
 							<div className='sm:inline-block'>
 								<Link href='/raumlichkeiten'>
-									<img
+									<Image
 										className='h-60 w-60 mt-10 ml-14 border-4 duration-600 border-black/80 rounded-xl 
 										hover:h-65 hover:w-65 hover:ml-12 hover:mt-8 hover:border-6 
 										sm:h-44 sm:w-44 sm:mt-3 sm:ml-0 sm:hover:ml-0 sm:hover:h-48 sm:hover:w-48 sm:hover:mt-1 
@@ -400,10 +407,11 @@ export default function Hoosch() {
 										lg:hover:border-6 lg:mt-12 lg:w-65 lg:h-64 lg:hover:w-70 lg:hover:h-69 lg:hover:mt-10 
 										xl:w-70 xl:mt-12 xl:h-65 xl:hover:h-70 xl:hover:w-75 xl:hover:mt-10 
 										2xl:w-80 2xl:h-80 2xl:mt-12 2xl:hover:h-90 2xl:hover:w-90 2xl:hover:mt-8'
-										src='land.png'
+										src='/land.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>

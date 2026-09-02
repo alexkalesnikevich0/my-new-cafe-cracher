@@ -1,5 +1,6 @@
 import Reserv from '../reserv/page'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -10,15 +11,18 @@ export default function Kolsch() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h2
 								className='uppercase text-3xl text-center text-white/90 font-bold mb-7 
 					sm:text-4xl 
@@ -43,7 +47,7 @@ export default function Kolsch() {
 									uns Ihre ideale Wunschhochzeit
 								</h1>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -78,12 +82,13 @@ export default function Kolsch() {
 						</div>
 						<div className='sm:flex sm:justify-center sm:pt-10 sm:pb-0 md:p-10 lg:p-5 md:w-[100%] lg:items-center lg:pt-0 lg:pr-0'>
 							<FadeInFromBottom delay={100} threshold={0.3}>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl w-[100%] mt-7 border-black/80 lg:h-100 xl:h-120 xl:mt-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</FadeInFromBottom>
 						</div>
@@ -95,12 +100,13 @@ export default function Kolsch() {
 				<div className='flex justify-center'>
 					<div className='sm:flex sm:justify-center sm:p-8 lg:p-20 xl:w-[85%] 2xl:w-[75%]'>
 						<FadeInFromBottom delay={100} threshold={0.1}>
-							<img
+							<Image
 								className='w-full sm:border-3 sm:rounded-xl sm:border-black'
-								src='land.png'
+								src='/land.png'
 								alt='tailWind'
-								width={27}
-								height={6400}
+								unoptimized
+								width={270}
+								height={640}
 							/>
 						</FadeInFromBottom>
 					</div>
@@ -116,12 +122,13 @@ export default function Kolsch() {
 						md:border-3 md:rounded-xl 
 						lg:h-85'
 							>
-								<img
+								<Image
 									className='w-full sm:rounded-xl md:rounded-lg'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromTop>
@@ -142,12 +149,13 @@ export default function Kolsch() {
 					<div className='sm:w-[45%] sm:flex sm:items-center sm:pr-3'>
 						<FadeInFromBottom delay={100} threshold={0.3}>
 							<div className='sm:flex sm:justify-center sm:h-70 sm:border-2 sm:border-black sm:rounded-2xl md:border-3 md:rounded-xl lg:h-110'>
-								<img
+								<Image
 									className='w-full sm:rounded-xl md:rounded-lg'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromBottom>
@@ -164,12 +172,13 @@ export default function Kolsch() {
 					<div className='xl:flex xl:w-full md:gap-1 xl:items-center xl:gap-15'>
 						<div className='lg:flex sm:justify-center sm:flex sm:justify-center xl:w-[45%] xl:items-center lg:pr-0'>
 							<FadeInFromBottom delay={100} threshold={0.3}>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl border-black/80 md:w-140 md:h-100 lg:w-160 lg:h-100 xl:w-120 xl:h-115'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</FadeInFromBottom>
 						</div>

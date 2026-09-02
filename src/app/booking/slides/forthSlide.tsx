@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -8,10 +9,13 @@ export default function FirstSlide() {
 	return (
 		<ZoomOutImage delay={100} threshold={0.2}>
 			<div className='relative w-full h-screen select-none'>
-				<img
-					src='land.png'
+				<Image
+					src='/land.png'
 					alt='Background'
-					className='absolute inset-0 w-full h-full object-cover'
+					className='object-cover'
+					priority
+					fill
+					sizes='100vw'
 				/>
 				<FadeInFromTop delay={1600} threshold={0.3}>
 					<div className='mb-10 flex justify-center md:mb-25 pt-45 2xl:pt-70 '>

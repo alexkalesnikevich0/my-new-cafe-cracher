@@ -4,9 +4,6 @@ import First from '@/components/tasks/first'
 import Second from '@/components/tasks/second'
 import Mainfoot from '@/components/footer/mainfoot'
 import Footer3 from '@/components/footer/footer3'
-import Chip from '@/components/tasks/chip'
-import Paragraph from '@/components/tasks/paragraph'
-import Image from 'next/image'
 
 export default function Restaurant() {
 	return (

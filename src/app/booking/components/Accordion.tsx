@@ -10,14 +10,33 @@
  * @param {boolean} open - ОТКРЫТ ЛИ АККОРДЕОН (УПРАВЛЯЕТСЯ РОДИТЕЛЕМ)
  * @param {function} onToggle - ФУНКЦИЯ, ВЫЗЫВАЕМАЯ ПРИ КЛИКЕ (РОДИТЕЛЬ МЕНЯЕТ open)
  * @param {boolean} isActive - ПОДСВЕТКА, ЕСЛИ ПОЛЬЗОВАТЕЛЬ НА АКТИВНОЙ СТРАНИЦЕ
+ * 
+ * ИЗМЕНЕНИЯ PR4 
+ * переименовал файл из .jsx в .tsx и типизировал
+ * потому что были ошибки сборки "Type '{ children: Element; title: string; open: boolean; onToggle: () => void; }'
+ * is not assignable to type = 'string'."
+ * РЕШЕНИЕ
+ * добавлен интерфейс AccordionProps, типизированы все пропсы
+ * импортирован React для работы JSX в TypeScript-файле
  */
+
+import React from 'react'
+
+interface AccordionProps {
+	title: string
+	children: React.ReactNode
+	open: boolean
+	onToggle: () => void
+	isActive?: boolean
+}
+
 export default function Accordion({
 	title,
 	children,
 	open,
 	onToggle,
 	isActive,
-}) {
+}: AccordionProps) {
 	return (
 		<div className='flex flex-col justify-center items-center pl-5 pr-4 select-none'>
 			{/* ЗАГОЛОВОК (КЛИКАБЕЛЬНЫЙ) */}

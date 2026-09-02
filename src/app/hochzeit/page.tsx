@@ -1,5 +1,6 @@
 import Reserv from '@/app/reserv/page'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -16,15 +17,18 @@ export default function Hochzeit() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						fill
+						priority
+						sizes='100vw'
+						className='object-cover'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='uppercase text-3xl text-center text-white/90 font-bold mb-7 
 					sm:text-4xl 
@@ -49,7 +53,7 @@ export default function Hochzeit() {
 									uns Ihre ideale Wunschhochzeit
 								</h2>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 mx-auto h-2 w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -164,12 +168,13 @@ export default function Hochzeit() {
 						</div>
 						<div className='sm:flex sm:justify-center sm:pt-10 sm:pb-0 md:p-10 md:w-[100%] lg:p-5 lg:pl-0 lg:items-center lg:pr-0'>
 							<FadeInFromBottom delay={100} threshold={0.2}>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl w-[100%] h-[100%] mt-7 border-black xl:h-100 2xl:w-[100%] 2xl:h-120'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</FadeInFromBottom>
 						</div>
@@ -203,12 +208,13 @@ export default function Hochzeit() {
 				</div>
 				<div className='sm:flex sm:justify-center sm:p-8 lg:pt-5 lg:pl-20 lg:pr-20 lg:pb-5'>
 					<FadeInFromBottom delay={100} threshold={0.3}>
-						<img
+						<Image
 							className='w-full sm:border-3 sm:rounded-xl sm:border-black 2xl:w-[85%]'
-							src='land.png'
+							src='/land.png'
 							alt='tailWind'
-							width={27}
-							height={6400}
+							unoptimized
+							width={270}
+							height={640}
 						/>
 					</FadeInFromBottom>
 				</div>
@@ -223,12 +229,13 @@ export default function Hochzeit() {
 						md:border-3 md:rounded-xl 
 						2xl:h-120'
 							>
-								<img
+								<Image
 									className='w-full sm:rounded-xl md:rounded-lg'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromTop>
@@ -252,12 +259,13 @@ export default function Hochzeit() {
 						md:border-3 md:rounded-xl 
 						2xl:h-120'
 							>
-								<img
+								<Image
 									className='w-full sm:rounded-xl md:rounded-lg'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromBottom>
@@ -268,12 +276,13 @@ export default function Hochzeit() {
 				</div>
 				<div className='sm:flex sm:justify-center sm:p-8 lg:pt-10 lg:pl-20 lg:pr-20 lg:pb-0 2xl:pb-15'>
 					<FadeInFromBottom delay={100} threshold={0.1}>
-						<img
+						<Image
 							className='w-full sm:border-3 sm:rounded-xl sm:border-black 2xl:w-[85%]'
-							src='land.png'
+							src='/land.png'
 							alt='tailWind'
-							width={27}
-							height={6400}
+							unoptimized
+							width={270}
+							height={640}
 						/>
 					</FadeInFromBottom>
 				</div>
@@ -361,15 +370,16 @@ export default function Hochzeit() {
 						lg:flex lg:p-5 lg:w-[50%] lg:items-center lg:pr-0'
 						>
 							<FadeInFromTop delay={100} threshold={0.3}>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl border-black/80 
 								lg:w-100 lg:h-80 
 								xl:w-100 xl:h-100 
 								2xl:w-[100%] 2xl:h-120'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</FadeInFromTop>
 						</div>

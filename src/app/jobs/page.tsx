@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -14,15 +15,18 @@ export default function Jobs() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vm'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h2
 								className='uppercase text-3xl text-center text-white/90 font-bold mb-7 
 					sm:text-4xl 
@@ -51,7 +55,7 @@ export default function Jobs() {
 									unser Brauhaus
 								</h1>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15bg-orange-300/50 md:mt-20 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>

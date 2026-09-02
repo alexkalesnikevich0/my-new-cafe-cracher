@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Reserv from '@/app/reserv/page'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -16,15 +17,18 @@ export default function Feiern() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h2
 								className='uppercase text-3xl text-center bg-gradient-to-t from-white/90 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
 					sm:text-3xl 
@@ -44,10 +48,9 @@ export default function Feiern() {
 						lg:text-4xl 
 						2xl:text-5xl'
 								>
-									Wir wissen, wie's geht
+									Wir wissen, wie&apos;s geht
 								</h1>
 							</div>
-
 							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
@@ -68,18 +71,19 @@ export default function Feiern() {
 				xl:max-w-[90%] 
 				2xl:w-[60%]'
 				>
-					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
-						<div className='sm:flex sm:justify-center lg:ml-10'>
-							<FadeInFromBottom delay={100} threshold={0.2}>
-								<img
-									className='w-full rounded-t-sm md:border-4 md:rounded-xl'
-									src='land.png'
+					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-10'>
+						<FadeInFromBottom delay={100} threshold={0.2}>
+							<div className='sm:flex sm:justify-center lg:ml-10 w-full'>
+								<Image
+									className='w-full h-auto rounded-t-sm md:border-4 md:rounded-xl'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									width={270}
+									height={640}
+									unoptimized
 								/>
-							</FadeInFromBottom>
-						</div>
+							</div>
+						</FadeInFromBottom>
 						<FadeInFromBottom delay={100} threshold={0.3}>
 							<div className='p-8'>
 								<h1 className='uppercase'>Private Feiern</h1>
@@ -122,12 +126,13 @@ export default function Feiern() {
 						</FadeInFromBottom>
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<div className='sm:flex sm:justify-center lg:mr-10'>
-								<img
-									className='w-full md:border-4 md:rounded-xl'
-									src='land.png'
+								<Image
+									className='w-full h-auto md:border-4 md:rounded-xl'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									width={270}
+									height={640}
+									unoptimized
 								/>
 							</div>
 						</FadeInFromTop>
@@ -165,16 +170,16 @@ export default function Feiern() {
 							<div className='w-[60%] mb-15 h-3 rounded-full bg-blue-800/70 md:w-[60%]'></div>
 						</div>
 					</div>
-
-					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-5'>
+					<div className='flex-col flex lg:flex-row lg:items-start lg:gap-10'>
 						<FadeInFromTop delay={100} threshold={0.2}>
-							<div className='sm:flex sm:justify-center lg:ml-10'>
-								<img
-									className='w-full md:border-4 md:rounded-xl'
-									src='land.png'
+							<div className='sm:flex sm:justify-center lg:ml-10 w-full'>
+								<Image
+									className='w-full h-auto md:border-4 md:rounded-xl'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									width={270}
+									height={640}
+									unoptimized
 								/>
 							</div>
 						</FadeInFromTop>
@@ -216,10 +221,11 @@ export default function Feiern() {
 						</FadeInFromBottom>
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<div className='sm:flex sm:justify-center lg:mr-10 lg:mb-10'>
-								<img
+								<Image
 									className='w-full rounded-b-sm md:mb-10 lg:mb-0 md:border-4 md:rounded-xl'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
+									unoptimized
 									width={27}
 									height={6400}
 								/>

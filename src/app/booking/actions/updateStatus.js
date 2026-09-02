@@ -11,6 +11,8 @@ const RESEND_KEY = process.env.RESEND_KEY
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID
 
+const MY_EMAIL = process.env.MY_EMAIL
+
 /**
  * СЕРВЕРНЫЙ ЭКШЕН — ВЫЗЫВАЕТСЯ ПРИ НАЖАТИИ CONFIRM ИЛИ CANCEL В ТАБЛИЦЕ.
  * 1. ОБНОВЛЯЕТ СТАТУС БРОНИ В БАЗЕ ДАННЫХ
@@ -72,7 +74,9 @@ export async function updateBookingStatus(bookingId, newStatus) {
 				text: message,
 			}),
 		})
-	} catch (error) {}
+	} catch (error) {
+		console.error('Error', error)
+	}
 
 	// ===== 4. ОТПРАВКА HTML ПИСЬМА ГОСТЮ =====
 	try {
@@ -85,7 +89,9 @@ export async function updateBookingStatus(bookingId, newStatus) {
 			body: JSON.stringify({
 				from: 'cafe@kolsell.store',
 				to: booking.email,
+				replyTo: MY_EMAIL, // добавил
 				subject: `Reservation ${statusText} - #${booking.id}`,
+				text: message,
 				// ВЫБИРАЕМ ШАБЛОН ПИСЬМА: ЗЕЛЁНЫЙ ДЛЯ CONFIRM, КРАСНЫЙ ДЛЯ CANCEL
 				html:
 					newStatus === 'confirmed'
@@ -105,7 +111,7 @@ export async function updateBookingStatus(bookingId, newStatus) {
         <h1 style="color: #16a34a; font-size: 27px;">
         Reservation Confirmed!
         </h1>
-
+        <p><a href="http://192.168.0.105:3000/">Перейти на сайт</a><p>
         <p style="color: #555; font-size: 16px;">
         Dear guest,
         </p>
@@ -194,7 +200,6 @@ export async function updateBookingStatus(bookingId, newStatus) {
           <span style="background: #dc2626; color: white; padding: 10px 25px; border-radius: 5px; font-size: 14px;">
           CAFE CRACHER
           </span>
-
         </div>
       </div>
     </body>
@@ -203,5 +208,11 @@ export async function updateBookingStatus(bookingId, newStatus) {
 			}),
 		})
 		const data = await response.json()
-	} catch (error) {}
+		console.log('Resend response:', data)
+		if (!response.ok) {
+			console.error('Resend error:', data)
+		}
+	} catch (error) {
+		console.error('Error', error)
+	}
 }

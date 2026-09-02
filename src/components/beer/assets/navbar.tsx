@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { useState } from 'react'
 import Forbutt from '../../../app/booking/components/forbutt' // МОБИЛЬНОЕ МЕНЮ (БУРГЕР)
@@ -116,10 +117,6 @@ export default function Navbar() {
 
 	const [isOpen, setIsOpen] = useState(false) // === СОСТОЯНИЕ ДЛЯ МОБИЛЬНОГО МЕНЮ === //
 
-	const toggle = () => {
-		setIsOpen(!isOpen)
-	}
-
 	// !! ПОДСВЕТКА АКТИВНОЙ СТРАНИЦЫ !! //
 	const pathname = usePathname() // ТЕКУЩИЙ URL
 
@@ -138,9 +135,17 @@ export default function Navbar() {
 			'/restaurant',
 		],
 	}
+	/*
+	* ИЗМЕНЕНИЕ PR4
+	* ПРИЧИНА 
+	* Ошибка сборки "Parameter 'routes' implicitly has an 'any' type."
+	* РЕШЕНИЕ 
+	* Явно указан тип String[] для параметра routes. 
+	*/
+	
 
 	// ПРОВЕРЯЕТ НАХОДИТСЯ ЛИ ПОЛЬЗОВАТЕЛЬ НА ОДНОЙ ИЗ СТРАНИЦ РАЗДЕЛА
-	const isButtonActive = routes =>
+	const isButtonActive = (routes: string[]) =>
 		routes.some(route => pathname.startsWith(route))
 
 	return (
@@ -154,9 +159,11 @@ export default function Navbar() {
 						<div className='relative z-50 p-1 pb-2 pl-2 pr-2 bg-yellow-950/60 rounded-lg'>
 							{base.map(link => (
 								<Link href={`${link.route}`} key={link.route}>
-									<img
+									<Image
 										src='/icon.png'
 										alt='Cafe Cracher'
+										width={52}
+										height={52}
 										className='h-13 w-13 cursor-pointer'
 										onClick={() => setIsOpen(false)}
 									/>

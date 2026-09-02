@@ -70,15 +70,26 @@ export default function PaginationBooking() {
 	// ФИЛЬТР ПО ДАТЕ
 	const [filterDate, setFilterDate] = useState('')
 
-	// ЕСЛИ ФИЛЬТР АКТИВЕН — ФИЛЬТРУЕМ И СОРТИРУЕМ, ИНАЧЕ — ВСЕ БРОНИ
-	const filteredBookings = filterDate
-		? allbookings
-				.filter(b => b.date === filterDate)
-				.sort((a, b) => {
-					if (a.date !== b.date) return a.date.localeCompare(b.date) // СОРТИРОВКА ПО ДАТЕ
-					return a.time.localeCompare(b.time) // ЕСЛИ ДАТЫ ОДИНАКОВЫ — ПО ВРЕМЕНИ
-				})
-		: allbookings
+
+	// ФИЛЬТР ПО СТАТУСУ --- НОВОЕ PR4 ---
+	const [filterStatus, setFilterStatus] = useState('all') // 'all', 'new', 'confirmed', 'cancelled' 1. новое состояние
+
+	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
+	const filteredBookings = allbookings
+		.filter(b => {
+			// ФИЛЬТР ПО ДАТЕ
+			if (filterDate && b.date !== filterDate) return false
+			// ФИЛЬТР ПО СТАТУСУ
+			if (filterStatus !== 'all' && b.status !== filterStatus) return false
+			return true
+		})
+		.sort((a, b) => {
+			// СОРТИРОВКА ПО ДАТЕ (ПО ВОЗРАСТАНИЮ)
+			if (a.date !== b.date) return
+			a.date.localeCompare(b.date)
+			// ЕСЛИ ДАТЫ ОДИНАКОВЫЕ ТО СОРТИРОВКА ПО ВРЕМЕНИ
+			return a.time.localeCompare(b.time)
+		})
 
 	// ПАГИНАЦИЯ: ПОКАЗЫВАЕМ ВСЕ ИЛИ ТОЛЬКО ПЕРВЫЕ 8
 	const displayedBookings = showAll
@@ -104,29 +115,48 @@ export default function PaginationBooking() {
 						<TodayCounter total={todayStats.count} label='reservations' />
 					</div>
 
-					{/* ФИЛЬТР ПО ДАТЕ (ПО ЦЕНТРУ) */}
-					<div className='flex items-center gap-4 mb-4 mt-5'>
-						<label className='text-base font-medium text-gray-700'>
-							Filter by date:
-							<input
-								type='date'
-								value={filterDate}
-								onChange={e => setFilterDate(e.target.value)}
-								className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
-							/>
-						</label>
-						{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
-						{filterDate && (
-							<button
-								onClick={() => setFilterDate('')}
-								className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
+					{/* ФИЛЬТР ПО ДАТЕ И СТАТУСУ (ПО ЦЕНТРУ) */}
+					<div className='flex flex-col items-center gap-2 mb-4 mt-5'>
+						<div className='flex items-center gap-4'>
+							<label className='text-base font-medium text-gray-700'>
+								Filter by date:
+								<input
+									type='date'
+									value={filterDate}
+									onChange={e => setFilterDate(e.target.value)}
+									className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
+								/>
+							</label>
+							{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
+							{filterDate && (
+								<button
+									onClick={() => setFilterDate('')}
+									className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
               hover:text-white hover:bg-blue-700 hover:border-gray-800'
-							>
-								Clear filter
-							</button>
-						)}
+								>
+									Clear filter
+								</button>
+							)}
+						</div>
+						{/* ФИЛЬТР ПО СТАТУСУ  ! НОВОЕ PR4 !  3. Кнопки фильтров в интерфейсе */}
+						<div className='flex items-center gap-2 mt-2 p-2'>
+							<span className='text-sm font-medium text-gray-700 mr-1'>
+								Status:
+							</span>
+							{['all', 'new', 'confirmed', 'cancelled'].map(status => (
+								<button
+									key={status}
+									onClick={() => setFilterStatus(status)}
+									className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
+									${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
+								>
+									{status === 'all'
+										? 'All'
+										: status.charAt(0).toUpperCase() + status.slice(1)}
+								</button>
+							))}
+						</div>
 					</div>
-
 					{/* КНОПКИ УПРАВЛЕНИЯ СПРАВА */}
 					<div className='flex flex-col gap-10'>
 						<button
@@ -164,14 +194,14 @@ export default function PaginationBooking() {
 				)}
 			</div>
 
-			{/* КНОПКА "SHOW ALL / SHOW LESS" (ТОЛЬКО ЕСЛИ БОЛЬШЕ 8 БРОНЕЙ И НЕТ ФИЛЬТРА) */}
-			{!filterDate && allbookings.length > 8 && (
+			{/* КНОПКА "SHOW ALL / SHOW LESS" (ТОЛЬКО ЕСЛИ БОЛЬШЕ 8 БРОНЕЙ И НЕТ ФИЛЬТРА) ! 4. добавил filteredBookings. PR4 ! */}
+			{!filterDate && filteredBookings.length > 8 && (
 				<div className='mt-4 text-center '>
 					<button
 						onClick={() => setShowAll(!showAll)}
 						className='text-white/70 hover:text-white border-2 border-white/0 hover:border-gray-800 duration-500 hover:underline text-sm font-extrabold px-6 py-2 bg-blue-600 rounded-md uppercase cursor-pointer'
 					>
-						{showAll ? 'show less' : `show all - ${allbookings.length}`}
+						{showAll ? 'show less' : `show all - ${filteredBookings.length}`}
 					</button>
 				</div>
 			)}

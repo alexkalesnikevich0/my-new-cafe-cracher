@@ -1,23 +1,27 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
 
-export default function () {
+export default function Bezzer() {
 	return (
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4 mx-auto'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 2xl:w-180 2xl:h-4 mx-auto'></div>
 							<h1
 								className='uppercase font-bold text-2xl text-center bg-gradient-to-t from-white/80 via-white/80 to-white/90 bg-clip-text text-transparent mb-7 
 						sm:text-3xl 
@@ -39,7 +43,7 @@ export default function () {
 								Im Brauhaus Sion
 							</h2>
 							<div
-								className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 mx-auto
+								className='mt-15 bg-orange-300/50 md:mt-20 h-2 w-50 mx-auto
 						2xl:w-80 2xl:h-3'
 							></div>
 						</FadeInFromBottom>
@@ -59,17 +63,17 @@ export default function () {
 						<div className='group '>
 							<div className='sm:w-full sm:flex'>
 								<div className='sm:w-[50%] md:w-[38%] group'>
-									<img
+									<Image
 										className='h-70 w-70 ml-10 mt-8 border-4 duration-600 border-black/80 rounded-xl 
 									sm:h-60 sm:w-60 sm:ml-7 sm:mt-17 
 									md:h-60 md:w-60 md:ml-7 md:mt-18 
 									lg:ml-11 lg:mt-17 lg:w-75 lg:h-75 
 									xl:ml-10 xl:ml-15 xl:w-90 xl:mt-17 xl:mb-25 xl:h-85 
 									2xl:w-117 2xl:h-113 2xl:mt-19 2xl:ml-18'
-										src='land.png'
+										src='/land.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 									<div
 										className='text-black/70 font-semibold flex justify-center text-center w-[80%] ml-8 mt-10 
@@ -142,17 +146,17 @@ export default function () {
 											</h2>
 										</div>
 										<div className='flex justify-center'>
-											<img
+											<Image
 												className='h-40 w-70 mt-10 border-4 duration-600 border-black/80 rounded-xl 
 											sm:h-40 sm:w-60 sm:ml-14 sm:mt-8 
 											md:h-40 md:w-70 md:ml-14 md:mt-8 
 											lg:ml-25 lg:w-90 lg:h-50 xl:ml-10 
 											xl:ml-30 xl:w-100 xl:mt-14 xl:h-50 
 											2xl:w-120 2xl:h-70 2xl:mt-14 2xl:ml-28'
-												src='land.png'
+												src='/land.png'
 												alt='tailWind'
-												width={27}
-												height={6400}
+												width={270}
+												height={640}
 											/>
 										</div>
 									</div>

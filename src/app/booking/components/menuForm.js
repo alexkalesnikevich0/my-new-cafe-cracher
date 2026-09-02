@@ -8,22 +8,53 @@ export default function Menu() {
 	// --- 	СОСТОЯНИЕ ДЛЯ СООБЩЕНИЙ ПОЛЬЗОВАТЕЛЮ ---
 	const [message, setMessage] = useState(null) // { success: '...' } or { error: '...' }
 
+	// --- НОВОЕ PR4 ! --- //
+	// 1. Новое состояние
+
+	// 2. Функция handleSubmit теперь:
+	// - Останавливает перезагрузку страницы (e.preventDefault())
+	// - Проверяет isSubmitting перед отправкой
+	// - Блокирует кнопку через setIsSubmitting(true)
+	// - Разблокирует в finally (даже при ошибке)
+
+	// 3. Кнопка SUBMIT:
+	// - disabled={!isValid || isSubmitting}
+	// - Условный рендеринг: спиннер "Booking..." + "submit reservation"
+
+	// -- СОСТОЯНИЕ ДЛЯ ОТПРАВКИ (ЗАЩИТА ОТ ДВОЙНОГО КЛИКА)
+	const [isSubmitting, setIsSubmitting] = useState(false)
+
 	// --- ОТПРАВКА ФОРМЫ НА СЕРВЕР --- //
-	async function handleSubmit(formData) {
-		const date = formData.get('date')
-		const time = formData.get('time')
-		const guests = formData.get('guests')
+	async function handleSubmit(e) {
+		e.preventDefault() // ОСТАНАВЛИВАЕТ ПЕРЕЗАГРУЗКУ СТРАНИЦЫ -- НОВОЕ PR4 --
+		const formData = new FormData(e.target) // ПОЛУЧАЕМ ДАННЫЕ ИЗ ФОРМЫ -- НОВОЕ PR4 --
+		// 1 	ЗАЩИТА ОТ ДВОЙНОГО КЛИКА
+		if (isSubmitting) return
+		setIsSubmitting(true) // -- НОВОЕ PR4 --
 
-		// --- ПРОВЕРКА НА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО ГОСТЕЙ (ДУБЛИРУЕТСЯ С max='8'. в input ) --- //
-		if (parseInt(guests) > 8) {
-			setMessage({ error: 'Maximum 8 guests for table!' })
-			return
+		// 2 ВЕСЬ ОСТАЛЬНОЙ КОД ЗАВЕРНУЛ В try/catch/finally
+		try {
+			const guests = formData.get('guests')
+
+			// --- ПРОВЕРКА НА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО ГОСТЕЙ (ДУБЛИРУЕТСЯ С max='8'. в input ) --- //
+			if (parseInt(guests) > 8) {
+				setMessage({ error: 'Maximum 8 guests for table!' })
+				setIsSubmitting(false) // РАЗБЛОКИРОВКА ПРИ ОШИБКЕ -- НОВОЕ PR4 --
+				return
+			}
+			// --- ВЫЗЫВАЕМ СЕРВЕРНЫЙ ЭКШЕН - ОН СОХРАНЯЕТ БРОНЬ В БАЗУ ДАННЫХ И ОТПРАВЛЯЕТ ПИСЬМА --- //
+			const result = await createBooking(formData)
+			setMessage(result) // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЮ
+		} catch (error) {
+			// 3 ОБРАБОТКА НЕПРЕДВИДЕННЫХ ОШИБОК -- НОВОЕ PR4 --
+			console.error('Ошибка при отправке:', error)
+			setMessage({ error: 'Что то пошло не так, попробуйте позже' })
+		} finally {
+			// 4 	РАЗБЛОКИРОВКА В ЛЮБОМ СЛУЧАЕ (null) -- НОВОЕ PR4 --
+			setIsSubmitting(false)
 		}
-
-		// --- ВЫЗЫВАЕМ СЕРВЕРНЫЙ ЭКШЕН - ОН СОХРАНЯЕТ БРОНЬ В БАЗУ ДАННЫХ И ОТПРАВЛЯЕТ ПИСЬМА --- //
-		const result = await createBooking(formData)
-		setMessage(result) // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЮ
 	}
+	// --- НОВОЕ PR4 ! --- //
 
 	// --- СОСТОЯНИЕ ДЛЯ ДИНАМИЧЕСКОГО СПИСКА ВРЕМЕНИ --- //
 	const [selectedDate, setSelectedDate] = useState('')
@@ -132,7 +163,8 @@ export default function Menu() {
 								</div>
 							</div>
 							{/* == САМА ФОРМА БРОНИРОВАНИЯ == */}
-							<form action={handleSubmit}>
+							{/* // -- НОВОЕ PR4 -- было action={} */}
+							<form onSubmit={handleSubmit}>
 								<div
 									className='mt-14 flex-col flex justify-center items-center
 						md:gap-4 md:ml-0 md:flex md:flex-row
@@ -228,16 +260,43 @@ export default function Menu() {
 									{/* КНОПКА SUBMIT - АКТИВНА ТОЛЬКО ВСЕ ПОЛЯ ЗАПОЛНЕНЫ */}
 									<button
 										type='submit'
-										disabled={!isValid}
+										disabled={!isValid || isSubmitting} // добавил isSubmitting PR4
 										className={`select-none flex items-center justify-center w-55 h-12 rounded-sm border-2 border-black/40
 												md:h-12 md:w-57 items-center uppercase font-extrabold duration-700 
 												${
-													isValid
+													isValid && !isSubmitting // изменил условие PR4
 														? 'cursor-pointer bg-blue-800 scale-110 text-white/60 hover:text-white hover:bg-blue-700 hover:border-black active:text-white active:bg-blue-700 active:border-black '
 														: 'border-black/50 opacity-70 text-white/60 cursor-not-allowed bg-blue-900 scale-100'
 												}`}
 									>
-										submit reservation
+										{isSubmitting ? ( // -- НОВОЕ PR4 --
+											<span className='flex items-center gap-2'>
+												<svg
+													className='animate-spin h-5 w-5 text-white'
+													xmlns='http://www.w3.org/2000/svg'
+													fill='none'
+													viewBox='0 0 24 24'
+												>
+													{' '}
+													<circle
+														className='opacity-25'
+														cx='12'
+														cy='12'
+														r='10'
+														stroke='currentColor'
+														strokeWidth='4'
+													></circle>{' '}
+													<path
+														className='opacity-75'
+														fill='currentColor'
+														d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+													></path>{' '}
+												</svg>
+												Booking...
+											</span>
+										) : (
+											'submit reservation'
+										)}
 									</button>
 								</div>
 							</form>

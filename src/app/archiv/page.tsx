@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Reserv from '@/app/reserv/page'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -10,15 +11,18 @@ export default function Archiv() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='uppercase text-2xl font-bold text-center bg-gradient-to-t from-white/80 via-white/80 to-white/90 bg-clip-text text-transparent mb-7 
 					sm:text-3xl 
@@ -43,7 +47,7 @@ export default function Archiv() {
 									einzigartige atmosphäre
 								</h1>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 mx-auto h-2 w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -65,16 +69,16 @@ export default function Archiv() {
 						>
 							<div className='group'>
 								<Link href='/bezzer'>
-									<img
+									<Image
 										className='w-71 h-70 ml-7 mr-2 mt-4 border-3 rounded-xl duration-900 border-black/70 hover:border-6 
 										md:group-hover:mr-2 md:group-hover:ml-4 md:group-hover:border-black md:w-54 md:h-60 
 										lg:w-60 lg:h-66 lg:group-hover:mr-10 
 										xl:group-hover:w-60 xl:group-hover:h-60 xl:w-50 xl:h-50 xl:group-hover:ml-6 xl:group-hover:mt-6 xl:ml-8 xl:mt-10 
 										2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -133,16 +137,16 @@ export default function Archiv() {
 						>
 							<div className='group'>
 								<Link href='/wicky'>
-									<img
+									<Image
 										className='w-71 h-70 ml-7 mt-7 rounded-xl border-3 border-black/70 duration-900 hover:border-6 
 										md:group-hover:ml-5 md:group-hover:border-black md:w-54 md:h-60 md:mt-5 
 										lg:w-59 
 										xl:group-hover:ml-6 xl:group-hover:mt-6 xl:group-hover:w-60 xl:group-hover:h-60 xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 
 										2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -200,17 +204,17 @@ export default function Archiv() {
 						>
 							<div className='group'>
 								<Link href='/hoosch'>
-									<img
+									<Image
 										className='w-71 h-70 ml-7 mr-2 mt-4 border-3 rounded-xl duration-900 border-black/70 
 										hover:border-6 
 										md:group-hover:mr-2 md:group-hover:ml-4 md:group-hover:border-black md:w-54 md:h-60 
 										lg:w-60 lg:h-66 lg:group-hover:mr-10 
 										xl:group-hover:w-60 xl:group-hover:h-60 xl:w-50 xl:h-50 xl:group-hover:ml-6 xl:group-hover:mt-6 xl:ml-8 xl:mt-10 
 										2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -269,16 +273,16 @@ export default function Archiv() {
 						>
 							<div className='group'>
 								<Link href='/timeride'>
-									<img
+									<Image
 										className='w-71 h-70 ml-7 mt-7 rounded-xl border-3 border-black/70 duration-900 hover:border-6 
 										md:group-hover:ml-5 md:group-hover:border-black md:w-54 md:h-60 md:mt-5 
 										lg:w-59 xl:group-hover:ml-6 
 										xl:group-hover:mt-6 xl:group-hover:w-60 xl:group-hover:h-60 xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 
 										2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -339,16 +343,16 @@ export default function Archiv() {
 							>
 								<div className='group'>
 									<Link href='/raumlichkeiten'>
-										<img
+										<Image
 											className='w-71 h-70 ml-7 mr-2 mt-4 border-3 rounded-xl duration-900 border-black/70 hover:border-6 
 											md:group-hover:mr-2 md:group-hover:ml-4 md:group-hover:border-black md:w-54 md:h-60 
 											lg:w-60 lg:h-66 lg:group-hover:mr-10 
 											xl:group-hover:w-60 xl:group-hover:h-60 xl:w-50 xl:h-50 xl:group-hover:ml-6 xl:group-hover:mt-6 xl:ml-8 xl:mt-10 
 											2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-											src='drink.png'
+											src='/drink.png'
 											alt='tailWind'
-											width={27}
-											height={6400}
+											width={270}
+											height={640}
 										/>
 									</Link>
 								</div>
@@ -406,16 +410,16 @@ export default function Archiv() {
 							>
 								<div className='group'>
 									<Link href='/feierno'>
-										<img
+										<Image
 											className='w-71 h-70 ml-7 mt-7 rounded-xl border-3 border-black/70 duration-900 hover:border-6 
 											md:group-hover:ml-5 md:group-hover:border-black md:w-54 md:h-60 md:mt-5 
 											lg:w-59 
 											xl:group-hover:ml-6 xl:group-hover:mt-6 xl:group-hover:w-60 xl:group-hover:h-60 xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 
 											2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-											src='drink.png'
+											src='/drink.png'
 											alt='tailWind'
-											width={27}
-											height={6400}
+											width={270}
+											height={640}
 										/>
 									</Link>
 								</div>
@@ -473,16 +477,16 @@ export default function Archiv() {
 								>
 									<div className='group'>
 										<Link href='/hochzeit'>
-											<img
+											<Image
 												className='w-71 h-70 ml-7 mr-2 mt-4 border-3 rounded-xl duration-900 border-black/70 hover:border-6 
 												md:group-hover:mr-2 md:group-hover:ml-4 md:group-hover:border-black md:w-54 md:h-60 
 												lg:w-60 lg:h-66 lg:group-hover:mr-10 
 												xl:group-hover:w-60 xl:group-hover:h-60 xl:w-50 xl:h-50 xl:group-hover:ml-6 xl:group-hover:mt-6 xl:ml-8 xl:mt-10 
 												2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-												src='drink.png'
+												src='/drink.png'
 												alt='tailWind'
-												width={27}
-												height={6400}
+												width={270}
+												height={640}
 											/>
 										</Link>
 									</div>
@@ -540,16 +544,16 @@ export default function Archiv() {
 								>
 									<div className='group'>
 										<Link href='/galerie'>
-											<img
+											<Image
 												className='w-71 h-70 ml-7 mt-7 rounded-xl border-3 border-black/70 duration-900 hover:border-6 
 												md:group-hover:ml-5 md:group-hover:border-black md:w-54 md:h-60 md:mt-5 
 												lg:w-59 
 												xl:group-hover:ml-6 xl:group-hover:mt-6 xl:group-hover:w-60 xl:group-hover:h-60 xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 
 												2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7'
-												src='drink.png'
+												src='/drink.png'
 												alt='tailWind'
-												width={27}
-												height={6400}
+												width={270}
+												height={640}
 											/>
 										</Link>
 									</div>

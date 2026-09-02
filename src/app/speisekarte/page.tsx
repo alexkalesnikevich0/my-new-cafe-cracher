@@ -2,11 +2,24 @@
 
 import Reserv from '@/app/reserv/page'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
+
 import ScrollToHash from '@/app/booking/animations/ScrollToHash'
+
+/**
+ * ИЗМЕНЕНИЯ PR4
+ * обертка ScrollToHash в Suspense
+ * ПРИЧИНА 
+ * ошибка сборки "useSearchParams() should be wrapped in a suspense boundary".
+ * РЕШЕНИЕ
+ * компонент ScrollToHash, использующий useSearchParams(), обернут в <Suspense>
+ * чтобы корректно обрабатываться на сервере во время статической генерации
+ */
+import { Suspense } from 'react'
 
 import GoogleMap from '@/app/booking/components/GoogleMap'
 
@@ -19,18 +32,23 @@ const home = [
 export default function Speisekarte() {
 	return (
 		<div className='bg-orange-300/80'>
-			<ScrollToHash />
+			<Suspense>
+				<ScrollToHash />
+			</Suspense>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h2
 								className='uppercase text-3xl text-center bg-gradient-to-t from-white/90 via-white/90 font-bold to-white/90 bg-clip-text text-transparent mb-7 
 					sm:text-3xl 
@@ -55,7 +73,7 @@ export default function Speisekarte() {
 									trifft jeden geschmack
 								</h1>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 mx-auto h-2 w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -323,12 +341,13 @@ export default function Speisekarte() {
 							className='sm:flex sm:justify-center sm:pt-10 sm:pb-0 md:p-10 lg:p-5 md:w-[100%] lg:items-center lg:pr-0'
 							id='flammkuchen'
 						>
-							<img
+							<Image
 								className='w-full border-3 rounded-xl w-[100%] h-[100%] mt-7 border-black lg:w-170 lg:h-100 lg:w-190 lg:h-110'
-								src='land.png'
+								src='/land.png'
 								alt='tailWind'
-								width={27}
-								height={6400}
+								unoptimized
+								width={270}
+								height={640}
 							/>
 						</div>
 					</FadeInFromBottom>
@@ -437,12 +456,13 @@ export default function Speisekarte() {
 						</div>
 						<h1 className='rounded-full h-1'></h1>
 						<div className='sm:flex sm:justify-center sm:pt-10 sm:pb-0 md:p-10 lg:p-5 md:w-[100%] lg:items-center lg:pr-0'>
-							<img
+							<Image
 								className='w-full border-3 rounded-xl w-[100%] h-[100%] mt-7 border-black lg:w-170 lg:h-100 lg:w-190 lg:h-110'
-								src='land.png'
+								src='/land.png'
 								alt='tailWind'
-								width={27}
-								height={6400}
+								unoptimized
+								width={270}
+								height={640}
 							/>
 						</div>
 					</FadeInFromBottom>

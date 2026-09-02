@@ -22,21 +22,6 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		"src/components/navbar/navbar.js",
-		"src/components/navbar/realnav.tsx",
-		"src/app/booking/components/forbutt.jsx",
-		"src/components/beer/assets/navbar.tsx",
-		"src/components/beer/assets/navbar.tsx",
-		"src/app/booking/components/forbutt.jsx",
-		"src/components/beer/assets/Logo.js",
-		"src/components/beer/assets/second.tsx",
-		"src/app/trying/AdminWrapper.jsx",
-		"src/app/trying/page.jsx"
-	],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

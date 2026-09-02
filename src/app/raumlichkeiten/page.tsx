@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -10,15 +11,18 @@ export default function Raumlichkeiten() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='text-2xl font-bold text-center bg-gradient-to-t from-white/90 via-white/80 to-white/90 bg-clip-text text-transparent mb-10 
 					sm:text-3xl
@@ -41,7 +45,7 @@ export default function Raumlichkeiten() {
 								ALTEN BRAUEREI ODER DEEN KLEINEN <br />
 								STUBEN ERLEBEN
 							</h2>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mx-auto mt-13 h-2 w-50 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 mx-auto h-2 w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -60,13 +64,14 @@ export default function Raumlichkeiten() {
 					<div className='flex justify-center mt-40'>
 						<section className=''>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='h-70 border-b-3 md:border-b-0 rounded-md rounded-b-none 
 								md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
@@ -110,7 +115,7 @@ export default function Raumlichkeiten() {
 										>
 											<div className='group text-center text-white items-center flex'>
 												<h5
-													className='duration-500 font-bold p-2 flex group-hover:text-white 
+													className='duration-500 font-bold p-1 flex group-hover:text-white 
 												md:group-hover:ml-1 md:group-hover:text-lg 
 												2xl:group-hover:font-bold'
 												>
@@ -125,13 +130,14 @@ export default function Raumlichkeiten() {
 								</div>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-t-3 rounded-md rounded-t-none 
 								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</section>
@@ -141,13 +147,14 @@ export default function Raumlichkeiten() {
 					<div className='flex justify-center mt-10'>
 						<section className=''>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='rounded-md rounded-b-none border-b-3 
 								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 							<div className='w-[100%] h-40 flex-col items-center mt-10 md:w-[50%]'>
@@ -183,13 +190,13 @@ export default function Raumlichkeiten() {
 								</h3>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-t-3 rounded-md rounded-t-none 
 								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									width={270}
+									height={640}
 								/>
 							</div>
 						</section>
@@ -199,13 +206,14 @@ export default function Raumlichkeiten() {
 					<div className='flex justify-center mt-10'>
 						<section className=''>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='rounded-md rounded-b-none border-b-3 
 								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
@@ -244,13 +252,14 @@ export default function Raumlichkeiten() {
 								</h3>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-t-3 rounded-md rounded-t-none 
 								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</section>
@@ -260,13 +269,14 @@ export default function Raumlichkeiten() {
 					<div className='flex justify-center mt-10'>
 						<section className=''>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-b-3 rounded-md rounded-b-none 
 								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
@@ -303,13 +313,14 @@ export default function Raumlichkeiten() {
 								</h3>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-t-3 rounded-md rounded-t-none 
 								md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0 md:border-l-3 md:border-t-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</section>
@@ -319,13 +330,14 @@ export default function Raumlichkeiten() {
 					<div className='flex justify-center mt-10'>
 						<section className=''>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-b-3 rounded-md rounded-b-none 
 								md:border-b-0 md:rounded-br-none md:rounded-bl-md md:rounded-l-md md:rounded-r-none md:border-r-3'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
@@ -357,13 +369,14 @@ export default function Raumlichkeiten() {
 								</h2>
 							</div>
 							<div className='w-[100%] md:w-[50%]'>
-								<img
+								<Image
 									className='border-t-3 rounded-md rounded-t-none 
 								md:border-l-3 md:border-t-0 md:rounded-bl-none md:rounded-br-md md:rounded-r-md md:rounded-l-none md:border-r-0'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</article>

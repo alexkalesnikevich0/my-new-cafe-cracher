@@ -1,11 +1,10 @@
-import Link from 'next/link'
-
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
+import Image from 'next/image'
 
 import SlowZoomInView from '@/app/booking/animations/SlowZoomInView' // МЕДЛЕННО ПРИБЛИЖАЕТ КАРТИНКУ ПОКА ПОЛЬЗОВАТЕЛЬ СМОТРИТ НА СЛАЙД
-import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection' // ПЛАВНО ПРОКРУЧИВАЕТ К ЭЛЕМЕНТУ С УКАЗАННЫМ id 
+import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection' // ПЛАВНО ПРОКРУЧИВАЕТ К ЭЛЕМЕНТУ С УКАЗАННЫМ id
 
 export default function Third() {
 	return (
@@ -17,10 +16,13 @@ export default function Third() {
 					<div className='relative h-screen w-full'>
 						{/* ФОНОВАЯ КАРТИНКА НА ВЕСЬ ЭКРАН */}
 
-						<img
-							src='land.png'
+						<Image
+							src='/land.png'
 							alt='Background'
-							className='absolute inset-0 w-full h-full object-cover'
+							className='object-cover'
+							fill
+							priority
+							sizes='100vw'
 						/>
 						<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 						{/* ТЕКСТ ПОВЕРХ КАРТИНКИ z-10 ЧТОБЫ БЫТЬ НАД ЗАТЕМНЕНИЕМ */}

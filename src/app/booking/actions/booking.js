@@ -2,6 +2,11 @@
 
 import prisma from '@/app/booking/lib/prisma'
 
+// НОВЫЕ ИМПОРТЫ ДЛЯ PR3 (типизация, валидация, доступность)
+
+import { validateBooking } from '@/features/booking/lib/validation'
+import { isSlotAvailable } from '@/features/booking/lib/availability'
+
 // ===== КОНФИГУРАЦИЯ КЛЮЧИ И АДРЕСА =====
 
 // ПОЧТА, КУДА ПРИХОДЯТ УВЕДОМЛЕНИЯ О НОВОЙ БРОНИ
@@ -24,14 +29,33 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID
  */
 export async function createBooking(formData) {
 	// ДОСТАЁМ ДАННЫЕ ИЗ ФОРМЫ ПО АТРИБУТУ name
-	const guests = formData.get('guests')
+
+	// получаем кол во гостей как строку
+	const guestsRaw = formData.get('guests')
+	// преобразуем в число для валидации parseInt
+	const guests = parseInt(guestsRaw, 10)
+	// parseInt - превращает строку '4' в число 4
+	// 10 это система счисления десятичная
+
 	const date = formData.get('date')
 	const time = formData.get('time')
 	const email = formData.get('email')
 
-	// ПРОВЕРКА: ОБЯЗАТЕЛЬНЫЕ ПОЛЯ ДОЛЖНЫ БЫТЬ ЗАПОЛНЕНЫ
-	if (!guests || !date || !time || !email) {
-		return { error: 'Please fill all gaps' }
+	// ШАГ - 1 ВАЛИДАЦИЯ ДАННЫХ (проверяем гостей, дату, время, email)
+
+	// validationBooking - функция из validation.ts
+	// она проверяет:
+	// - гости от 1 до 8
+	// - дата не прошлая
+	// - время в формате HH:MM
+	// - email содержит @ и .
+	// ЕСЛИ ЕСТЬ ОШИБКА ВОЗВРАЩАЕТ { error: 'текст ошибки' }
+	// ЕСЛИ ВСЕ ХОРОШО - ВОЗВРАЩАЕТ null
+
+	const validationError = validateBooking({ guests, date, time, email })
+	if (validationError) {
+		// ВОЗВРАЩАЕМ ОШИБКУ ПОЛЬЗОВАТЕЛЮ (ОНА ПОКАЖЕТСЯ В ФОРМЕ)
+		return { error: validationError.error }
 	}
 
 	// ФОРМИРУЕМ ТЕКСТ УВЕДОМЛЕНИЯ
@@ -41,6 +65,40 @@ export async function createBooking(formData) {
   Time: ${time}
   Email: ${email}
   We are waiting you!`
+
+	// ШАГ - 2 ПРОВЕРКА ДОСТУПНОСТИ (СВОБОДНО ЛИ ВРЕМЯ)
+
+	// isSlotAvailable - функция из availability.ts
+	// ПРОВЕРЯЕТ ЕСТЬ ЛИ В БД БРОНЬ НА ЭТУ ДАТУ И ВРЕМЯ
+	// (ИСКЛЮЧАЕТ ОТМЕНЕННЫЕ БРОНИ)
+	// ВОЗВРАЩАЕТ true - ЕСЛИ СВОБОДНО, false - ЕСЛИ ЗАНЯТО
+
+	const isFree = await isSlotAvailable(date, time)
+	if (!isFree) {
+		// ЕСЛИ ВРЕМЯ ЗАНЯТО - ВОЗВРАЩАЕМ ОШИБКУ
+		return {
+			error: 'Это время уже забронировано. Пожалуйста выберите другое время',
+		}
+	}
+
+	try {
+		// ШАГ 3 СОХРАНЕНИЕ В БАЗУ ДАННЫХ
+
+		await prisma.booking.create({
+			data: {
+				guests: guests, // уже число привели через parseInt
+				date: date, // дата в формате YYYY-MM-DD
+				time: time, // время в формате HH:MM
+				email: email, // email гостя
+				status: 'new', // явно указываем статус 'new' (новая бронь)
+			},
+		})
+		// status 'new' - означает что бронь только создана и ждет подтверждения
+	} catch (error) {
+		console.error('Ошибка сохранения в базу данных', error) // возвращаем пользователю это сообщение
+
+		return { error: 'Не удалось сохранить бронь. Попробуйте позже!' }
+	}
 
 	// ===== 1. ОТПРАВКА УВЕДОМЛЕНИЯ В TELEGRAM =====
 	try {
@@ -67,15 +125,19 @@ export async function createBooking(formData) {
 			body: JSON.stringify({
 				from: 'cafe@kolsell.store',
 				to: MY_EMAIL,
+				replyTo: email, // добавил
 				subject: `New reservation!`,
 				text: message,
 			}),
 		})
 		const data = await response.json()
+		console.log('Resend response:', data)
 		if (!response.ok) {
-			// ЗДЕСЬ МОЖНО ДОБАВИТЬ ОБРАБОТКУ ОШИБКИ
+			console.error('Resend error:', data)
 		}
-	} catch (error) {}
+	} catch (error) {
+		console.error('Error', error)
+	}
 
 	// ===== 3. ОТПРАВКА HTML ПИСЬМА ГОСТЮ =====
 
@@ -90,6 +152,7 @@ export async function createBooking(formData) {
 				body: JSON.stringify({
 					from: 'cafe@kolsell.store',
 					to: email,
+					replyTo: MY_EMAIL, // добавил
 					subject: 'Thank you for your reservation!',
 					// HTML ПИСЬМО С ТАБЛИЦЕЙ И СТИЛЯМИ
 					html: `
@@ -137,33 +200,17 @@ export async function createBooking(formData) {
 				}),
 			})
 			const data = await response.json()
-		} catch (error) {}
+			console.log('Resend response:', data)
+			if (!response.ok) {
+				console.error('Resend error:', data)
+			}
+		} catch (error) {
+			console.error('Ошибка сохранения в базу данных', error) // возвращаем пользователю это сообщение
+
+			return { error: 'Не удалось сохранить бронь. Попробуйте позже!' }
+		}
 	}
 
-	// ===== 4. ПРОВЕРКА: НЕ ЗАНЯТО ЛИ ЭТО ВРЕМЯ? =====
-	const existing = await prisma.booking.findFirst({
-		where: {
-			date: date,
-			time: time,
-			status: { not: 'cancelled' }, // ОТМЕНЁННЫЕ БРОНИ НЕ СЧИТАЮТСЯ ЗАНЯТЫМИ
-		},
-	})
-	if (existing) {
-		return { error: 'This time is already booked. Please choose another time' }
-	}
-
-	// ===== 5. СОХРАНЕНИЕ БРОНИ В БАЗУ ДАННЫХ =====
-	try {
-		await prisma.booking.create({
-			data: {
-				guests: parseInt(guests), // ПРЕВРАЩАЕМ СТРОКУ В ЧИСЛО
-				date: date,
-				time: time,
-				email: email,
-			},
-		})
-	} catch (error) {}
-
-	// ВОЗВРАЩАЕМ УСПЕХ — КЛИЕНТ УВИДИТ ЗЕЛЁНОЕ СООБЩЕНИЕ
+	// ШАГ 4 = ВОЗВРАЩАЕМ УСПЕХ — КЛИЕНТ УВИДИТ ЗЕЛЁНОЕ СООБЩЕНИЕ
 	return { success: 'Your table has been reserved!' }
 }

@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
+import Image from 'next/image'
 
 export default function Second() {
 	return (
@@ -31,13 +32,14 @@ export default function Second() {
 							{/* ! КАРТОЧКА 1 КАРТИНКА СЛЕВА + ТЕКСТ СПРАВА ! */}
 							<section className='group duration-900 xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 
 									md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</article>
 								<article className='group duration-900 justify-center flex md:w-[43%]'>
@@ -114,13 +116,13 @@ export default function Second() {
 									</div>
 								</article>
 								<article className='flex items-center md:w-[55%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mb-5 
 									md:mb-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 							</section>
@@ -138,13 +140,13 @@ export default function Second() {
 							{/* ! 3 КАРТОЧКА  ! */}
 							<section className='group duration-900 xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 
 									md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 								<div className='group duration-900 justify-center flex md:w-[43%]'>
@@ -223,13 +225,14 @@ export default function Second() {
 									</div>
 								</article>
 								<article className='flex items-center md:w-[55%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mb-5 
 									md:mb-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</article>
 							</section>

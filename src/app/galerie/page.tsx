@@ -1,30 +1,28 @@
 import Reserv from '@/app/reserv/page'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 import ZoomOutImage from '@/app/booking/animations/ZoomOutImage'
-
-const home = [
-	{
-		route: '/',
-	},
-]
 
 export default function Glaerie() {
 	return (
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						fill
+						priority
+						sizes='100vw'
+						className='object-cover'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 h-2 bg-orange-300/50 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='uppercase text-3xl text-center font-bold text-white/90 mb-7 
 					sm:text-4xl 
@@ -49,7 +47,7 @@ export default function Glaerie() {
 									mehr machen
 								</h2>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 mx-auto w-50 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 h-2 mx-auto w-50 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -73,16 +71,15 @@ export default function Glaerie() {
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<section className='group duration-900 md:flex md:hover:border-3 md:hover:border-black xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 
 									md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
-
 								<div className='group duration-900 justify-center flex md:w-[43%]'>
 									<div className='group duration-900 md:py-10'>
 										<h1
@@ -161,12 +158,12 @@ export default function Glaerie() {
 									</div>
 								</article>
 								<article className='flex items-center md:w-[55%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mb-5 md:mb-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 							</section>
@@ -182,12 +179,12 @@ export default function Glaerie() {
 						<FadeInFromBottom delay={100} threshold={0.2}>
 							<section className='group duration-900 md:flex md:hover:border-3 md:hover:border-black xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 								<div className='group duration-900 justify-center flex md:w-[43%]'>
@@ -267,12 +264,12 @@ export default function Glaerie() {
 									</div>
 								</article>
 								<article className='flex items-center md:w-[55%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mb-5 md:mb-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 							</section>
@@ -288,12 +285,12 @@ export default function Glaerie() {
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<section className='group duration-900 md:flex md:hover:border-3 md:hover:border-black xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 								<div className='group duration-900 justify-center flex md:w-[43%]'>
@@ -374,12 +371,12 @@ export default function Glaerie() {
 									</div>
 								</article>
 								<article className='flex items-center md:w-[55%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mb-5 md:mb-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 							</section>
@@ -395,12 +392,12 @@ export default function Glaerie() {
 						<FadeInFromBottom delay={100} threshold={0.2}>
 							<section className='group duration-900 md:flex md:hover:border-3 md:hover:border-black xl:mr-0'>
 								<article className='flex items-center md:w-[50%]'>
-									<img
+									<Image
 										className='duration-900 w-[70%] h-50 mt-5 md:mt-0 md:h-[75%] md:w-[80%] md:group-hover:h-[80%] md:group-hover:w-[85%]'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										width={270}
+										height={640}
 									/>
 								</article>
 								<div className='group duration-900 justify-center flex md:w-[43%]'>

@@ -12,7 +12,18 @@ import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection'
 export default function Footer() {
 	// openIndex ХРАНИТ ИНДЕКС ОТКРЫТОГО АККОРДЕОНА (или null, если все закрыты)
 	// БЛАГОДАРЯ ЭТОМУ ОДНОВРЕМЕННО ОТКРЫТ ТОЛЬКО ОДИН БЛОК
-	const [openIndex, setOpenIndex] = useState(null)
+
+	/**
+	 * ИЗМЕНЕНИЯ PR4
+	 * добавлен тип для состояния openIndex
+	 * ПРИЧИНА
+	 * ошибка сборки "Argument of type '0 | null' is not assignable to parameter of type 'SetStateAction<null>'."
+	 * РЕШЕНИЕ
+	 * указан тип useState<number | null>(null), 
+	 * чтобы TypeScript понимал, что состояние может быть как числом (индексом), так и null
+	 * */
+
+	const [openIndex, setOpenIndex] = useState<number | null>(null)
 
 	return (
 		// suppressHydrationsWarning - ОТКЛЮЧАЕТ ПРЕДУПРЕЖДЕНИЕ REACT О НЕСОВПАДЕНИИ СЕРВЕРНОГО И КЛИЕНТСКОГО РЕНДЕРА

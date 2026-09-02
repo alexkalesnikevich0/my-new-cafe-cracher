@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -92,15 +93,16 @@ export default function Five() {
 							</div>
 							{/* ПРАВАЯ КОЛОНКА КАРТИНКА */}
 							<div className='md:w-[50%] group'>
-								<img
+								<Image
 									className='h-70 w-70 ml-10 xl:ml-10 mt-8 border-2 duration-600 border-black/70 rounded-xl 
 								md:h-70 md:w-70 md:group-hover:w-70 md:mt-5 md:group-hover:mt-3 md:group-hover:h-73 md:group-hover:ml-10 md:group-hover:border-black md:group-hover:border-2 
 								lg:ml-18 lg:group-hover:ml-23 lg:w-75 lg:h-77 lg:group-hover:w-76 lg:group-hover:h-78 lg:group-hover:mt-5 
 								xl:ml-18 xl:group-hover:ml-22 xl:w-90 xl:mt-6 xl:group-hover:mt-4 xl:group-hover:w-93 xl:h-87 xl:group-hover:h-90 
 								2xl:w-117 2xl:h-119 2xl:mt-5 2xl:group-hover:w-122 2xl:group-hover:h-118 2xl:group-hover:mt-5 2xl:ml-27 2xl:group-hover:ml-27'
-									src='drink.png'
+									src='/drink.png'
 									alt='tailWind'
-									width={27}
+									unoptimized
+									width={270}
 									height={6400}
 								/>
 							</div>

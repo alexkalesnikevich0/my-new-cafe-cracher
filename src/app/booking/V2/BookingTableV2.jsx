@@ -78,11 +78,30 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 							{/* ЕСЛИ БРОНЕЙ НЕТ — ПОКАЗЫВАЕМ ЗАГЛУШКУ */}
 							{bookings.length === 0 ? (
 								<tr>
-									<td
-										colSpan={7}
-										className='px-6 py-12 text-center text-gray-400'
-									>
-										No reservations yet!
+									<td colSpan={7} className='px-6 py-12 text-center'>
+										<div className='flex flex-col items-center gap-3'>
+											{/* Иконка */}
+
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 16 16'
+												fill='currentColor'
+												className='size-15 text-red-600/90'
+											>
+												<path
+													fillRule='evenodd'
+													d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+
+											<p className='text-xl font-medium text-gray-500'>
+												No reservations yet
+											</p>
+											<p className='text-sm text-gray-400'>
+												There are no bookings at the moment.
+											</p>
+										</div>
 									</td>
 								</tr>
 							) : (

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-
+import Image from 'next/image'
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
 
@@ -20,16 +20,17 @@ export default function Four() {
 							{/* ! КАРТИНКА СОБЫТИЯ */}
 							<div className='group'>
 								<Link href='/timeride'>
-									<img
+									<Image
 										className='w-66 h-65 ml-7 mr-2 mt-4 border-2 rounded-xl duration-900 border-black/70 
 								md:group-hover:mr-2 md:group-hover:ml-4 md:group-hover:border-3 md:group-hover:border-black md:w-54 md:h-60 
 								lg:w-60 lg:h-66 lg:group-hover:mr-10 
 								xl:group-hover:w-60 xl:group-hover:h-60 xl:w-50 xl:h-50 xl:group-hover:ml-6 xl:group-hover:mt-6 xl:ml-8 xl:mt-10 
 								2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7 2xl:group-hover:border-2'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -95,16 +96,17 @@ export default function Four() {
 							{/* ! КАРТИНКА ! */}
 							<div className='group'>
 								<Link href='/kolsch'>
-									<img
+									<Image
 										className='w-66 h-65 ml-7 mt-7 rounded-xl border-2 border-black/70 duration-900 
 								md:group-hover:ml-5 md:group-hover:border-black md:group-hover:border-3 md:w-54 md:h-60 md:mt-5 
 								lg:w-59 
 								xl:group-hover:ml-6 xl:group-hover:mt-6 xl:group-hover:w-60 xl:group-hover:h-60 xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 
 								2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7 2xl:group-hover:border-2'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>
@@ -162,15 +164,16 @@ export default function Four() {
 							{/* ! КАРТИНКА ! */}
 							<div className='group'>
 								<Link href='/archiv'>
-									<img
+									<Image
 										className='w-66 h-65 ml-6 mt-7 border-2 border-black/70 rounded-xl duration-900 
 								md:w-55 md:h-58 md:mt-6 md:group-hover:border-3 md:group-hover:border-black
 								xl:ml-8 xl:w-50 xl:mt-10 xl:h-50 xl:group-hover:w-60 xl:group-hover:h-60 xl:group-hover:ml-6 xl:group-hover:mt-6 
 								2xl:w-80 2xl:h-80 2xl:group-hover:w-90 2xl:group-hover:h-93 2xl:group-hover:ml-6 2xl:group-hover:mt-7 2xl:group-hover:border-2'
-										src='drink.png'
+										src='/drink.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</Link>
 							</div>

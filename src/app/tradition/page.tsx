@@ -1,4 +1,5 @@
 import Reserv from '@/app/reserv/page'
+import Image from 'next/image'
 
 import FadeInFromBottom from '@/app/booking/animations/FadeInFromBottom'
 import FadeInFromTop from '@/app/booking/animations/FadeInfromTop'
@@ -9,15 +10,18 @@ export default function Tradition() {
 		<div className='bg-orange-300/80'>
 			<ZoomOutImage>
 				<div className='relative h-screen w-full'>
-					<img
-						src='land.png'
+					<Image
+						src='/land.png'
 						alt='Background'
-						className='absolute inset-0 w-full h-full object-cover'
+						className='object-cover'
+						fill
+						priority
+						sizes='100vw'
 					/>
 					<div className='absolute inset-0 bg-gradient-to-b from-black/40 to-black/10 h-full' />
 					<div className='relative z-10 flex flex-col items-center justify-center h-full'>
 						<FadeInFromTop delay={1600} threshold={0.2}>
-							<div className='mb-15 h-1 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
+							<div className='mb-15 bg-orange-300/50 h-2 w-80 mx-auto 2xl:w-180 2xl:h-4'></div>
 							<h1
 								className='uppercase text-2xl text-center bg-gradient-to-t from-white/80 via-white/80 font-bold to-white/90 bg-clip-text text-transparent mb-7 
 									sm:text-3xl 
@@ -41,7 +45,7 @@ export default function Tradition() {
 									Geschichte verpflichtet
 								</h2>
 							</div>
-							<div className='mt-15 h-1 bg-orange-300/50 md:mt-20 mt-13 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
+							<div className='mt-15 bg-orange-300/50 md:mt-20 h-2 w-50 mx-auto 2xl:w-80 2xl:h-3'></div>
 						</FadeInFromBottom>
 					</div>
 				</div>
@@ -56,12 +60,13 @@ export default function Tradition() {
 					<div className='flex flex-col sm:w-1/2 justify-center items-center'>
 						<FadeInFromBottom delay={100} threshold={0.3}>
 							<div className='sm:flex sm:justify-center sm:pt-2 lg:p-5 md:w-[100%] lg:items-center lg:pr-0'>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl h-70 lg:h-[100%] border-black xl:mt-3 xl:ml-6'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromBottom>
@@ -116,7 +121,7 @@ export default function Tradition() {
 						</div>
 						<FadeInFromTop delay={100} threshold={0.1}>
 							<h1 className='text-center md:text-left mt-5 xl:mt-10 md:ml-4'>
-								Hans Sion – der "Vater des Kölsch"
+								Hans Sion – der &quot;Vater des Kölsch&quot;
 							</h1>
 						</FadeInFromTop>
 						<FadeInFromBottom delay={100} threshold={0.3}>
@@ -135,12 +140,13 @@ export default function Tradition() {
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<div className='md:block lg:hidden justify-center w-full items-center mt-10 pl-10 pr-10 md:pl-20 md:pr-20'>
 								<div className=''>
-									<img
+									<Image
 										className='w-full border-3 rounded-xl w-[60%] h-[60%] border-black xl:mt-3 xl:ml-6'
-										src='land.png'
+										src='/land.png'
 										alt='tailWind'
-										width={27}
-										height={6400}
+										unoptimized
+										width={270}
+										height={640}
 									/>
 								</div>
 							</div>
@@ -173,12 +179,13 @@ export default function Tradition() {
 					<div className='hidden lg:block flex flex-col lg:w-1/2 justify-center items-center'>
 						<FadeInFromTop delay={100} threshold={0.2}>
 							<div className='sm:flex sm:justify-center lg:p-5 md:w-[100%] lg:items-center'>
-								<img
+								<Image
 									className='w-full border-3 rounded-xl w-[100%] h-[100%] border-black xl:mt-3 xl:ml-6 lg:h-100'
-									src='land.png'
+									src='/land.png'
 									alt='tailWind'
-									width={27}
-									height={6400}
+									unoptimized
+									width={270}
+									height={640}
 								/>
 							</div>
 						</FadeInFromTop>
@@ -186,12 +193,13 @@ export default function Tradition() {
 				</div>
 				<FadeInFromTop delay={100} threshold={0.1}>
 					<div className='sm:flex sm:justify-center lg:p-5 md:w-[100%] lg:items-center lg:pl-30 lg:pr-30 lg:mb-10'>
-						<img
+						<Image
 							className='w-full border-t-2 rounded-b-sm border-black lg:border-3 lg:rounded-xl lg:border-black xl:mt-3 xl:ml-6'
-							src='land.png'
+							src='/land.png'
 							alt='tailWind'
-							width={27}
-							height={6400}
+							unoptimized
+							width={270}
+							height={640}
 						/>
 					</div>
 				</FadeInFromTop>
