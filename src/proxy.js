@@ -9,7 +9,7 @@
  */
 import { NextResponse } from 'next/server'
 
-export function middleware(request) {
+export function proxy(request) {
 	// ИЩЕМ КУКУ admin_token В ЗАПРОСЕ
 	const token = request.cookies.get('admin_token')
 	// ДОСТАЁМ ТЕКУЩИЙ ПУТЬ
