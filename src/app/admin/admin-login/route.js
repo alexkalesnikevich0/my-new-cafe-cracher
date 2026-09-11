@@ -20,7 +20,7 @@ export async function POST(request) {
 		// СОЗДАЁМ КУКУ, КОТОРАЯ ДАЁТ ДОСТУП К /admin
 		cookiesStore.set('admin_token', 'true', {
 			httpOnly: true, // КУКА НЕДОСТУПНА ЧЕРЕЗ JAVASCRIPT (ЗАЩИТА ОТ КРАЖИ)
-			secure: false, // РАБОТАЕТ НА HTTP (ДЛЯ РАЗРАБОТКИ; НА ПРОДАКШЕНЕ true)
+			secure: process.env.NODE_ENV === 'production', // РАБОТАЕТ НА HTTP (ДЛЯ РАЗРАБОТКИ; НА ПРОДАКШЕНЕ true)
 			path: '/', // ДЕЙСТВУЕТ НА ВСЁМ САЙТЕ
 		})
 		return NextResponse.json({ ok: true })
