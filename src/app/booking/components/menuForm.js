@@ -4,6 +4,8 @@ import { createBooking } from '@/app/booking/actions/booking'
 
 import FadeInFromBottom from '../animations/FadeInFromBottom'
 
+import ModalConfirm from './ModalConfirm'
+
 export default function Menu() {
 	// --- 	СОСТОЯНИЕ ДЛЯ СООБЩЕНИЙ ПОЛЬЗОВАТЕЛЮ ---
 	const [message, setMessage] = useState(null) // { success: '...' } or { error: '...' }
@@ -24,37 +26,74 @@ export default function Menu() {
 	// -- СОСТОЯНИЕ ДЛЯ ОТПРАВКИ (ЗАЩИТА ОТ ДВОЙНОГО КЛИКА)
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
+	const [showConfirm, setShowConfirm] = useState(false) // new ModalConfirm (after change telegram)
+	const [pendingData, setPendingData] = useState(null) // new ModalConfirm (after change telegram)
+
 	// --- ОТПРАВКА ФОРМЫ НА СЕРВЕР --- //
-	async function handleSubmit(e) {
-		e.preventDefault() // ОСТАНАВЛИВАЕТ ПЕРЕЗАГРУЗКУ СТРАНИЦЫ -- НОВОЕ PR4 --
-		const formData = new FormData(e.target) // ПОЛУЧАЕМ ДАННЫЕ ИЗ ФОРМЫ -- НОВОЕ PR4 --
-		// 1 	ЗАЩИТА ОТ ДВОЙНОГО КЛИКА
+	// НОВОЕ ИЗМЕНЕНИЕ handleSubmit теперь только показывает модалку
+	// 1. ОСТАНАВЛИВАЕТ ПЕРЕЗАГРУЗКУ СТРАНИЦЫ (e.preventDefault)
+	// 2. СОБИРАЕТ ДАННЫЕ ИЗ ФОРМЫ
+	// 3. СОХРАНЯЕТ ИХ В pendingData
+	// 4. ПОКАЗЫВАЕТ МОДАЛКУ (showConfirm = true)
+	// ОТПРАВКА НА СЕРВЕР ПРОИСХОДИТ ТОЛЬКО ПОСЛЕ ПОДТВЕРЖДЕНИЯ
+
+	function handleSubmit(e) {
+		e.preventDefault()
+		const formData = new FormData(e.target)
+
+		const data = {
+			guests: formData.get('guests'),
+			date: formData.get('date'),
+			time: formData.get('time'),
+			email: formData.get('email'),
+		}
+
+		setPendingData(data) // СОХРАНЯЕМ ДАННЫЕ ПО ВРЕМЕННОЕ ХРАНИЛИЩЕ
+		setShowConfirm(true) // ПОКАЗЫВАЕМ МОДАЛКУ
+	}
+
+	// НОВОЕ ИЗМЕНЕНИЕ ПОСЛЕ PR4
+	// handleConfirmBooking
+	// ДЕЛАЕТ:
+	// 1. ЗАКРЫВАЕТ МОДАЛКУ
+	// 2. БЛОКИРУЕТ КНОПКУ (isSubmitting = true)
+	// 3. ОТПРАВЛЯЕТ ДАННЫЕ НА СЕРВЕР (createBooking)
+	// 4. ПОКАЗЫВАЕТ РЕЗУЛЬТАТ (УСПЕХ ИЛИ ОШИБКА)
+	// 5. РАЗБЛОКИРУЕТ КНОПКУ В finally
+	// ВЫЗЫВАЕТСЯ ИЗ МОДАЛКИ ПРИ НАЖАТИИ 'ПОДТВЕРДИТЬ'
+	// --- НОВОЕ PR4 ! --- //
+	async function handleConfirmBooking() {
+		if (!pendingData) return
+		setShowConfirm(false)
 		if (isSubmitting) return
-		setIsSubmitting(true) // -- НОВОЕ PR4 --
+		setIsSubmitting(true)
 
-		// 2 ВЕСЬ ОСТАЛЬНОЙ КОД ЗАВЕРНУЛ В try/catch/finally
 		try {
-			const guests = formData.get('guests')
+			// СОБИРАЕМ formData ИЗ pendingData
+			const formData = new FormData()
+			formData.append('guests', pendingData.guests)
+			formData.append('date', pendingData.date)
+			formData.append('time', pendingData.time)
+			formData.append('email', pendingData.email)
 
-			// --- ПРОВЕРКА НА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО ГОСТЕЙ (ДУБЛИРУЕТСЯ С max='8'. в input ) --- //
-			if (parseInt(guests) > 8) {
+			// ПРОВЕРКА ГОСТЕЙ
+			if (parseInt(pendingData.guests) > 8) {
 				setMessage({ error: 'Maximum 8 guests for table!' })
-				setIsSubmitting(false) // РАЗБЛОКИРОВКА ПРИ ОШИБКЕ -- НОВОЕ PR4 --
+				setIsSubmitting(false)
 				return
 			}
-			// --- ВЫЗЫВАЕМ СЕРВЕРНЫЙ ЭКШЕН - ОН СОХРАНЯЕТ БРОНЬ В БАЗУ ДАННЫХ И ОТПРАВЛЯЕТ ПИСЬМА --- //
+
+			// ОТПРАВКА НА СЕРВЕР
 			const result = await createBooking(formData)
-			setMessage(result) // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ ПОЛЬЗОВАТЕЛЮ
+			setMessage(result)
 		} catch (error) {
-			// 3 ОБРАБОТКА НЕПРЕДВИДЕННЫХ ОШИБОК -- НОВОЕ PR4 --
 			console.error('Ошибка при отправке:', error)
-			setMessage({ error: 'Что то пошло не так, попробуйте позже' })
+			setMessage({ error: 'Что-то пошло не так, попробуйте позже' })
 		} finally {
-			// 4 	РАЗБЛОКИРОВКА В ЛЮБОМ СЛУЧАЕ (null) -- НОВОЕ PR4 --
 			setIsSubmitting(false)
+			setPendingData(null)
 		}
 	}
-	// --- НОВОЕ PR4 ! --- //
 
 	// --- СОСТОЯНИЕ ДЛЯ ДИНАМИЧЕСКОГО СПИСКА ВРЕМЕНИ --- //
 	const [selectedDate, setSelectedDate] = useState('')
@@ -300,6 +339,22 @@ export default function Menu() {
 									</button>
 								</div>
 							</form>
+							{/**
+							 * НОВОЕ ИЗМЕНЕНИЕ: МОДАЛКА ПОДТВЕРЖДЕНИЯ БРОНИ
+							 * after change telegram folder
+							 * ПОКАЗЫВАЕТ ПОСЛЕ КНОПКИ Submit
+							 * ПЕРЕДАЕТ ДАННЫЕ БРОНИ (pendingData) и вызывает handleConfirmBooking ПРИ ПОДТВЕРЖДЕНИИ
+							 */}
+							{showConfirm && pendingData && (
+								<ModalConfirm
+									data={pendingData}
+									onConfirm={handleConfirmBooking}
+									onCancel={() => {
+										setShowConfirm(false)
+										setPendingData(null)
+									}}
+								/>
+							)}
 							{/* СООБЩЕНИЯ ОБ УСПЕХЕ ЛИБО ОШИБКЕ БРОНИРОВАНИЯ */}
 							<div className='flex justify-center items-center pl-0 pt-5 font-bold duration-700'>
 								{message?.error && (

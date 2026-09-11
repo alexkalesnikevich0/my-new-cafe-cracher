@@ -14,6 +14,8 @@ import { updateBookingStatus } from '@/app/booking/actions/updateStatus'
 import { useState } from 'react'
 import ConfirmModal from './confirmModal'
 
+import toast from 'react-hot-toast'
+
 export default function BookingTableV2({ bookings, onStatusChange }) {
 	// ПОДТВЕРЖДЕНИЕ БРОНИ
 	async function handleConfirm(id) {
@@ -66,7 +68,7 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 	const copyBooking = b => {
 		const text = `ID: #${b.id} | Guests: ${b.guests} | Date: ${b.date} | Time: ${b.time} | Email: ${b.email} | Status: ${b.status}`
 		navigator.clipboard.writeText(text)
-		alert('Бронь скопирована!')
+		toast.success('Reservation copied!')
 	}
 
 	return (

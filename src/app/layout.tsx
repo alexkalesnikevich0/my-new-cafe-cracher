@@ -5,6 +5,7 @@ import Navbar from '@/components/beer/assets/navbar'
 import Footer from '@/app/footer/page'
 import Navigation from '@/components/beer/assets/navigation'
 import ScrollToTop from '@/app/booking/components/scroll/scrollToTop'
+import { Toaster } from 'react-hot-toast'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -47,6 +48,7 @@ export default function RootLayout({
 					</footer>
 				</div>
 				<ScrollToTop />
+				<Toaster position='bottom-right' />
 			</body>
 		</html>
 	)

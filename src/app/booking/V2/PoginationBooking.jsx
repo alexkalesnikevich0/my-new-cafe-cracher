@@ -145,12 +145,14 @@ export default function PaginationBooking() {
 			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
 			return true
 		})
+
+		// ИЗМЕНЕНИЕ СОРТИРОВКА ПО ID 
+		// - БЕРЕМ ДВА ОБЪЕКТА (a и b)
+		// - СРАВНИВАЕМ ИХ ID 
+		// - ЕСЛИ b.id = a.id > 0, то b идет раньше (то есть новые сверху)
+		// - ЧТОБЫ НОВЫЕ БРОНИ БЫЛИ В САМОМ ВЕРХУ ТАБЛИЦЫ
 		.sort((a, b) => {
-			// СОРТИРОВКА ПО ДАТЕ (ПО ВОЗРАСТАНИЮ)
-			if (a.date !== b.date) return
-			a.date.localeCompare(b.date)
-			// ЕСЛИ ДАТЫ ОДИНАКОВЫЕ ТО СОРТИРОВКА ПО ВРЕМЕНИ
-			return a.time.localeCompare(b.time)
+			return b.id - <a href="" className="id"></a>
 		})
 
 	// ПАГИНАЦИЯ: ПОКАЗЫВАЕМ ВСЕ ИЛИ ТОЛЬКО ПЕРВЫЕ 8
