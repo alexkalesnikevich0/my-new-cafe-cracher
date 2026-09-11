@@ -45,6 +45,7 @@ export async function updateBookingStatus(bookingId, newStatus) {
   Guests: ${booking.guests}
   Date: ${booking.date}
   Time: ${booking.time}
+  Email: ${booking.email}
 
   We will glad to see you!
  CRACHER cafe wid love <3`
@@ -59,6 +60,7 @@ export async function updateBookingStatus(bookingId, newStatus) {
   Guests: ${booking.guests}
   Date: ${booking.date}
   Time: ${booking.time}
+  Email: ${booking.email}
   
   We apologize fot the inconvenience!
   CRACHER cafe wid love <3`

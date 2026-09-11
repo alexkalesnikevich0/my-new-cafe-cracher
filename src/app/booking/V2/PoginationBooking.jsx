@@ -70,9 +70,18 @@ export default function PaginationBooking() {
 	// ФИЛЬТР ПО ДАТЕ
 	const [filterDate, setFilterDate] = useState('')
 
-
 	// ФИЛЬТР ПО СТАТУСУ --- НОВОЕ PR4 ---
 	const [filterStatus, setFilterStatus] = useState('all') // 'all', 'new', 'confirmed', 'cancelled' 1. новое состояние
+
+	// НОВОЕ
+	// after change telegram
+
+	// СОСТОЯНИЕ ДЛЯ ПОИСКА (ЧТО ВВЕЛ ПОЛЬЗОВАТЕЛЬ)
+	const [searchQuery, setSearchQuery] = useState('')
+
+	// СОСТОЯНИЕ ДЛЯ ТЕКУЩЕГО ПОИСКА
+	// (ПРИМЕНЯЕТСЯ ТОЛЬКО ПОСЛЕ ENTER)
+	const [appliedQuery, setAppliedQuery] = useState('')
 
 	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
 	const filteredBookings = allbookings
@@ -81,6 +90,59 @@ export default function PaginationBooking() {
 			if (filterDate && b.date !== filterDate) return false
 			// ФИЛЬТР ПО СТАТУСУ
 			if (filterStatus !== 'all' && b.status !== filterStatus) return false
+			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
+			/**
+ 
+
+// ============================================================
+// НОВОЕ ИЗМЕНЕНИЕ: Поиск (фильтрация) по тексту
+// ДАТА: Сентябрь 2026
+//
+// ЕСЛИ appliedQuery НЕ ПУСТОЙ:
+//   if (appliedQuery) — проверяем, есть ли введённый текст.
+//   Если пусто — фильтр пропускается, показываются все брони.
+//
+// ЧТО ДЕЛАЕТ `const q = appliedQuery.toLowerCase()`:
+//   Приводит введённый текст к нижнему регистру.
+//   Зачем: чтобы поиск был нечувствителен к регистру.
+//   Пример: если ввести "TEST@MAIL.COM", оно найдёт "test@mail.com".
+//
+// ЧТО ТАКОЕ `match`:
+//   Это переменная, которая хранит true/false — совпало ли что-то.
+//   Если хотя бы одно условие верно → match = true.
+//   Если ничего не совпало → match = false, и бронь скрывается.
+//
+// ПОЧЕМУ `b.id.toString().includes(q)`:
+//   b.id — это число (например, 12), а q — это строка ("12").
+//   Числа в JavaScript не имеют метода .includes().
+//   Поэтому мы вызываем .toString(), чтобы превратить число в строку.
+//   И уже у строки вызываем .includes(q) — проверяем, есть ли в ней q.
+//
+// ЧТО ТАКОЕ `.includes(q)`:
+//   Это метод строки, который проверяет, содержится ли q внутри строки.
+//   Пример: "test@mail.com".includes("mail") → true
+//           "test@mail.com".includes("xyz") → false
+//
+// ПОЛЯ, ПО КОТОРЫМ ИЩЕТ ПОИСК:
+//   - b.id → ID брони
+//   - b.email → почта гостя
+//   - b.date → дата брони
+//   - b.time → время брони
+//   - b.guests → количество гостей
+// ============================================================
+*/
+
+			if (appliedQuery) {
+				const q = appliedQuery.toLowerCase()
+				const match =
+					b.id.toString().includes(q) ||
+					b.email.toLowerCase().includes(q) ||
+					b.date.includes(q) ||
+					b.time.includes(q) ||
+					b.guests.toString().includes(q)
+				if (!match) return false
+			}
+			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
 			return true
 		})
 		.sort((a, b) => {
@@ -175,6 +237,96 @@ export default function PaginationBooking() {
 						>
 							Export CSV
 						</a>
+					</div>
+				</div>
+				<div className='flex justify-center mt-6 mb-4'>
+					{/** НОВОЕ after change - кнопка поиск брони -
+					 * // ============================================================
+// ЧТО ТАКОЕ `searchQuery`:
+//   Это состояние (state), которое хранит то, что пользователь
+//   печатает в поле прямо сейчас (побуквенно).
+//
+// ЧТО ТАКОЕ `appliedQuery`:
+//   Это состояние, которое хранит уже применённый поиск.
+//   Оно обновляется ТОЛЬКО когда пользователь нажмёт Enter.
+//   Зачем так сделано: чтобы фильтрация не запускалась на каждую букву,
+//   а срабатывала только когда пользователь закончил вводить.
+//
+// ЧТО ДЕЛАЕТ `value={searchQuery}`:
+//   Привязывает значение инпута к состоянию searchQuery.
+//   То есть: что в searchQuery → то и в поле.
+//   Это называется "контролируемый инпут".
+//
+// ЧТО ДЕЛАЕТ `onChange={e => setSearchQuery(e.target.value)}`:
+//   Срабатывает при каждом изменении текста в поле.
+//   `e` — это объект события (event), который содержит всю информацию
+//   о том, что произошло (какая клавиша, где курсор и т.д.).
+//   `e.target` — это сам элемент input.
+//   `e.target.value` — текущий текст в поле.
+//   `setSearchQuery(...)` — обновляет состояние новым текстом.
+//
+// ЧТО ДЕЛАЕТ `onKeyDown`:
+//   Срабатывает при нажатии ЛЮБОЙ клавиши в поле.
+//   Мы проверяем: если нажата клавиша Enter (e.key === 'Enter'),
+//   то копируем текущий searchQuery в appliedQuery.
+//   Это и есть момент, когда поиск "применяется".
+//
+// ЧТО ДЕЛАЕТ `e.key === 'Enter'`:
+//   `e.key` — это название нажатой клавиши.
+//   Если это 'Enter' → применяем поиск.
+//
+// ЧТО ДЕЛАЕТ `setAppliedQuery(searchQuery.trim())`:
+//   `.trim()` убирает лишние пробелы в начале и конце текста.
+//   Пример: "  test  " → "test"
+//   Зачем: чтобы случайный пробел не сломал поиск.
+// ============================================================
+					 */}
+					<div className='relative w-full max-w-80'>
+						<input
+							type='text'
+							value={searchQuery}
+							onChange={e => setSearchQuery(e.target.value)}
+							onKeyDown={e => {
+								if (e.key === 'Enter') setAppliedQuery(searchQuery.trim())
+							}}
+							placeholder='Поиск по ID, email, дате...'
+							className='w-80 mx-auto flex pr-5 justify-center border-2 border-gray-600 bg-gray-300 rounded-full px-5 py-2 text-sm
+							focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all duration-500'
+						/>
+						{/** НОВОЕ after change - кнопка поиск брони -
+						 * крестик в правой части строки чтобы убрать внесенное
+						 * // ============================================================
+							 // ЧТО ДЕЛАЕТ:
+							 //   При клике сбрасывает оба состояния:
+							 //   - searchQuery = '' (очищает поле ввода)
+							 //   - appliedQuery = '' (сбрасывает фильтр)
+							 //   После этого таблица снова показывает все брони.
+							 //
+							 // ПОЧЕМУ `{searchQuery && (...)}`:
+							 //   Кнопка показывается ТОЛЬКО если в поле что-то введено.
+							 //   Если поле пустое — крестик не отображается.
+							 // ============================================================
+						 */}
+						{searchQuery && (
+							<button
+								onClick={() => {
+									setSearchQuery('')
+									setAppliedQuery('')
+								}}
+								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors
+								hover:text-red-600 cursor-pointer'
+								title='Очистить'
+							>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 16 16'
+									fill='currentColor'
+									className='size-6'
+								>
+									<path d='M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z' />
+								</svg>
+							</button>
+						)}
 					</div>
 				</div>
 
