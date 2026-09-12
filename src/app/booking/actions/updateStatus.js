@@ -218,3 +218,25 @@ export async function updateBookingStatus(bookingId, newStatus) {
 		console.error('Error', error)
 	}
 }
+
+export async function updateManyBookingStatus(bookingIds, newStatus) {
+	if (!bookingIds || bookingIds.length === 0) {
+		return { error: 'No bookings selected' }
+	}
+
+	if (newStatus !== 'confirmed' && newStatus !== 'cancelled') {
+		return { error: 'Invalid status' }
+	}
+
+	try {
+		const result = await prisma.booking.updateMany({
+			where: { id: { in: bookingIds } },
+			data: { status: newStatus },
+		})
+
+		return { success: `Updated ${result.count} bookings` }
+	} catch (error) {
+		console.error('Ошибка массового обновления', error)
+		return { error: 'Failed to update bookings' }
+	}
+}

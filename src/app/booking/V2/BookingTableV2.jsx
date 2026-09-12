@@ -9,7 +9,10 @@
  * @param {function} onStatusChange - ФУНКЦИЯ ОБНОВЛЕНИЯ ТАБЛИЦЫ ПОСЛЕ CONFIRM/CANCEL
  */
 'use client'
-import { updateBookingStatus } from '@/app/booking/actions/updateStatus'
+import {
+	updateBookingStatus,
+	updateManyBookingStatus,
+} from '@/app/booking/actions/updateStatus'
 
 import { useState } from 'react'
 import ConfirmModal from './confirmModal'
@@ -71,15 +74,130 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 		toast.success('Reservation copied!')
 	}
 
+	// НОВОЕ ИЗМЕНЕНИЕ - СОСТОЯНИЕ ДЛЯ ВЫБРАННЫХ БРОНЕЙ
+	// after change telegram folder
+	// ХРАНИТ МАССИВ ID ВЫБРАННЫХ БРОНЕЙ (ДЛЯ МАССОВЫХ ДЕЙСТВИЙ)
+	const [selectedIds, setSelectedIds] = useState([])
+
+	// НОВОЕ ИЗМЕНЕНИЕ - ФУНКЦИЯ toggleSelect
+	// after change telegram folder
+	// ДОБАВЛЯЕТ ИЛИ УБИРАЕТ ID ИЗ МАССИВА selectedIds
+	const toggleSelect = id => {
+		setSelectedIds(prev =>
+			prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id],
+		)
+	}
+
+	// НОВОЕ ИЗМЕНЕНИЕ - ФУНКЦИЯ toggleSelectAll
+	// after change telegram folder
+	// ВЫБИРАЕТ/СНИМАЕТ ВСЕ БРОНИ СО СТАТУСОМ new
+	const toggleSelectAll = () => {
+		const newBookings = bookings.filter(b => b.status === 'new').map(b => b.id)
+
+		if (selectedIds.length === newBookings.length) {
+			setSelectedIds([])
+		} else {
+			setSelectedIds(newBookings)
+		}
+	}
+
+	// НОВОЕ ИЗМЕНЕНИЕ - МАССОВОЕ ПОДТВЕРЖДЕНИЕ
+	// after change telegram folder
+	// ОТПРАВЛЯЕТ ВСЕ ВЫБРАННЫЕ ID НА СЕРВЕР СО СТАТУСОМ confirmed
+
+	async function handleMassConfirm() {
+		if (selectedIds.length === 0) return
+
+		const result = await updateManyBookingStatus(selectedIds, 'confirmed')
+
+		if (result.success) {
+			toast.success(result.success)
+			setSelectedIds([]) // ОЧИЩАЕМ ВЫБОР
+			onStatusChange() // ОБНОВЛЯЕМ ТАБЛИЦУ
+		} else {
+			toast.error(result.error || 'Что-то пошло не так')
+		}
+	}
+
+	// НОВОЕ ИЗМЕНЕНИЕ - МАССОВАЯ ОТМЕНА
+	// after change telegram folder
+	// ОТПРАВЛЯЕТ ВСЕ ВЫБРАННЫЕ ID НА СЕРВЕР СО СТАТУСОМ cancelled
+	async function handleMassCancel() {
+		if (selectedIds.length === 0) return
+
+		const result = await updateManyBookingStatus(selectedIds, 'cancelled')
+
+		if (result.success) {
+			toast.success(result.success)
+			setSelectedIds([])
+			onStatusChange()
+		} else {
+			toast.error(result.error || 'Что-то пошло не так')
+		}
+	}
+
 	return (
 		<div className='py-10 px-4'>
 			<div className='max-w-8xl mx-auto'>
-				<div className='mb-0 flex justify-between items-center'></div>
+				{/**
+				 * НОВОЕ ИЗМЕНЕНИЕ ПАНЕЛЬ МАССОВЫХ ДЕЙСТВИЙ
+				 * after change telegram folder
+				 * ПОКАЗЫВАЕТСЯ ТОЛЬКО ЕСЛИ ВЫБРАНА ХОТЯ БЫ ОДНА БРОНЬ
+				 * СОДЕРЖИТ КНОПКИ Confirm bookings и Cancel bookings и cancel selected
+				 */}
+
+				<div
+					className={`mb-4 overflow-hidden transition-all duration-2200 ease-in-out
+							${selectedIds.length > 0 ? 'max-h-40 opacity-100 ' : 'max-h-0 opacity-0'}`}
+				>
+					<div className='flex items-center justify-center mx-auto gap-5 bg-white/70 border-gray-700/80 w-[50%] border-2 rounded-lg p-3'>
+						<span className='text-sm font-medium text-black/70'>
+							Selected:{' '}
+							<span className='text-black text-lg'>{selectedIds.length}</span>
+						</span>
+						<button
+							onClick={handleMassConfirm}
+							className='bg-green-700 text-white/70 px-4 py-2 rounded-md text-xs font-semibold border-2 border-black/70 cursor-pointer transition-all duration-800
+							hover:bg-green-600 hover:scale-105 hover:text-white hover:border-black'
+						>
+							Confirm bookings
+						</button>
+						<button
+							onClick={handleMassCancel}
+							className='bg-red-700 text-white/70 px-4 py-2 rounded-md text-xs font-semibold border-2 border-black/70 cursor-pointer transition-all duration-800
+						hover:bg-red-600 hover:text-white hover:scale-105 hover:border-black'
+						>
+							Cancel bookings
+						</button>
+						<button
+							onClick={() => setSelectedIds([])}
+							className='bg-gray-500/90 text-white/70 px-4 py-2 rounded-md text-xs font-semibold border-2 border-black/70 cursor-pointer transition-all duration-800
+						hover:bg-gray-400 hover:scale-105 hover:text-white hover:border-black'
+						>
+							Remove selections
+						</button>
+					</div>
+				</div>
+
 				<div className='bg-white/90 shadow-xl overflow-hidden rounded-xl border border-gray-100'>
 					<table className='w-320 text-sm'>
 						{/* ЗАГОЛОВОК ТАБЛИЦЫ */}
 						<thead>
 							<tr className='bg-gray-200 text-gray-700 uppercase text-xs tracking-wider'>
+								{/** НОВОЕ ГАЛОЧКИ 1 */}
+								<th className='px-2 py-2 text-left font-semibold whitespace-nowrap'>
+									<input
+										type='checkbox'
+										checked={
+											selectedIds.length > 0 &&
+											selectedIds.length ===
+												bookings.filter(b => b.status === 'new').length
+										}
+										onChange={toggleSelectAll}
+										className='cursor-pointer'
+									/>
+								</th>
+								{/** НОВОЕ ГАЛОЧКИ 1 */}
 								<th className='px-10 py-4 text-left font-semibold'>ID</th>
 								<th className='px-2 py-4 text-left font-semibold'>Guests</th>
 								<th className='px-11 py-4 text-left font-semibold'>Date</th>
@@ -95,7 +213,7 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 							{/* ЕСЛИ БРОНЕЙ НЕТ — ПОКАЗЫВАЕМ ЗАГЛУШКУ */}
 							{bookings.length === 0 ? (
 								<tr>
-									<td colSpan={9} className='px-6 py-12 text-center'>
+									<td colSpan={10} className='px-6 py-12 text-center'>
 										<div className='flex flex-col items-center gap-3'>
 											{/* Иконка */}
 
@@ -127,6 +245,19 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 										key={b.id}
 										className='hover:bg-blue-100/40 transition-colors'
 									>
+										{/** НОВОЕ ГАЛОЧКИ 1 */}
+										<td className='px-2 py-2'>
+											{b.status === 'new' && (
+												<input
+													type='checkbox'
+													checked={selectedIds.includes(b.id)}
+													onChange={() => toggleSelect(b.id)}
+													className='cursor-pointer'
+												/>
+											)}
+										</td>
+										{/** НОВОЕ ГАЛОЧКИ 1 */}
+
 										{/* ID + ЦВЕТНОЙ ИНДИКАТОР ВРЕМЕНИ */}
 										<td className='px-6 py-4 font-mono text-gray-500 flex gap-3 items-center'>
 											<span
