@@ -15,6 +15,7 @@
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
+		"@ducanh2912/next-pwa": "^10.2.9",
 		"@prisma/client": "^5.22.0",
 		"@radix-ui/react-label": "^2.1.7",
 		"@radix-ui/react-slot": "^1.2.3",
@@ -26,7 +27,8 @@
 		"react-dom": "19.1.0",
 		"react-hot-toast": "^2.6.0",
 		"react-router-dom": "^7.13.2",
-		"tailwind-merge": "^3.3.1"
+		"tailwind-merge": "^3.3.1",
+		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^4.1.1",

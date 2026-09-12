@@ -1,0 +1,51 @@
+{
+	"name": "Cafe Cracher — Бронирование столиков",
+	"short_name": "Cafe Cracher",
+	"description": "Система бронирования столиков в ресторане Cafe Cracher",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait",
+	"background_color": "#ffffff",
+	"theme_color": "#f5c17a",
+	"lang": "ru",
+	"icons": [
+		{
+			"src": "/icon-192.png",
+			"sizes": "256x256",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icon-192.png",
+			"sizes": "256x256",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "/screenshot-mobile.png",
+			"sizes": "964x1626",
+			"type": "image/png",
+			"form_factor": "narrow"
+		},
+		{
+			"src": "/screenshot-desktop.png",
+			"sizes": "2880x1626",
+			"type": "image/png",
+			"form_factor": "wide"
+		}
+	]
+}

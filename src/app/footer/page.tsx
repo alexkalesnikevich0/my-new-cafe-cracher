@@ -9,6 +9,8 @@ import { useState } from 'react'
 // scrollToSection - КНОПКА КОТОРАЯ ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ЭЛЕМЕНТУ С УКАЗАННЫМ id
 import ScrollToSection from '@/app/booking/components/scroll/ScrollToSection'
 
+import { Suspense } from 'react'
+
 export default function Footer() {
 	// openIndex ХРАНИТ ИНДЕКС ОТКРЫТОГО АККОРДЕОНА (или null, если все закрыты)
 	// БЛАГОДАРЯ ЭТОМУ ОДНОВРЕМЕННО ОТКРЫТ ТОЛЬКО ОДИН БЛОК
@@ -19,7 +21,7 @@ export default function Footer() {
 	 * ПРИЧИНА
 	 * ошибка сборки "Argument of type '0 | null' is not assignable to parameter of type 'SetStateAction<null>'."
 	 * РЕШЕНИЕ
-	 * указан тип useState<number | null>(null), 
+	 * указан тип useState<number | null>(null),
 	 * чтобы TypeScript понимал, что состояние может быть как числом (индексом), так и null
 	 * */
 
@@ -331,13 +333,14 @@ export default function Footer() {
 						RESERVIEREN
 					</h1>
 					<h2 className='text-white/70 text-md md:text-xl mb-13 font-bold mt-3 2xl:mb-22 2xl:text-2xl'>
-						Telefon +49 0221/2578540 <br />
 						{/* = КНОПКА ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ФОРМЕ БРОНИРОВАНИЯ = */}
-						<ScrollToSection targetId='anfahrt'>
-							<span className='text-orange-300/60 hover:text-orange-300/80 cursor-pointer'>
-								Reservierung
-							</span>
-						</ScrollToSection>
+						<Suspense fallback={null}>
+							<ScrollToSection targetId='anfahrt'>
+								<span className='text-orange-300/60 hover:text-orange-300/80 cursor-pointer'>
+									Reservierung
+								</span>
+							</ScrollToSection>
+						</Suspense>
 					</h2>
 					<h1 className='font-extrabold text-2xl text-white/90 sm:text-4xl md:text-2xl 2xl:text-6xl'>
 						ÖFFNUNGSZEITEN

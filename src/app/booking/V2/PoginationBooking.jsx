@@ -232,12 +232,12 @@ export default function PaginationBooking() {
 						</button>
 						<LogoutButton />
 						<a
-							href='/booking/api/export'
+							href='/booking/api/export-xlsx'
 							className='bg-green-700 text-white/60 text-center px-4 py-2 rounded-md cursor-pointer text-sm font-medium
                transition-colors duration-400 border-2 border-gray-600/90
           hover:text-white hover:bg-green-800 hover:border-gray-800'
 						>
-							Export CSV
+							Export bookings
 						</a>
 					</div>
 				</div>
