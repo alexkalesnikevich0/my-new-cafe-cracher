@@ -40,7 +40,7 @@ const withPWA = withPWAInit({
 // - turbopack.root — указывает корень проекта для Turbopack.
 // ============================================================
 const nextConfig: NextConfig = {
-	allowedDevOrigins: ['192.168.1.6'],
+	allowedDevOrigins: ['192.168.1.5'],
 	turbopack: {
 		root: process.cwd(),
 	},

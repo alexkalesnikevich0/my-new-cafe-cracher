@@ -29,4 +29,4 @@ export interface ActionResult {
 /**
  * ДОПУСТИМЫЕ СТАТУСЫ ДЛЯ ОБНОВЛЕНИЯ (ИЗ АДМИНКИ)
  */
-export type AllowedStatusUpdate = 'confirmed' | 'cancelled'
+export type AllowedStatusUpdate = 'confirmed' | 'cancelled'	

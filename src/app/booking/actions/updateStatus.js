@@ -2,6 +2,8 @@
 
 import prisma from '@/app/booking/lib/prisma'
 
+import { isAuthorized } from '../lib/auth' // 2 changes 1.5
+
 // ===== КОНФИГУРАЦИЯ: КЛЮЧИ ДЛЯ ОТПРАВКИ УВЕДОМЛЕНИЙ =====
 
 // API-КЛЮЧ RESEND ДЛЯ ОТПРАВКИ ПИСЕМ
@@ -24,6 +26,56 @@ const MY_EMAIL = process.env.MY_EMAIL
  */
 export async function updateBookingStatus(bookingId, newStatus) {
 	console.log('updateBookingStatus called:', bookingId, newStatus)
+
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Проверка авторизации 1.5
+	// 2 changes tg 1.5
+	//
+	// ПРОБЛЕМА:
+	// Раньше эту функцию мог вызвать ЛЮБОЙ через консоль браузера.
+	// Достаточно было открыть DevTools и написать:
+	//   updateBookingStatus(5, 'confirmed')
+	//
+	// UI скрывает кнопку Confirm для не-админов,
+	// но функцию можно вызвать напрямую через код.
+	// UI НЕ защищает — защищать должен сервер.
+	//
+	// РЕШЕНИЕ:
+	// В начале функции проверяем isAuthorized().
+	// Если не админ — возвращаем ошибку.
+	// ==
+	if (!(await isAuthorized())) {
+		return { error: 'Unauthorized' }
+	}
+	console.log('updateBookingStatus called:', bookingId, newStatus)
+
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Валидация статуса (1.6)
+	// 2 changes tg 1.6
+	//
+	// ПРОБЛЕМА:
+	// Функция принимала ЛЮБОЙ статус.
+	// Если кто-то вызовет updateBookingStatus(5, 'hacked'),
+	// в базу попадёт невалидный статус.
+	//
+	// РЕШЕНИЕ:
+	// Проверяем, что newStatus — только 'confirmed' или 'cancelled'.
+	// Всё остальное — отклоняем с ошибкой.
+	//
+	// ВАЖНО:
+	// Тип AllowedStatusUpdate из types.ts работает ТОЛЬКО при компиляции.
+	// Во время выполнения TypeScript не проверяет.
+	// Поэтому нужна явная проверка через includes().
+	// ===
+
+	// == 1.6
+	const allowedStatus = ['confirmed', 'cancelled']
+
+	if (!allowedStatus.includes(newStatus)) {
+		return { error: 'Invalid status' }
+	}
+	console.log('updateBookingStatus called:', bookingId, newStatus)
+	// === 1.6
 
 	// ===== 1. ОБНОВЛЯЕМ СТАТУС В БАЗЕ ДАННЫХ =====
 	const booking = await prisma.booking.update({
@@ -220,6 +272,25 @@ export async function updateBookingStatus(bookingId, newStatus) {
 }
 
 export async function updateManyBookingStatus(bookingIds, newStatus) {
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Проверка авторизации 1.5
+	// 2 changes tg 1.5
+	//
+	// ЗАЧЕМ:
+	// Массовое обновление статуса — тоже админское действие.
+	// Без проверки любой может подтвердить/отменить
+	// сразу много броней через консоль.
+	//
+	// РЕШЕНИЕ:
+	// Проверяем isAuthorized() в самом начале.
+	// ==
+
+	// == 1.5 tg 2 changes
+	if (!(await isAuthorized())) {
+		return { error: 'Unauthorized' }
+	}
+	// === 1.5 tg 2 changes
+
 	if (!bookingIds || bookingIds.length === 0) {
 		return { error: 'No bookings selected' }
 	}

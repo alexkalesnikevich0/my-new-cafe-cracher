@@ -5,7 +5,10 @@ import prisma from '@/app/booking/lib/prisma'
 // НОВЫЕ ИМПОРТЫ ДЛЯ PR3 (типизация, валидация, доступность)
 
 import { validateBooking } from '@/features/booking/lib/validation'
-import { isSlotAvailable } from '@/features/booking/lib/availability'
+import {
+	isSlotAvailable,
+	isDayAvailable,
+} from '@/features/booking/lib/availability'
 
 // ===== КОНФИГУРАЦИЯ КЛЮЧИ И АДРЕСА =====
 
@@ -30,12 +33,21 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID
 export async function createBooking(formData) {
 	// ДОСТАЁМ ДАННЫЕ ИЗ ФОРМЫ ПО АТРИБУТУ name
 
-	// получаем кол во гостей как строку
-	const guestsRaw = formData.get('guests')
-	// преобразуем в число для валидации parseInt
-	const guests = parseInt(guestsRaw, 10)
-	// parseInt - превращает строку '4' в число 4
-	// 10 это система счисления десятичная
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Number вместо parseInt (2.3)
+	// tg 2 changes 2.3 PR2
+	//
+	// ПРОБЛЕМА:
+	// parseInt('4abc') → 4 (принимает мусор).
+	// parseInt('4.5')  → 4 (обрезает дробь).
+	//
+	// РЕШЕНИЕ:
+	// Number('4abc') → NaN (строго, без мусора).
+	// Number('4.5')  → 4.5 (не обрезает).
+	// Number('4')    → 4.
+	// ===
+	const guestRaw = formData.get('guests')
+	const guests = Number(guestRaw)
 
 	const date = formData.get('date')
 	const time = formData.get('time')
@@ -81,9 +93,39 @@ export async function createBooking(formData) {
 		}
 	}
 
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Проверка лимита броней на день (2.7)
+	// tg 2 changes PR2 2.7
+	//
+	// ПРОБЛЕМА:
+	// Раньше функция isDayAvailable была написана, но не вызывалась.
+	// Значит, лимит в 20 броней на день НЕ работал.
+	//
+	// РЕШЕНИЕ:
+	// Вызываем isDayAvailable(date) перед сохранением.
+	// Если лимит превышен => возвращаем ошибку.
+	// ===
+	const isDayFree = await isDayAvailable(date)
+	if (!isDayFree) {
+		return {
+			error: 'На этот день больше нет свободных мест. Выберите другую дату',
+		}
+	}
+
+	// ==
+	// НОВОЕ ИЗМЕНЕНИЕ: Ловим ошибку уникальности (2.10)
+	// tg 2 changes PR2 2.10
+	//
+	// ПРОБЛЕМА:
+	// Race condition — два запроса могут создать две брони на одно время.
+	//
+	// РЕШЕНИЕ:
+	// БД защищает через уникальный индекс на (date, time).
+	// Если два запроса одновременно создают бронь —
+	// второй упадёт с ошибкой P2002.
+	// ===
 	try {
 		// ШАГ 3 СОХРАНЕНИЕ В БАЗУ ДАННЫХ
-
 		await prisma.booking.create({
 			data: {
 				guests: guests, // уже число привели через parseInt
@@ -95,8 +137,14 @@ export async function createBooking(formData) {
 		})
 		// status 'new' - означает что бронь только создана и ждет подтверждения
 	} catch (error) {
+		// => ЕСЛИ ЭТО ОШИБКА УНИКАЛЬНОСТИ — ВРЕМЯ УЖЕ ЗАНЯТО PR2 2.10
+		if (error.code === 'P2002') {
+			return {
+				error: 'Это время уже забронировано. Пожалуйста, выберите другое',
+			}
+		}
+		// <=
 		console.error('Ошибка сохранения в базу данных', error) // возвращаем пользователю это сообщение
-
 		return { error: 'Не удалось сохранить бронь. Попробуйте позже!' }
 	}
 
@@ -108,7 +156,6 @@ export async function createBooking(formData) {
 			body: JSON.stringify({
 				chat_id: CHAT_ID,
 				text: message,
-				
 			}),
 		})
 	} catch (error) {

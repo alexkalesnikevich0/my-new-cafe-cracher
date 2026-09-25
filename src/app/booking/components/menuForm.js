@@ -106,11 +106,23 @@ export default function Menu() {
 			.then(setOccupiedSlots)
 	}, [])
 
+	// ============================================================
+	// НОВОЕ ИЗМЕНЕНИЕ: Сегодняшняя дата в локальном формате (2.8.1)
+	// 2 changes th PR2 2.8
+	//
+	// ЗАЧЕМ: используется для:
+	// - min в <input type="date">
+	// - проверки в onChange (iOS Safari)
+	// ============================================================
+	const today = (() => {
+		const now = new Date()
+		return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+	})()
+
 	// --- ГЕНЕРИРУЕМ СПИСОК ДОСТУПНОГО ВРЕМЕНИ С 10:00 - 22:00 ТОЛЬКО СВОБОДНЫЕ СЛОТЫ --- //
 	const timeOptions = (() => {
 		const options = []
 		const now = new Date()
-		const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 		const currentTotalMinutes = now.getHours() * 60 + now.getMinutes()
 
 		for (let h = 10; h <= 22; h++) {
@@ -214,31 +226,71 @@ export default function Menu() {
 									{/* ПОЛЕ КОЛИЧЕСТВО ГОСТЕЙ */}
 									<section className=''>
 										Person:
+										{/* ==
+      								НОВОЕ ИЗМЕНЕНИЕ: Проверка гостей для iOS (2.8.2)
+      								ДАТА: Сентябрь 2026
+      								ПРОБЛЕМА: iOS Safari игнорирует min/max для type="number".
+                			Можно ввести "abc", "232", "0".
+      								РЕШЕНИЕ: JS-проверка в onChange.
+                			Если значение невалидное → сбрасываем на 1 + alert.
+     								=== */}
 										<input
-											onChange={checkForm}
 											name='guests'
 											placeholder='fill the gap'
 											type='number'
 											required
 											min='1'
 											max='8'
-											className='md:ml-2 text-center '
-										></input>
-									</section>
-									{/* ПОЛЕ ДАТА (ПРИ ИЗМЕНЕНИИ ОБНОВЛЯЕТ selectedDate И СПИСОК ВРЕМЕНИ)*/}
-									<section className='mt-7 md:mt-0'>
-										Date:
-										<input
-											name='date'
-											type='date'
-											required
-											min={new Date().toISOString().split('T')[0]}
-											className='md:ml-10'
+											className='md:ml-2 text-center'
 											onChange={e => {
-												setSelectedDate(e.target.value)
+												const raw = e.target.value
+
+												// Если пусто — пропускаем (пользователь стирает)
+												if (raw === '') {
+													checkForm()
+													return
+												}
+
+												// Преобразуем в число
+												const num = Number(raw)
+
+												// Если не целое число ИЛИ меньше 1, ИЛИ больше 8 — сбрасываем
+												if (!Number.isInteger(num) || num < 1 || num > 8) {
+													e.target.value = '1'
+													alert('Количество гостей от 1 до 8')
+												}
+
+												// Обновляем состояние формы
 												checkForm()
 											}}
-										></input>
+										/>
+									</section>
+									{/* ПОЛЕ ДАТА (ПРИ ИЗМЕНЕНИИ ОБНОВЛЯЕТ selectedDate И СПИСОК ВРЕМЕНИ)*/}
+
+									<section className='mt-7 md:mt-0'>
+										Date:
+										{/* ==
+    								НОВОЕ ИЗМЕНЕНИЕ: Проверка даты для iOS (2.8.1)
+  								  2 changes tg PR2 + 2.8 IOS 
+   									ПРОБЛЕМА: iOS Safari игнорирует min/max для input type="date".
+    								РЕШЕНИЕ: JS-проверка при изменении даты.
+   									=== */}
+										<input
+											required
+											className='md:ml-10'
+											name='date'
+											type='date'
+											min={today}
+											onChange={e => {
+												const value = e.target.value
+												if (value && value < today) {
+													e.target.value = today
+													alert('Нельзя выбрать прошедшую дату')
+												}
+												setSelectedDate(value)
+												checkForm()
+											}}
+										/>
 									</section>
 									{/* ПОЛЕ ВРЕМЯ (ДИНАМИЧЕСКИЙ СПИСОК ЗАВИСИТ ОТ ВЫБРАННОЙ ДАТЫ) */}
 									<section className='mt-7 md:mt-0'>

@@ -21,19 +21,45 @@ export default function LoginPage() {
 		e.preventDefault()
 		setError('') // новое 8 сентября!
 		setIsLoading(true) // новое 8 сентября!
+		// =
+		// НОВОЕ ИЗМЕНЕНИЕ: Обработка всех кодов ответа
+		// ДАТА: Сентябрь 2026
+		//
+		// 1.4 rate-limits
+		// ПРОБЛЕМА:
+		// Раньше показывалось "Wrong password" на любой не-200 ответ.
+		// Теперь сервер может вернуть:
+		// - 200 — успех.
+		// - 401 — неверный пароль.
+		// - 429 — слишком много попыток.
+		// - 500 — сервер не настроен.
+		//
+		// РЕШЕНИЕ:
+		// Читаем ответ сервера и показываем нужное сообщение.
+		// =
+		try {
+			const res = await fetch('/admin/admin-login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ password }),
+			})
+			setIsLoading(false) // новое 8 сентября!
 
-		const res = await fetch('/admin/admin-login', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ password }),
-		})
+			if (res.ok) {
+				router.push('/admin') // УСПЕХ — ПЕРЕХОДИМ В АДМИНКУ
+				return
+			}
 
-		setIsLoading(false) // новое 8 сентября!
+			// ЧИТАЕМ ТЕЛО ОТВЕТА (ошибку от сервера)
+			const data = await res.json()
 
-		if (res.ok) {
-			router.push('/admin') // УСПЕХ — ПЕРЕХОДИМ В АДМИНКУ
-		} else {
-			setError('Wrong password') // ОШИБКА — ПОКАЗЫВАЕМ СООБЩЕНИЕ
+			// ПОКАЗЫВАЕМ СООБЩЕНИЕ ОТ СЕРВЕРА
+			// Если сервер вернул { error: "..." } — показываем это.
+			// Иначе — общее сообщение.
+			setError(data.error || 'Wrong password')
+		} catch (error) {
+			setIsLoading(false)
+			setError('Wrong! Please try later')
 		}
 	}
 

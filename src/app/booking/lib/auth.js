@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { verifySession } from '@/app/lib/auth/session'
 
 /**
  * ПРОВЕРЯЕТ АВТОРИЗОВАН ЛИ ПОЛЬЗОВАТЕЛЬ
@@ -12,8 +13,26 @@ import { cookies } from 'next/headers'
  * КУКУ ПРОВЕРЯЕТ middleware,js ПРИ ЗАХОДЕ В /admin
  */
 
+// ============================================================
+// НОВОЕ ИЗМЕНЕНИЕ: Проверка авторизации через JWT
+// ДАТА: Сентябрь 2026
+//
+// ПРОБЛЕМА:
+// Раньше проверялось cookie === 'true'.
+// Теперь в куке хранится JWT (длинная строка).
+// Проверка на 'true' больше не работает.
+//
+// РЕШЕНИЕ:
+// Читаем куку, проверяем подпись через verifySession().
+// ============================================================
+
 export async function isAuthorized() {
 	const cookiesStore = await cookies()
-	const token = cookiesStore.get('admin_token')
-	return token?.value === 'true'
+	const token = cookiesStore.get('admin_token')?.value
+
+	// если куки нет => не авторизован
+	if (!token) return false
+
+	// проверяем подпись и срок действия JWT
+	return await verifySession(token)
 }

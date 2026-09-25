@@ -26,21 +26,50 @@ export default function PaginationBooking() {
 	const prevCountRef = useRef(0)
 
 	// ЗАГРУЗКА БРОНЕЙ ИЗ API
+	// ============================================================
+	// НОВОЕ ИЗМЕНЕНИЕ: Защита от пустого ответа (bug fix)
+	// ошибка в админке
+	//
+	// ПРОБЛЕМА:
+	// Если сервер вернёт ошибку 500 без тела — res.json() падает.
+	//
+	// РЕШЕНИЕ:
+	// 1. Проверяем res.ok.
+	// 2. Если ошибка — показываем сообщение и выходим.
+	// 3. Если 401 — редирект на /admin/login.
+	// ============================================================
 	const loadBookings = useCallback(async () => {
-		const res = await fetch('/booking/api')
-		const data = await res.json()
+		try {
+			const res = await fetch('/booking/api')
 
-		setLoading(true)
-		// ЗВУКОВОЕ УВЕДОМЛЕНИЕ, ЕСЛИ ПОЯВИЛАСЬ НОВАЯ БРОНЬ
-		if (data.length > prevCountRef.current) {
-			const audio = new Audio('/notification.mp3')
-			audio.play().catch(() => {}) // ИГНОРИРУЕМ ОШИБКУ, ЕСЛИ БРАУЗЕР БЛОКИРУЕТ ЗВУК
+			// ЕСЛИ НЕ 200 — ОБРАБАТЫВАЕМ ОШИБКУ
+			if (!res.ok) {
+				// ЕСЛИ 401 — НЕ АВТОРИЗОВАН → РЕДИРЕКТ НА ЛОГИН
+				if (res.status === 401) {
+					window.location.href = '/admin/login'
+					return
+				}
+
+				console.error(`Ошибка загрузки броней: ${res.status}`)
+				setLoading(false)
+				return
+			}
+
+			const data = await res.json()
+
+			setLoading(true)
+			if (data.length > prevCountRef.current) {
+				const audio = new Audio('/notification.mp3')
+				audio.play().catch(() => {})
+			}
+			prevCountRef.current = data.length
+			setAllBookings(data)
+			setLoading(false)
+		} catch (error) {
+			console.error('Ошибка загрузки:', error)
+			setLoading(false)
 		}
-		prevCountRef.current = data.length
-		setAllBookings(data)
-		setLoading(false)
 	}, [])
-
 	// АВТООБНОВЛЕНИЕ КАЖДЫЕ 60 СЕКУНД
 	useEffect(() => {
 		loadBookings()
