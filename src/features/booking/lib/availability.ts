@@ -1,4 +1,4 @@
-import prisma from '../../../app/booking/lib/prisma'
+import prisma from '@/app/booking/lib/prisma'
 
 /**
  * ПРОВЕРЯЕТ СВОБОДНО ЛИ УКАЗАННОЕ ВРЕМЯ ДЛЯ БРОНИРОВАНИЯ

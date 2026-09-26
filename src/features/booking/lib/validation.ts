@@ -350,7 +350,7 @@ export function validateBooking(
 
 	// 4.1 ПРОВЕРКА, ЧТО ВРЕМЯ ВООБЩЕ ЕСТЬ
 	if (!time || typeof time !== 'string' || time.trim() === '') {
-		return { error: 'Пожалуйста выберите время' }
+		return { error: 'Пожалуйста, выберите время' }
 	}
 
 	// 4.2 ПРОВЕРКА ФОРМАТА ВРЕМЕНИ (HH:MM)
@@ -367,7 +367,7 @@ export function validateBooking(
 	// ===
 	if (!isValidTimeSlot(time)) {
 		return {
-			error: 'Restaurant is working from 10.00 to 22.00',
+			error: 'Ресторан работает с 10:00 до 22:00',
 		}
 	}
 
