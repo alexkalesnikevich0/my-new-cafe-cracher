@@ -22,6 +22,11 @@ export default function PaginationBooking() {
 	// ПОКАЗЫВАТЬ ВСЕ БРОНИ ИЛИ ТОЛЬКО 8?
 	const [showAll, setShowAll] = useState(false)
 
+	// ОШИБКА ЗАГРУЗКИ (PR4 tg 4.1)
+	// null — ошибки нет
+	// строка — текст ошибки для показа пользователю
+	const [error, setError] = useState(null)
+
 	// ХРАНИТ ПРЕДЫДУЩЕЕ КОЛИЧЕСТВО БРОНЕЙ ДЛЯ ЗВУКОВОГО УВЕДОМЛЕНИЯ
 	const prevCountRef = useRef(0)
 
@@ -39,6 +44,8 @@ export default function PaginationBooking() {
 	// 3. Если 401 — редирект на /admin/login.
 	// ============================================================
 	const loadBookings = useCallback(async () => {
+		setLoading(true) // PR4 tg 4.1 tg 2 changes
+		setError(null) // PR4 tg 2 changes 4.1 - сброс ошибки перед каждой загрузкой
 		try {
 			const res = await fetch('/booking/api')
 
@@ -49,25 +56,23 @@ export default function PaginationBooking() {
 					window.location.href = '/admin/login'
 					return
 				}
-
 				console.error(`Ошибка загрузки броней: ${res.status}`)
-				setLoading(false)
+				setError('Failed to load bookings') // PR4 tg 2 changes 4.1
 				return
 			}
-
 			const data = await res.json()
 
-			setLoading(true)
 			if (data.length > prevCountRef.current) {
 				const audio = new Audio('/notification.mp3')
 				audio.play().catch(() => {})
 			}
 			prevCountRef.current = data.length
 			setAllBookings(data)
-			setLoading(false)
 		} catch (error) {
 			console.error('Ошибка загрузки:', error)
-			setLoading(false)
+			setError('Failed to load bookings') // PR4 tg 2 changes 4.1
+		} finally {
+			setLoading(false) // PR4 tg 2 changes 4.1
 		}
 	}, [])
 	// АВТООБНОВЛЕНИЕ КАЖДЫЕ 60 СЕКУНД
@@ -180,9 +185,7 @@ export default function PaginationBooking() {
 		// - СРАВНИВАЕМ ИХ ID
 		// - ЕСЛИ b.id = a.id > 0, то b идет раньше (то есть новые сверху)
 		// - ЧТОБЫ НОВЫЕ БРОНИ БЫЛИ В САМОМ ВЕРХУ ТАБЛИЦЫ
-		.sort((a, b) => {
-			return b.id - <a href='' className='id'></a>
-		})
+		.sort((a, b) => b.id - a.id)
 
 	// ПАГИНАЦИЯ: ПОКАЗЫВАЕМ ВСЕ ИЛИ ТОЛЬКО ПЕРВЫЕ 8
 	const displayedBookings = showAll
@@ -360,7 +363,19 @@ export default function PaginationBooking() {
 						)}
 					</div>
 				</div>
-
+				{/** КРАСНЫЙ БАННЕР ОШИБКИ (PR4 tg 2 changes 4.1) */}
+				{error && (
+					<div className='bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-md mt-4 flex items-center mx-auto w-90 justify-between'>
+						<span className='font-medium'>{error}</span>
+						<button
+							onClick={loadBookings}
+							className='bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold cursor-pointer transition-colors duration-500
+						hover:bg-red-700'
+						>
+							Retry
+						</button>
+					</div>
+				)}
 				{/* СКЕЛЕТОН-ЗАГРУЗКА (ПОКА ДАННЫЕ ГРУЗЯТСЯ) ИЛИ ТАБЛИЦА */}
 				{loading ? (
 					<div className='space-y-3 animate-pulse mt-4'>
