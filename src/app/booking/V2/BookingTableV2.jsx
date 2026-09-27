@@ -22,14 +22,24 @@ import toast from 'react-hot-toast'
 export default function BookingTableV2({ bookings, onStatusChange }) {
 	// ПОДТВЕРЖДЕНИЕ БРОНИ
 	async function handleConfirm(id) {
-		await updateBookingStatus(id, 'confirmed')
-		onStatusChange() // ОБНОВЛЯЕМ ТАБЛИЦУ ЧЕРЕЗ РОДИТЕЛЯ
+		try {
+			await updateBookingStatus(id, 'confirmed')
+			onStatusChange() // ОБНОВЛЯЕМ ТАБЛИЦУ ЧЕРЕЗ РОДИТЕЛЯ
+		} catch (error) {
+			console.error('Ошибка подтверждения:', error)
+			toast.error('Failed to confirm booking')
+		}
 	}
 
 	// ОТМЕНА БРОНИ
 	async function handleCancel(id) {
-		await updateBookingStatus(id, 'cancelled')
-		onStatusChange()
+		try {
+			await updateBookingStatus(id, 'cancelled')
+			onStatusChange()
+		} catch (error) {
+			console.error('Ошибка отмены:', error)
+			toast.error('Failed to cancel booking')
+		}
 	}
 
 	// СОСТОЯНИЕ ДЛЯ МОДАЛЬНОГО ОКНА ПОДТВЕРЖДЕНИЯ
