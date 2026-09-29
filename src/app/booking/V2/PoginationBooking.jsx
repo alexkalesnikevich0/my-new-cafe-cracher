@@ -117,6 +117,23 @@ export default function PaginationBooking() {
 	// (ПРИМЕНЯЕТСЯ ТОЛЬКО ПОСЛЕ ENTER)
 	const [appliedQuery, setAppliedQuery] = useState('')
 
+	// ЕСТЬ ЛИ АКТИВНЫЙ ФИЛЬТР (PR4 tg 4.3) =>
+	// tg 2 changes
+	// true — хотя бы один фильтр активен
+	// false — фильтров нет
+	const hasFilter =
+		filterDate !== '' || filterStatus !== 'all' || appliedQuery !== ''
+
+	// СБРОС ВСЕХ ФИЛЬТРОВ (PR4 tg 4.3) =>
+	// Вызывается из BookingTableV2 при клике на 'Clear filters'
+	// tg 2 changes
+	const handleClearFilters = () => {
+		setFilterDate('')
+		setFilterStatus('all')
+		setSearchQuery('')
+		setAppliedQuery('')
+	}
+
 	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
 	const filteredBookings = allbookings
 		.filter(b => {
@@ -388,10 +405,11 @@ export default function PaginationBooking() {
 					<BookingTableV2
 						bookings={displayedBookings}
 						onStatusChange={loadBookings}
+						hasFilter={hasFilter} // PR4 4.3 tg 2 changes
+						onClearFilters={handleClearFilters} // PR4 4.3 tg 2 changes
 					/>
 				)}
 			</div>
-
 			{/* КНОПКА "SHOW ALL / SHOW LESS" (ТОЛЬКО ЕСЛИ БОЛЬШЕ 8 БРОНЕЙ И НЕТ ФИЛЬТРА) ! 4. добавил filteredBookings. PR4 ! */}
 			{!filterDate && filteredBookings.length > 8 && (
 				<div className='mt-4 text-center '>

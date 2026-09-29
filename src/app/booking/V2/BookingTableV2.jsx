@@ -19,7 +19,12 @@ import ConfirmModal from './confirmModal'
 
 import toast from 'react-hot-toast'
 
-export default function BookingTableV2({ bookings, onStatusChange }) {
+export default function BookingTableV2({
+	bookings,
+	onStatusChange,
+	hasFilter,
+	onClearFilters,
+}) {
 	// ПОДТВЕРЖДЕНИЕ БРОНИ
 	async function handleConfirm(id) {
 		try {
@@ -188,7 +193,6 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 						</button>
 					</div>
 				</div>
-
 				<div className='bg-white/90 shadow-xl overflow-hidden rounded-xl border border-gray-100'>
 					<table className='w-320 text-sm'>
 						{/* ЗАГОЛОВОК ТАБЛИЦЫ */}
@@ -224,29 +228,60 @@ export default function BookingTableV2({ bookings, onStatusChange }) {
 							{bookings.length === 0 ? (
 								<tr>
 									<td colSpan={10} className='px-6 py-12 text-center'>
-										<div className='flex flex-col items-center gap-3'>
-											{/* Иконка */}
+										{hasFilter ? ( // PR4 4.3 tg 2 changes =>
+											<div className='flex flex-col items-center gap-3'>
+												{/* Иконка */}
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 16 16'
+													fill='currentColor'
+													className='size-15 text-red-600/90'
+												>
+													<path
+														fillRule='evenodd'
+														d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
+														clipRule='evenodd'
+													/>
+												</svg>
+												<p className='text-xl font-medium text-gray-500'>
+													No result for your filters
+												</p>
+												<p className='text-sm text-gray-400'>
+													Try changing or clearing your filters
+												</p>
+												<button
+													onClick={onClearFilters} // PR4 4.3 tg 2 changes
+													className='mt-2 bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold cursor-pointer
+													transition-colors duration-500
+													hover:bg-blue-700'
+												>
+													Clear filters
+												</button>
+											</div>
+										) : (
+											<div className='flex flex-col items-center gap-3'>
+												{/* старый компонент */}
+												<svg
+													xmlns='http://www.w3.org/2000/svg'
+													viewBox='0 0 16 16'
+													fill='currentColor'
+													className='size-15 text-red-600/90'
+												>
+													<path
+														fillRule='evenodd'
+														d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
+														clipRule='evenodd'
+													/>
+												</svg>
 
-											<svg
-												xmlns='http://www.w3.org/2000/svg'
-												viewBox='0 0 16 16'
-												fill='currentColor'
-												className='size-15 text-red-600/90'
-											>
-												<path
-													fillRule='evenodd'
-													d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
-													clipRule='evenodd'
-												/>
-											</svg>
-
-											<p className='text-xl font-medium text-gray-500'>
-												No reservations yet
-											</p>
-											<p className='text-sm text-gray-400'>
-												There are no bookings at the moment.
-											</p>
-										</div>
+												<p className='text-xl font-medium text-gray-500'>
+													No reservations yet
+												</p>
+												<p className='text-sm text-gray-400'>
+													There are no bookings at the moment.
+												</p>
+											</div>
+										)}
 									</td>
 								</tr>
 							) : (
