@@ -49,3 +49,5 @@ storybook-static
 
 
 prisma/dev.db
+
+*.log
