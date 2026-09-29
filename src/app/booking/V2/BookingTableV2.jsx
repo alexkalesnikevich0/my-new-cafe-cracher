@@ -24,6 +24,9 @@ export default function BookingTableV2({
 	onStatusChange,
 	hasFilter,
 	onClearFilters,
+	sortColumn,
+	sortDirection,
+	onSort,
 }) {
 	// ПОДТВЕРЖДЕНИЕ БРОНИ
 	async function handleConfirm(id) {
@@ -151,6 +154,47 @@ export default function BookingTableV2({
 		}
 	}
 
+	// ИНДИКАТОР СОРТИРОВКИ (PR4 4.4 tg 2 changes) ======>
+	function SortIndicator({ column }) {
+		if (sortColumn !== column) return null
+
+		return (
+			<span className='ml-1 inline-flex items-center justify-center flex'>
+				{sortDirection === 'asc' ? (
+					// СТРЕЛКА ВВЕРХ
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 16 16'
+						fill='currentColor'
+						className='w-3 h-3 text-blue-700'
+					>
+						<path
+							fillRule='evenodd'
+							d='M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z'
+							clipRule='evenodd'
+						/>
+					</svg>
+				) : (
+					// СТРЕЛКА ВНИЗ
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 16 16'
+						fill='currentColor'
+						className='w-3 h-3 text-blue-700'
+					>
+						<path
+							fillRule='evenodd'
+							d='M8 2a.75.75 0 0 1 .75.75v8.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.22 3.22V2.75A.75.75 0 0 1 8 2Z'
+							clipRule='evenodd'
+						/>
+					</svg>
+
+					// СТРЕЛКА ВНИЗ
+				)}
+			</span>
+		)
+	}
+
 	return (
 		<div className='py-10 px-4'>
 			<div className='max-w-8xl mx-auto'>
@@ -212,12 +256,42 @@ export default function BookingTableV2({
 									/>
 								</th>
 								{/** НОВОЕ ГАЛОЧКИ 1 */}
-								<th className='px-10 py-4 text-left font-semibold'>ID</th>
-								<th className='px-2 py-4 text-left font-semibold'>Guests</th>
-								<th className='px-11 py-4 text-left font-semibold'>Date</th>
-								<th className='px-6.5 py-4 text-left font-semibold'>Time</th>
-								<th className='px-11 py-4 text-left font-semibold'>Status</th>
-								<th className='px-12 py-4 text-left font-semibold'>Created</th>
+								<th
+									onClick={() => onSort('id')}
+									className='px-10 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									ID <SortIndicator column='id' />
+								</th>
+								<th
+									onClick={() => onSort('guests')}
+									className='px-2 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									Guests <SortIndicator column='guests' />
+								</th>
+								<th
+									onClick={() => onSort('date')}
+									className='px-11 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									Date <SortIndicator column='date' />
+								</th>
+								<th
+									onClick={() => onSort('time')}
+									className='px-6.5 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									Time <SortIndicator column='time' />
+								</th>
+								<th
+									onClick={() => onSort('status')}
+									className='px-11 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									Status <SortIndicator column='status' />
+								</th>
+								<th
+									onClick={() => onSort('createdAt')}
+									className='px-12 py-4 text-left font-semibold cursor-pointer select-none transition-colors hover:bg-gray-300'
+								>
+									Created <SortIndicator column='createdAt' />
+								</th>
 								<th className='px-22 py-4 text-left font-semibold'>Email</th>
 								<th className='px-18 py-4 text-left font-semibold'>Actions</th>
 								<th className='px-5 py-4 text-left font-semibold'>Copy</th>

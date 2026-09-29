@@ -134,6 +134,13 @@ export default function PaginationBooking() {
 		setAppliedQuery('')
 	}
 
+	// СОРТИРОВКА (PR4 tg 4.4) ======>
+	// tg 2 changes
+	// Колонка, по которой сортируем
+	const [sortColumn, setSortColumn] = useState('id')
+	// Направление: 'asc' (↑) или 'desc' (↓)
+	const [sortDirection, setSortDirection] = useState('desc')
+
 	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
 	const filteredBookings = allbookings
 		.filter(b => {
@@ -145,43 +152,43 @@ export default function PaginationBooking() {
 			/**
  
 
-// ============================================================
-// НОВОЕ ИЗМЕНЕНИЕ: Поиск (фильтрация) по тексту
-// ДАТА: Сентябрь 2026
-//
-// ЕСЛИ appliedQuery НЕ ПУСТОЙ:
-//   if (appliedQuery) — проверяем, есть ли введённый текст.
-//   Если пусто — фильтр пропускается, показываются все брони.
-//
-// ЧТО ДЕЛАЕТ `const q = appliedQuery.toLowerCase()`:
-//   Приводит введённый текст к нижнему регистру.
-//   Зачем: чтобы поиск был нечувствителен к регистру.
-//   Пример: если ввести "TEST@MAIL.COM", оно найдёт "test@mail.com".
-//
-// ЧТО ТАКОЕ `match`:
-//   Это переменная, которая хранит true/false — совпало ли что-то.
-//   Если хотя бы одно условие верно → match = true.
-//   Если ничего не совпало → match = false, и бронь скрывается.
-//
-// ПОЧЕМУ `b.id.toString().includes(q)`:
-//   b.id — это число (например, 12), а q — это строка ("12").
-//   Числа в JavaScript не имеют метода .includes().
-//   Поэтому мы вызываем .toString(), чтобы превратить число в строку.
-//   И уже у строки вызываем .includes(q) — проверяем, есть ли в ней q.
-//
-// ЧТО ТАКОЕ `.includes(q)`:
-//   Это метод строки, который проверяет, содержится ли q внутри строки.
-//   Пример: "test@mail.com".includes("mail") → true
-//           "test@mail.com".includes("xyz") → false
-//
-// ПОЛЯ, ПО КОТОРЫМ ИЩЕТ ПОИСК:
-//   - b.id → ID брони
-//   - b.email → почта гостя
-//   - b.date → дата брони
-//   - b.time → время брони
-//   - b.guests → количество гостей
-// ============================================================
-*/
+					// ============================================================
+					// НОВОЕ ИЗМЕНЕНИЕ: Поиск (фильтрация) по тексту
+					// ДАТА: Сентябрь 2026
+					//
+					// ЕСЛИ appliedQuery НЕ ПУСТОЙ:
+					//   if (appliedQuery) — проверяем, есть ли введённый текст.
+					//   Если пусто — фильтр пропускается, показываются все брони.
+					//
+					// ЧТО ДЕЛАЕТ `const q = appliedQuery.toLowerCase()`:
+					//   Приводит введённый текст к нижнему регистру.
+					//   Зачем: чтобы поиск был нечувствителен к регистру.
+					//   Пример: если ввести "TEST@MAIL.COM", оно найдёт "test@mail.com".
+					//
+					// ЧТО ТАКОЕ `match`:
+					//   Это переменная, которая хранит true/false — совпало ли что-то.
+					//   Если хотя бы одно условие верно → match = true.
+					//   Если ничего не совпало → match = false, и бронь скрывается.
+					//
+					// ПОЧЕМУ `b.id.toString().includes(q)`:
+					//   b.id — это число (например, 12), а q — это строка ("12").
+					//   Числа в JavaScript не имеют метода .includes().
+					//   Поэтому мы вызываем .toString(), чтобы превратить число в строку.
+					//   И уже у строки вызываем .includes(q) — проверяем, есть ли в ней q.
+					//
+					// ЧТО ТАКОЕ `.includes(q)`:
+					//   Это метод строки, который проверяет, содержится ли q внутри строки.
+					//   Пример: "test@mail.com".includes("mail") → true
+					//           "test@mail.com".includes("xyz") → false
+					//
+					// ПОЛЯ, ПО КОТОРЫМ ИЩЕТ ПОИСК:
+					//   - b.id → ID брони
+					//   - b.email → почта гостя
+					//   - b.date → дата брони
+					//   - b.time → время брони
+					//   - b.guests → количество гостей
+					// ============================================================
+					*/
 
 			if (appliedQuery) {
 				const q = appliedQuery.toLowerCase()
@@ -196,13 +203,50 @@ export default function PaginationBooking() {
 			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
 			return true
 		})
-
+		// СОРТИРОВКА ПО ВЫБРАННОЙ КОЛОНКЕ (PR4 tg 4.4) =====>
+		// tg 2 changes
 		// ИЗМЕНЕНИЕ СОРТИРОВКА ПО ID
 		// - БЕРЕМ ДВА ОБЪЕКТА (a и b)
 		// - СРАВНИВАЕМ ИХ ID
 		// - ЕСЛИ b.id = a.id > 0, то b идет раньше (то есть новые сверху)
 		// - ЧТОБЫ НОВЫЕ БРОНИ БЫЛИ В САМОМ ВЕРХУ ТАБЛИЦЫ
-		.sort((a, b) => b.id - a.id)
+		.sort((a, b) => {
+			const aVal = a[sortColumn]
+			const bVal = b[sortColumn]
+
+			// Если равны — порядок не меняем
+			if (aVal === bVal) return 0
+
+			let result
+
+			// Для чисел (id, guests)
+			if (typeof aVal === 'number' && typeof bVal === 'number') {
+				result = aVal - bVal
+			} else if (sortColumn === 'createdAt') {
+				// Для даты создания — сравниваем как timestamp
+				result = new Date(aVal).getTime() - new Date(bVal).getTime()
+			} else {
+				// Для строк (date, time, status) — localeCompare
+				result = String(aVal).localeCompare(String(bVal))
+			}
+
+			// Инвертируем для 'desc'
+			return sortDirection === 'asc' ? result : -result
+		})
+	// СОРТИРОВКА ПО ВЫБРАННОЙ КОЛОНКЕ (PR4 tg 4.4) <=====
+
+	// ОБРАБОТЧИК КЛИКА ПО ЗАГОЛОВКУ (PR4 tg 4.4) ====>
+	// Если кликнули по той же колонке — меняем направление
+	// Если по новой — ставим asc
+	const handleSort = column => {
+		if (sortColumn === column) {
+			setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+		} else {
+			setSortColumn(column)
+			setSortDirection('asc')
+		}
+	}
+	// 4.4 <======
 
 	// ПАГИНАЦИЯ: ПОКАЗЫВАЕМ ВСЕ ИЛИ ТОЛЬКО ПЕРВЫЕ 8
 	const displayedBookings = showAll
@@ -407,6 +451,9 @@ export default function PaginationBooking() {
 						onStatusChange={loadBookings}
 						hasFilter={hasFilter} // PR4 4.3 tg 2 changes
 						onClearFilters={handleClearFilters} // PR4 4.3 tg 2 changes
+						sortColumn={sortColumn} // PR4 4.4 tg 2 changes
+						sortDirection={sortDirection} // PR4 4.4 tg 2 changes
+						onSort={handleSort} // PR4 4.4 tg 2 changes
 					/>
 				)}
 			</div>
