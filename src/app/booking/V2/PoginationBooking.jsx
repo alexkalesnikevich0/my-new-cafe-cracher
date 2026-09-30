@@ -15,12 +15,11 @@ import TodayCounter from './TodayCounter'
 import PendingCounter from './PendingCounter'
 import LogoutButton from '@/app/admin/logout/logoutButton'
 
+import PaginationControls from './PaginationControls'
+
 export default function PaginationBooking() {
 	// ВСЕ БРОНИ (ПОЛНЫЙ СПИСОК)
 	const [allbookings, setAllBookings] = useState([])
-
-	// ПОКАЗЫВАТЬ ВСЕ БРОНИ ИЛИ ТОЛЬКО 8?
-	const [showAll, setShowAll] = useState(false)
 
 	// ОШИБКА ЗАГРУЗКИ (PR4 tg 4.1)
 	// null — ошибки нет
@@ -29,6 +28,11 @@ export default function PaginationBooking() {
 
 	// ХРАНИТ ПРЕДЫДУЩЕЕ КОЛИЧЕСТВО БРОНЕЙ ДЛЯ ЗВУКОВОГО УВЕДОМЛЕНИЯ
 	const prevCountRef = useRef(0)
+
+	// ХРАНИТ, БЫЛА ЛИ ПЕРВАЯ ЗАГРУЗКА (PR4 tg 4.5)
+	// true — первая загрузка (показываем скелетон)
+	// false — обновление (без скелетона)
+	const isFirstLoadRef = useRef(true)
 
 	// ЗАГРУЗКА БРОНЕЙ ИЗ API
 	// ============================================================
@@ -44,7 +48,8 @@ export default function PaginationBooking() {
 	// 3. Если 401 — редирект на /admin/login.
 	// ============================================================
 	const loadBookings = useCallback(async () => {
-		setLoading(true) // PR4 tg 4.1 tg 2 changes
+		// PR 4.5 tg 2 changes - cкелетон только при первой загрузке
+		if (isFirstLoadRef.current) setLoading(true) // PR4 tg 4.1 tg 2 changes
 		setError(null) // PR4 tg 2 changes 4.1 - сброс ошибки перед каждой загрузкой
 		try {
 			const res = await fetch('/booking/api')
@@ -73,6 +78,7 @@ export default function PaginationBooking() {
 			setError('Failed to load bookings') // PR4 tg 2 changes 4.1
 		} finally {
 			setLoading(false) // PR4 tg 2 changes 4.1
+			isFirstLoadRef.current = false // PR4 4.5 tg 2 changes
 		}
 	}, [])
 	// АВТООБНОВЛЕНИЕ КАЖДЫЕ 60 СЕКУНД
@@ -132,6 +138,7 @@ export default function PaginationBooking() {
 		setFilterStatus('all')
 		setSearchQuery('')
 		setAppliedQuery('')
+		setCurrentPage(1) // PR4 4.5 tg 2 changes  сброс на 1 страницу
 	}
 
 	// СОРТИРОВКА (PR4 tg 4.4) ======>
@@ -140,6 +147,14 @@ export default function PaginationBooking() {
 	const [sortColumn, setSortColumn] = useState('id')
 	// Направление: 'asc' (↑) или 'desc' (↓)
 	const [sortDirection, setSortDirection] = useState('desc')
+
+	// ПАГИНАЦИЯ (PR4 tg 4.5) ====>
+	// tg 2 changes
+	// Текущая страница (1, 2, 3...)
+	const [currentPage, setCurrentPage] = useState(1)
+	// Сколько записей на страницу
+	const [perPage, setPerPage] = useState(8)
+	// <====
 
 	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
 	const filteredBookings = allbookings
@@ -245,13 +260,21 @@ export default function PaginationBooking() {
 			setSortColumn(column)
 			setSortDirection('asc')
 		}
+		setCurrentPage(1) // PR4 4.5 tg 2 changes сброс на 1 страницу
 	}
 	// 4.4 <======
 
-	// ПАГИНАЦИЯ: ПОКАЗЫВАЕМ ВСЕ ИЛИ ТОЛЬКО ПЕРВЫЕ 8
-	const displayedBookings = showAll
-		? filteredBookings
-		: filteredBookings.slice(0, 8)
+	// ПАГИНАЦИЯ (PR4 tg 4.5) tg 2 changes ======>
+	// Вычисляем диапазон записей для текущей страницы
+	const StartIndex = (currentPage - 1) * perPage
+	const EndIndex = StartIndex + perPage
+
+	// Общее количество страниц
+	const totalPages = Math.ceil(filteredBookings.length / perPage)
+
+	// Показываем только записи текущей страницы
+	const displayedBookings = filteredBookings.slice(StartIndex, EndIndex)
+	// <====== PR4 4.5
 
 	// СОСТОЯНИЕ ЗАГРУЗКИ ДЛЯ СКЕЛЕТОН-АНИМАЦИИ
 	const [loading, setLoading] = useState(true)
@@ -280,14 +303,20 @@ export default function PaginationBooking() {
 								<input
 									type='date'
 									value={filterDate}
-									onChange={e => setFilterDate(e.target.value)}
+									onChange={e => {
+										setFilterDate(e.target.value)
+										setCurrentPage(1) // PR4 4.5 tg 2 changes
+									}}
 									className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
 								/>
 							</label>
 							{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
 							{filterDate && (
 								<button
-									onClick={() => setFilterDate('')}
+									onClick={() => {
+										setFilterDate('')
+										setCurrentPage(1) // PR4 4.5 tg 2 changes
+									}}
 									className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
               hover:text-white hover:bg-blue-700 hover:border-gray-800'
 								>
@@ -303,7 +332,10 @@ export default function PaginationBooking() {
 							{['all', 'new', 'confirmed', 'cancelled'].map(status => (
 								<button
 									key={status}
-									onClick={() => setFilterStatus(status)}
+									onClick={() => {
+										setFilterStatus(status)
+										setCurrentPage(1) // PR4 4.5 tg 2 changes
+									}}
 									className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
 									${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
 								>
@@ -383,6 +415,7 @@ export default function PaginationBooking() {
 							onChange={e => setSearchQuery(e.target.value)}
 							onKeyDown={e => {
 								if (e.key === 'Enter') setAppliedQuery(searchQuery.trim())
+								setCurrentPage(1) // PR4 4.5 tg 2 changes
 							}}
 							placeholder='Поиск по ID, email, дате...'
 							className='w-80 mx-auto flex pr-5 justify-center border-2 border-gray-600 bg-gray-300 rounded-full px-5 py-2 text-sm
@@ -456,18 +489,17 @@ export default function PaginationBooking() {
 						onSort={handleSort} // PR4 4.4 tg 2 changes
 					/>
 				)}
+				{/* ПАГИНАЦИЯ (PR4 tg 4.5 2 changes) */}
+				{filteredBookings.length > 0 && (
+					<PaginationControls
+						currentPage={currentPage}
+						totalPages={totalPages}
+						totalItems={filteredBookings.length}
+						perPage={perPage}
+						onPageChange={setCurrentPage}
+					/>
+				)}
 			</div>
-			{/* КНОПКА "SHOW ALL / SHOW LESS" (ТОЛЬКО ЕСЛИ БОЛЬШЕ 8 БРОНЕЙ И НЕТ ФИЛЬТРА) ! 4. добавил filteredBookings. PR4 ! */}
-			{!filterDate && filteredBookings.length > 8 && (
-				<div className='mt-4 text-center '>
-					<button
-						onClick={() => setShowAll(!showAll)}
-						className='text-white/70 hover:text-white border-2 border-white/0 hover:border-gray-800 duration-500 hover:underline text-sm font-extrabold px-6 py-2 bg-blue-600 rounded-md uppercase cursor-pointer'
-					>
-						{showAll ? 'show less' : `show all - ${filteredBookings.length}`}
-					</button>
-				</div>
-			)}
 		</div>
 	)
 }
