@@ -40,13 +40,14 @@ export default function LoginPage() {
 		try {
 			const res = await fetch('/admin/admin-login', {
 				method: 'POST',
+				credentials: 'include',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ password }),
 			})
 			setIsLoading(false) // новое 8 сентября!
 
 			if (res.ok) {
-				router.push('/admin') // УСПЕХ — ПЕРЕХОДИМ В АДМИНКУ
+				window.location.href = '/admin'
 				return
 			}
 

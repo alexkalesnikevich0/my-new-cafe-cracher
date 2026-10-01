@@ -16,6 +16,7 @@ import PendingCounter from './PendingCounter'
 import LogoutButton from '@/app/admin/logout/logoutButton'
 
 import PaginationControls from './PaginationControls'
+import BookingCard from './BookingCard'
 
 export default function PaginationBooking() {
 	// ВСЕ БРОНИ (ПОЛНЫЙ СПИСОК)
@@ -280,90 +281,92 @@ export default function PaginationBooking() {
 	const [loading, setLoading] = useState(true)
 
 	return (
-		<div className='py-10 px-30'>
-			<div className='min-w-6xl mx-auto'>
+		<div className='py-10'>
+			<div className='max-w-7xl mx-auto'>
 				{/* ВЕРХНЯЯ ПАНЕЛЬ: ЗАГОЛОВОК + СЧЁТЧИКИ + КНОПКИ */}
-				<div className='mt-0 flex justify-between items-center bg-white/70 p-6 rounded-md border-gray-700/80 border-3 shadow-xl'>
-					{/* СЧЁТЧИКИ СЛЕВА */}
-					<div className='flex flex-col gap-4'>
-						<h1 className='text-3xl font-extrabold text-gray-900'>
-							Reservations
-						</h1>
-						<BookingCounterV2 total={allbookings.length} />
-						<PendingCounter total={pendingCount} label='new' />
-						<TodayCounter total={todayStats.guests} label='guests' />
-						<TodayCounter total={todayStats.count} label='reservations' />
-					</div>
+				<div className='w-95 mx-auto md:w-full md:px-20'>
+					<div className='mt-0 flex flex-col md:flex-row justify-between items-center bg-white/70 p-6 rounded-md border-gray-700/80 border-3 shadow-xl'>
+						{/* СЧЁТЧИКИ СЛЕВА */}
+						<div className='flex flex-col gap-4'>
+							<h1 className='text-3xl font-extrabold text-gray-900'>
+								Reservations
+							</h1>
+							<BookingCounterV2 total={allbookings.length} />
+							<PendingCounter total={pendingCount} label='new' />
+							<TodayCounter total={todayStats.guests} label='guests' />
+							<TodayCounter total={todayStats.count} label='reservations' />
+						</div>
 
-					{/* ФИЛЬТР ПО ДАТЕ И СТАТУСУ (ПО ЦЕНТРУ) */}
-					<div className='flex flex-col items-center gap-2 mb-4 mt-5'>
-						<div className='flex items-center gap-4'>
-							<label className='text-base font-medium text-gray-700'>
-								Filter by date:
-								<input
-									type='date'
-									value={filterDate}
-									onChange={e => {
-										setFilterDate(e.target.value)
-										setCurrentPage(1) // PR4 4.5 tg 2 changes
-									}}
-									className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
-								/>
-							</label>
-							{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
-							{filterDate && (
-								<button
-									onClick={() => {
-										setFilterDate('')
-										setCurrentPage(1) // PR4 4.5 tg 2 changes
-									}}
-									className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
-              hover:text-white hover:bg-blue-700 hover:border-gray-800'
-								>
-									Clear filter
-								</button>
-							)}
-						</div>
-						{/* ФИЛЬТР ПО СТАТУСУ  ! НОВОЕ PR4 !  3. Кнопки фильтров в интерфейсе */}
-						<div className='flex items-center gap-2 mt-2 p-2'>
-							<span className='text-sm font-medium text-gray-700 mr-1'>
-								Status:
-							</span>
-							{['all', 'new', 'confirmed', 'cancelled'].map(status => (
-								<button
-									key={status}
-									onClick={() => {
-										setFilterStatus(status)
-										setCurrentPage(1) // PR4 4.5 tg 2 changes
-									}}
-									className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
+						{/* ФИЛЬТР ПО ДАТЕ И СТАТУСУ (ПО ЦЕНТРУ) */}
+						<div className='flex flex-col items-center gap-2 mb-4 mt-5'>
+							<div className='flex flex-col md:flex-row items-center gap-4'>
+								<label className='text-base font-medium text-gray-700'>
+									Filter by date:
+									<input
+										type='date'
+										value={filterDate}
+										onChange={e => {
+											setFilterDate(e.target.value)
+											setCurrentPage(1) // PR4 4.5 tg 2 changes
+										}}
+										className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
+									/>
+								</label>
+								{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
+								{filterDate && (
+									<button
+										onClick={() => {
+											setFilterDate('')
+											setCurrentPage(1) // PR4 4.5 tg 2 changes
+										}}
+										className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
+                     hover:text-white hover:bg-blue-700 hover:border-gray-800'
+									>
+										Clear filter
+									</button>
+								)}
+							</div>
+							{/* ФИЛЬТР ПО СТАТУСУ  ! НОВОЕ PR4 !  3. Кнопки фильтров в интерфейсе */}
+							<div className='flex items-center gap-2 mt-2 p-2'>
+								<span className='text-sm font-medium text-gray-700 mr-1'>
+									Status:
+								</span>
+								{['all', 'new', 'confirmed', 'cancelled'].map(status => (
+									<button
+										key={status}
+										onClick={() => {
+											setFilterStatus(status)
+											setCurrentPage(1) // PR4 4.5 tg 2 changes
+										}}
+										className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
 									${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
-								>
-									{status === 'all'
-										? 'All'
-										: status.charAt(0).toUpperCase() + status.slice(1)}
-								</button>
-							))}
+									>
+										{status === 'all'
+											? 'All'
+											: status.charAt(0).toUpperCase() + status.slice(1)}
+									</button>
+								))}
+							</div>
 						</div>
-					</div>
-					{/* КНОПКИ УПРАВЛЕНИЯ СПРАВА */}
-					<div className='flex flex-col gap-10'>
-						<button
-							onClick={loadBookings}
-							className='bg-blue-600 text-white/60 px-4 py-2 rounded-md cursor-pointer text-sm font-medium transition-colors duration-400 border-2 border-gray-600/90
+						{/* КНОПКИ УПРАВЛЕНИЯ СПРАВА */}
+						<div className='flex flex-col gap-10'>
+							<button
+								onClick={loadBookings}
+								className='bg-blue-600 text-white/60 px-4 py-2 rounded-md cursor-pointer text-sm font-medium transition-colors duration-400 border-2 border-gray-600/90
           hover:text-white hover:bg-blue-700 hover:border-gray-800'
-						>
-							Refresh
-						</button>
-						<LogoutButton />
-						<a
-							href='/booking/api/export-xlsx'
-							className='bg-green-700 text-white/60 text-center px-4 py-2 rounded-md cursor-pointer text-sm font-medium
+							>
+								Refresh
+							</button>
+							<LogoutButton />
+							<a
+								href='/booking/api/export-xlsx'
+								className='bg-green-700 text-white/60 text-center px-4 py-2 rounded-md cursor-pointer text-sm font-medium
                transition-colors duration-400 border-2 border-gray-600/90
           hover:text-white hover:bg-green-800 hover:border-gray-800'
-						>
-							Export bookings
-						</a>
+							>
+								Export bookings
+							</a>
+						</div>
 					</div>
 				</div>
 				<div className='flex justify-center mt-6 mb-4'>
@@ -479,17 +482,89 @@ export default function PaginationBooking() {
 						<div className='h-10 bg-gray-200 rounded w-full'></div>
 					</div>
 				) : (
-					<BookingTableV2
-						bookings={displayedBookings}
-						onStatusChange={loadBookings}
-						hasFilter={hasFilter} // PR4 4.3 tg 2 changes
-						onClearFilters={handleClearFilters} // PR4 4.3 tg 2 changes
-						sortColumn={sortColumn} // PR4 4.4 tg 2 changes
-						sortDirection={sortDirection} // PR4 4.4 tg 2 changes
-						onSort={handleSort} // PR4 4.4 tg 2 changes
-					/>
+					<>
+						{/* ТАБЛИЦА — только на больших экранах (lg+) PR4 tg 4.6 */}
+						<div className='hidden lg:block px-10'>
+							<BookingTableV2
+								bookings={displayedBookings}
+								onStatusChange={loadBookings}
+								hasFilter={hasFilter}
+								onClearFilters={handleClearFilters}
+								sortColumn={sortColumn}
+								sortDirection={sortDirection}
+								onSort={handleSort}
+							/>
+						</div>
+
+						{/* КАРТОЧКИ — на мобилке и планшете (< lg) PR4 tg 4.6 */}
+						<div className='block lg:hidden space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 p-10'>
+							{displayedBookings.length === 0 ? (
+								<div className='bg-white/90 shadow-lg rounded-xl p-8 text-center col-span-full'>
+									{hasFilter ? (
+										<div className='flex flex-col items-center gap-3'>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 16 16'
+												fill='currentColor'
+												className='size-15 text-red-600/90'
+											>
+												<path
+													fillRule='evenodd'
+													d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+											<p className='text-xl font-medium text-gray-500'>
+												No result for your filters
+											</p>
+											<p className='text-sm text-gray-400'>
+												Try changing or clearing your filters
+											</p>
+											<button
+												onClick={handleClearFilters}
+												className='mt-2 bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:bg-blue-700'
+											>
+												Clear filters
+											</button>
+										</div>
+									) : (
+										<div className='flex flex-col items-center gap-3'>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 16 16'
+												fill='currentColor'
+												className='size-15 text-red-600/90'
+											>
+												<path
+													fillRule='evenodd'
+													d='M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 1 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z'
+													clipRule='evenodd'
+												/>
+											</svg>
+											<p className='text-xl font-medium text-gray-500'>
+												No reservations yet
+											</p>
+											<p className='text-sm text-gray-400'>
+												There are no bookings at the moment.
+											</p>
+										</div>
+									)}
+								</div>
+							) : (
+								displayedBookings.map(b => (
+									<BookingCard
+										key={b.id}
+										booking={b}
+										onStatusChange={loadBookings}
+										isSelected={false}
+										onToggleSelect={() => {}}
+									/>
+								))
+							)}
+						</div>
+					</>
 				)}
-				{/* ПАГИНАЦИЯ (PR4 tg 4.5 2 changes) */}
+				{/** ПАГИНАЦИЯ (PR4 tg 2 changes 4.5) */}
 				{filteredBookings.length > 0 && (
 					<PaginationControls
 						currentPage={currentPage}

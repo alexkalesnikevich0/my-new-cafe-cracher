@@ -1,4 +1,4 @@
-import PaginationBooking from '../booking/V2/PoginationBooking'
+import PaginationBooking from '../booking/V2/PaginationBooking'
 
 export default function AdminPage() {
 	return (
