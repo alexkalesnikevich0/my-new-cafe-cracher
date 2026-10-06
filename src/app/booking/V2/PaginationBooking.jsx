@@ -303,6 +303,7 @@ export default function PaginationBooking() {
 								<label className='text-base font-medium text-gray-700'>
 									Filter by date:
 									<input
+										aria-label='Filter bookings ba date'
 										type='date'
 										value={filterDate}
 										onChange={e => {
@@ -327,7 +328,11 @@ export default function PaginationBooking() {
 								)}
 							</div>
 							{/* ФИЛЬТР ПО СТАТУСУ  ! НОВОЕ PR4 !  3. Кнопки фильтров в интерфейсе */}
-							<div className='flex items-center gap-2 mt-2 p-2'>
+							<div
+								className='flex items-center gap-2 mt-2 p-2'
+								role='group' // PR5
+								aria-label='Filter by status' // PR5
+							>
 								<span className='text-sm font-medium text-gray-700 mr-1'>
 									Status:
 								</span>
@@ -338,6 +343,7 @@ export default function PaginationBooking() {
 											setFilterStatus(status)
 											setCurrentPage(1) // PR4 4.5 tg 2 changes
 										}}
+										aria-pressed={filterStatus === status} // PR5
 										className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
 									${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
 									>
@@ -412,7 +418,12 @@ export default function PaginationBooking() {
 // ============================================================
 					 */}
 					<div className='relative w-full max-w-80'>
+						<label htmlFor='search-bookings' className='sr-only'>
+							Search bookings
+						</label>
 						<input
+							id='search-bookings'
+							aria-label='Search bookings by: ID, email, or date'
 							type='text'
 							value={searchQuery}
 							onChange={e => setSearchQuery(e.target.value)}
@@ -421,7 +432,7 @@ export default function PaginationBooking() {
 								setCurrentPage(1) // PR4 4.5 tg 2 changes
 							}}
 							placeholder='Поиск по ID, email, дате...'
-							className='w-80 mx-auto flex pr-5 justify-center border-2 border-gray-600 bg-gray-300 rounded-full px-5 py-2 text-sm
+							className='w-full mx-auto flex pr-5 justify-center border-2 border-gray-600 bg-gray-300 rounded-full px-5 py-2 text-sm
 							focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all duration-500'
 						/>
 						{/** НОВОЕ after change - кнопка поиск брони -
@@ -444,11 +455,13 @@ export default function PaginationBooking() {
 									setSearchQuery('')
 									setAppliedQuery('')
 								}}
+								aria-label='Clear search'
 								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors
 								hover:text-red-600 cursor-pointer'
-								title='Очистить'
+								title='Clear search'
 							>
 								<svg
+									aria-hidden='true'
 									xmlns='http://www.w3.org/2000/svg'
 									viewBox='0 0 16 16'
 									fill='currentColor'

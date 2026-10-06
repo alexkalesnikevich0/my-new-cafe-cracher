@@ -35,13 +35,17 @@ export default function Navigation() {
 					{/* ССЫЛКА ПОД ТЕКСТОМ */}
 					<div className='flex justify-center h-15 items-center'>
 						<section
-							className='lg:p-4 text-blue-700/90 font-extrabold duration-500 text-lg 
+							className='lg:p-4 font-extrabold duration-500 text-lg 
 								hover:text-lg hover:text-blue-700 hover:font-black hover:text-2xl 
 								sm:text-xl sm:hover:text-xl sm:hover:mt-3 
 								md:ml-14 lg:h-5 mt-0 
 								2xl:hover:text-4xl 2xl:text-3xl 2xl:hover:mt-2 2xl:font-bold'
 						>
-							<Link href='/timeride' className='p-2'>
+							<Link
+								href='/timeride'
+								className='bg-orange-950/80 text-white px-5 py-3 border-2 border-black rounded-xl
+								hover:bg-white hover:text-yellow-800/90 duration-600 transition-colors'
+							>
 								Mehr Informationen Timeride
 							</Link>
 						</section>

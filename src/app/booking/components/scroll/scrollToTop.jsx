@@ -49,14 +49,15 @@ export default function ScrollToTop() {
 
 	return (
 		<button
+			aria-label='Scroll to top'
 			onClick={scrollToTop}
 			className={`fixed bottom-6 right-6 z-50 bg-yellow-900/80 text-white/70 w-13 h-13 rounded-full border-1 border-gray-700/50
 				shadow-lg flex items-center justify-center text-xl cursor-pointer transition-all duration-400
 				${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
 				hover:bg-yellow-900 hover:text-white hover:border-gray-700/80 hover:border-2`}
-			area-label='Scroll to top'
 		>
 			<svg
+				aria-hidden='true'
 				xmlns='http://www.w3.org/2000/svg'
 				viewBox='0 0 24 24'
 				fill='currentColor'

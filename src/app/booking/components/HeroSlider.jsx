@@ -100,10 +100,12 @@ export default function HeroSlider() {
 			</div>
 			{/* стрелка назад */}
 			<button
+				aria-label='Previous slide'
 				onClick={prev}
 				className='absolute left-4 top-1/2 -translate-y-1/2 text-white text-5xl hover:text-gray-300 z-30'
 			>
 				<svg
+					aria-hidden='true'
 					xmlns='http://www.w3.org/2000/svg'
 					viewBox='0 0 24 24'
 					fill='currentColor'
@@ -118,10 +120,12 @@ export default function HeroSlider() {
 			</button>
 			{/* стрелка вперед */}
 			<button
+				aria-label='Next slide'
 				onClick={next}
 				className='absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl hover:text-gray-300 z-30'
 			>
 				<svg
+					aria-hidden='true'
 					xmlns='http://www.w3.org/2000/svg'
 					viewBox='0 0 24 24'
 					fill='currentColor'
@@ -138,10 +142,16 @@ export default function HeroSlider() {
 			<div className='absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-3 z-30 '>
 				{slides.map((_, index) => (
 					<button
+						aria-label={`Go to slide ${index + 1}`}
+						aria-current={index === current}
 						key={index}
 						onClick={() => goTo(index)}
-						className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === current ? 'bg-white scale-145' : 'bg-white/50 hover:bg-white/80 hover:scale-145'}`}
-					/>
+						className='p-4 cursor-pointer'
+					>
+						<span
+							className={`block w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${index === current ? 'bg-white scale-145' : 'bg-white/50 hover:bg-white/80 hover:scale-145'}`}
+						></span>
+					</button>
 				))}
 			</div>
 		</div>

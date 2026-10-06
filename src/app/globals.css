@@ -121,6 +121,37 @@
 	}
 }
 
+/* ============================================================
+   FOCUS STYLES (PR5 tg 5.7)
+   Видимый фокус для keyboard navigation
+   ============================================================ */
+
+/* Все интерактивные элементы — красивый focus при Tab */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid #3b82f6; /* синий */
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Для тёмного фона — светлый outline */
+.dark button:focus-visible,
+.dark a:focus-visible,
+.dark input:focus-visible,
+.dark select:focus-visible,
+.dark textarea:focus-visible {
+	outline-color: #93c5fd; /* светло-синий */
+}
+
+/* Убираем уродливый дефолтный focus для mouse-кликов */
+*:focus:not(:focus-visible) {
+	outline: none;
+}
+
 /* code --- 5 file FadeInFromBottom
 ВЫЕЗД СНИЗУ: ЭЛЕМЕНТ НАЧИНАЕТ НА 40px НИЖЕ И ПОЛНОСТЬЮ ПРОЗРАЧНЫМ */
 @keyframes fadeInUp {

@@ -136,13 +136,12 @@ export default function Navbar() {
 		],
 	}
 	/*
-	* ИЗМЕНЕНИЕ PR4
-	* ПРИЧИНА 
-	* Ошибка сборки "Parameter 'routes' implicitly has an 'any' type."
-	* РЕШЕНИЕ 
-	* Явно указан тип String[] для параметра routes. 
-	*/
-	
+	 * ИЗМЕНЕНИЕ PR4
+	 * ПРИЧИНА
+	 * Ошибка сборки "Parameter 'routes' implicitly has an 'any' type."
+	 * РЕШЕНИЕ
+	 * Явно указан тип String[] для параметра routes.
+	 */
 
 	// ПРОВЕРЯЕТ НАХОДИТСЯ ЛИ ПОЛЬЗОВАТЕЛЬ НА ОДНОЙ ИЗ СТРАНИЦ РАЗДЕЛА
 	const isButtonActive = (routes: string[]) =>
@@ -164,6 +163,7 @@ export default function Navbar() {
 										alt='Cafe Cracher'
 										width={52}
 										height={52}
+										priority
 										className='h-13 w-13 cursor-pointer'
 										onClick={() => setIsOpen(false)}
 									/>
@@ -174,6 +174,8 @@ export default function Navbar() {
 						<div className='justify-end items-center '>
 							<div className='justify-between w-full [&_section]:h-2 [&_section]:w-10 [&_section]:bg-white/90 [&_section]:rounded-full [&_section]:'>
 								<button
+									aria-label={isOpen ? 'Close menu' : 'Open menu'}
+									aria-expanded={isOpen}
 									onClick={() => setIsOpen(!isOpen)}
 									className={`md:hidden h-14 w-14 relative cursor-pointer z-50 select-none rounded-md flex items-center justify-center duration-300 border-2 transition-all ${
 										isOpen
@@ -182,7 +184,11 @@ export default function Navbar() {
 									}`}
 								>
 									{/* ! SVG-БУРГЕР ТРИ ПОЛОСКИ ПОВОРАЧИВАЮТСЯ НА 90 ГРАДУСОВ ПРИ ОТКРЫТИИ ! */}
-									<svg viewBox='0 0 24 24' className='w-11 h-11'>
+									<svg
+										viewBox='0 0 24 24'
+										className='w-11 h-11'
+										aria-hidden='true'
+									>
 										<rect
 											x='3'
 											y='5'

@@ -250,6 +250,8 @@ export default function BookingCard({
 						onClick={copyBooking}
 						className='w-full bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer
             transition-colors duration-300 hover:bg-blue-700'
+						title='Copy booking'
+						aria-label='Copy booking'
 					>
 						Copy
 					</button>

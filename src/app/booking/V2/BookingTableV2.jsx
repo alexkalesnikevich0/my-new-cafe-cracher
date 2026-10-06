@@ -437,7 +437,8 @@ export default function BookingTableV2({
 										<button
 											onClick={() => copyBooking(b)}
 											className='text-center p-1 cursor-pointer text-blue-700 hover:text-blue-600 transition-colors'
-											title='Копировать бронь'
+											title='Copy booking'
+											aria-label='Copy booking'
 										>
 											<svg
 												xmlns='http://www.w3.org/2000/svg'

@@ -82,11 +82,18 @@ export default function LoginPage() {
 			>
 				<h1 className='text-2xl font-bold mb-6'>Admin Login</h1>
 				{error && <p className='text-red-500 text-sm mb-1'>{error}</p>}
+				{/** // PR5  all */}
+				<label className='sr-only' htmlFor='admin-password'>
+					Password
+				</label>
+				{/** // PR5  id ; aria-label */}
 				<input
+					id='admin-password' // PR5
 					type='password'
 					value={password}
 					onChange={e => setPassword(e.target.value)}
 					placeholder='Password'
+					aria-label='Admin password'
 					className='w-full border-2 border-gray-300 rounded-md px-3 py-2 mb-4
 					focus:outline-none focus:border-blue-500'
 				/>

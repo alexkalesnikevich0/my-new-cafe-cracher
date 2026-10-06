@@ -225,7 +225,7 @@ export default function Menu() {
 								>
 									{/* ПОЛЕ КОЛИЧЕСТВО ГОСТЕЙ */}
 									<section className=''>
-										Person:
+										<label htmlFor='booking-guests'>Person:</label>
 										{/* ==
       								НОВОЕ ИЗМЕНЕНИЕ: Проверка гостей для iOS (2.8.2)
       								ДАТА: Сентябрь 2026
@@ -235,6 +235,7 @@ export default function Menu() {
                 			Если значение невалидное → сбрасываем на 1 + alert.
      								=== */}
 										<input
+											id='booking-guests'
 											name='guests'
 											placeholder='fill the gap'
 											type='number'
@@ -268,7 +269,7 @@ export default function Menu() {
 									{/* ПОЛЕ ДАТА (ПРИ ИЗМЕНЕНИИ ОБНОВЛЯЕТ selectedDate И СПИСОК ВРЕМЕНИ)*/}
 
 									<section className='mt-7 md:mt-0'>
-										Date:
+										<label htmlFor='booking-date'>Date:</label>
 										{/* ==
     								НОВОЕ ИЗМЕНЕНИЕ: Проверка даты для iOS (2.8.1)
   								  2 changes tg PR2 + 2.8 IOS 
@@ -276,6 +277,7 @@ export default function Menu() {
     								РЕШЕНИЕ: JS-проверка при изменении даты.
    									=== */}
 										<input
+											id='booking-date'
 											required
 											className='md:ml-10'
 											name='date'
@@ -294,8 +296,9 @@ export default function Menu() {
 									</section>
 									{/* ПОЛЕ ВРЕМЯ (ДИНАМИЧЕСКИЙ СПИСОК ЗАВИСИТ ОТ ВЫБРАННОЙ ДАТЫ) */}
 									<section className='mt-7 md:mt-0'>
-										Time:
+										<label htmlFor='booking-time'>Time:</label>
 										<select
+											id='booking-time'
 											onChange={checkForm}
 											name='time'
 											required
@@ -311,8 +314,9 @@ export default function Menu() {
 									</section>
 									{/* ПОЛЕ ЕМАЙЛ (ДЛЯ ОТПРАВКИ СООБЩЕНИЯ НА ПОЧТУ ГОСТЮ) */}
 									<section className='mt-7 md:mt-0'>
-										Email:
+										<label htmlFor='booking-email'>Email:</label>
 										<input
+											id='booking-email'
 											onChange={checkForm}
 											name='email'
 											placeholder='your@gmail'

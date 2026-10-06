@@ -17,6 +17,7 @@ export default function GoogleMap() {
 								style = {{ border: 0 }} - УБИРАЕТ СТАНДАРТНУЮ РАМКУ iframe
 								*/}
 						<iframe
+							title='Google Map'
 							className=''
 							src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1040.492064525332!2d27.64892214902707!3d53.931610086232304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcedd4e03a1bd%3A0x7912e6398b03a332!2z0YPQuy4g0J_QtdGC0YDQsCDQnNGB0YLQuNGB0LvQsNCy0YbQsCAxMCwg0JzQuNC90YHQuiwg0JzQuNC90YHQutCw0Y8g0L7QsdC70LDRgdGC0YwgMjIwMDc2!5e0!3m2!1sru!2sby!4v1784827169890!5m2!1sru!2sby'
 							width='100%'

@@ -58,7 +58,7 @@ export default function Footer() {
 								open={openIndex === 0}
 								onToggle={() => setOpenIndex(openIndex === 0 ? null : 0)}
 							>
-								<div className='text-white/40 text-lg pb-4 w-[80%] mx-auto'>
+								<div className='text-white/80 text-lg pb-4 w-[80%] mx-auto'>
 									<p className='pb-4 mt-3'>
 										Anfahrt mit Bus und Bahn Das Brauhaus Sion ist ideal mit
 										öffentlichen Verkehrsmitteln zu erreichen und ca. 5
@@ -72,7 +72,7 @@ export default function Footer() {
 										Online-Fahrplanauskunft.
 									</p>
 									{/* = ССЫЛКИ С АНИМИРОВАННОЙ СТРЕЛКОЙ (УЛЕТАЕТ ВПРАВО ПРИ НАВЕДЕНИИ) = */}
-									<div className='text-orange-300/60 text-lg uppercase'>
+									<div className='text-orange-300/80 text-lg uppercase'>
 										<p
 											className='pr-4 pb-4 group
 										hover:text-orange-300/80
@@ -165,12 +165,12 @@ export default function Footer() {
 								open={openIndex === 1}
 								onToggle={() => setOpenIndex(openIndex === 1 ? null : 1)}
 							>
-								<div className='text-white/40 text-lg pb-4 w-[100%] mx-auto'>
+								<div className='text-white/80 text-lg pb-4 w-[100%] mx-auto'>
 									<p className='pb-4 mt-3'>
 										Einen Link zu Ihrer Routenplanung finden Sie hier:
 									</p>
 									<p
-										className='text-orange-300/60 text-lg uppercase pr-4 group
+										className='text-orange-300/80 text-lg uppercase pr-4 group
 									hover:text-orange-300/80
 									active:text-orange-300/80'
 									>
@@ -206,7 +206,7 @@ export default function Footer() {
 								open={openIndex === 2}
 								onToggle={() => setOpenIndex(openIndex === 2 ? null : 2)}
 							>
-								<div className='text-white/40 text-lg pb-4 w-[75%] mx-auto'>
+								<div className='text-white/80 text-lg pb-4 w-[75%] mx-auto'>
 									<p className='pb-4 mt-3'>
 										Es sind ausreichen Parkplätze in der Tiefgarage am Dom oder
 										in den weiteren umliegenden Parkhäusern vorhanden.
@@ -215,7 +215,7 @@ export default function Footer() {
 										Einen Link zu Ihrer Routenplanung finden Sie hier:
 									</p>
 									<p
-										className='text-orange-300/60 text-lg uppercase pr-4 group
+										className='text-orange-300/80 text-lg uppercase pr-4 group
 									hover:text-orange-300/80
 									active:text-orange-300/80'
 									>
@@ -251,7 +251,7 @@ export default function Footer() {
 								open={openIndex === 3}
 								onToggle={() => setOpenIndex(openIndex === 3 ? null : 3)}
 							>
-								<div className='text-white/40 text-lg pb-4 w-[80%] mx-auto'>
+								<div className='text-white/80 text-lg pb-4 w-[80%] mx-auto'>
 									<p className='pb-4 mt-3'>
 										Inmitten der historischen Kölner Altstadt, zwischen Dom und
 										Rathaus, zwischen Einkaufsstraßen und Rhein liegt das rundum
@@ -265,7 +265,7 @@ export default function Footer() {
 										freundlichem 3-Sterne-Format.
 									</p>
 									<p
-										className='text-orange-300/60 text-lg uppercase pr-4 pb-4 group
+										className='text-orange-300/80 text-lg uppercase pr-4 pb-4 group
 									hover:text-orange-300/80
 									active:text-orange-300/80'
 									>
@@ -336,7 +336,7 @@ export default function Footer() {
 						{/* = КНОПКА ПЛАВНО ПРОКРУЧИВАЕТ СТРАНИЦУ К ФОРМЕ БРОНИРОВАНИЯ = */}
 						<Suspense fallback={null}>
 							<ScrollToSection targetId='anfahrt'>
-								<span className='text-orange-300/60 hover:text-orange-300/80 cursor-pointer'>
+								<span className='text-orange-300/80 hover:text-orange-300/80 cursor-pointer'>
 									Reservierung
 								</span>
 							</ScrollToSection>
@@ -352,6 +352,7 @@ export default function Footer() {
 					<div className='group'>
 						<div className=''>
 							<a
+								aria-label='facebook'
 								className=''
 								href='https://www.facebook.com/?locale=ru_RU'
 								target='_blank'
@@ -367,6 +368,7 @@ export default function Footer() {
 								</svg>
 							</a>
 							<a
+								aria-label='youtube'
 								className=''
 								href='https://www.youtube.com'
 								target='_blank'
@@ -383,6 +385,7 @@ export default function Footer() {
 							</a>
 
 							<a
+								aria-label='x'
 								className=''
 								href='https://x.com/?lang=ru'
 								target='_blank'
@@ -399,6 +402,7 @@ export default function Footer() {
 							</a>
 
 							<a
+								aria-label='instagram'
 								className=''
 								href='https://www.instagram.com'
 								target='_blank'
@@ -455,7 +459,7 @@ export default function Footer() {
 			</div>
 			{/* = КОПИРАЙТ = */}
 			<footer className='flex items-center justify-center md:justify-start md:pl-20 gap-4 pb-6 '>
-				<p className='text-xl font-semibold font-serif text-white/40'>
+				<p className='text-xl font-semibold font-serif text-white/80'>
 					cafe cracher © {new Date().getFullYear()}
 				</p>
 			</footer>
