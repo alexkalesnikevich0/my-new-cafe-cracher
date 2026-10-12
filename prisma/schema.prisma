@@ -15,9 +15,13 @@ model Booking {
   guests    Int
   date      String
   time      String
+  duration Int @default(120) // PR6 6.2
   email     String   @default("")
   status    String   @default("new")
+  tableId Int? // PR6 6.2
+  table Table? @relation(fields: [tableId], references: [id]) // PR6 6.2
   createdAt DateTime @default(now())
+  
   // ==
   // НОВОЕ ИЗМЕНЕНИЕ: Уникальный индекс на (date, time) (2.10)
   // tg 2 changes PR2 2.10
@@ -35,4 +39,19 @@ model Booking {
   // активные брони (new, confirmed).
   // ===
   @@unique([date, time])
+  @@index([date, time]) // PR6 6.2
 }
+
+
+// PR6 6.2 НОВОЕ!!
+
+model Table {
+  id Int @id @default(autoincrement())
+  number Int @unique
+  capacity Int // 2, 4, 6, 8
+  bookings Booking[]
+
+  @@index([capacity])
+}
+
+// PR6 6.2 НОВОЕ!!
