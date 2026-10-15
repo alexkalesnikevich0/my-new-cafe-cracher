@@ -172,7 +172,12 @@ export default function BookingFormV2() {
 						<button
 							type='submit'
 							disabled={!isValid || isSubmitting}
-							className={`w-full h-12 rounded border-2 uppercase font-extrabold duration-500 ${isValid && !isSubmitting ? 'bg-blue-800 text-white cursor-pointer hover:bg-blue-700 hover:scale-105' : 'bg-blue-900/50 text-white/60 cursor-not-allowed'}`}
+							className={`w-full h-12 rounded border-2 uppercase font-extrabold duration-500 
+                ${
+									isValid && !isSubmitting
+										? 'bg-blue-800 text-white cursor-pointer hover:bg-blue-700 hover:scale-105'
+										: 'bg-blue-900/50 text-white/60 cursor-not-allowed'
+								}`}
 						>
 							{isSubmitting ? 'Booking...' : 'submit reservation'}
 						</button>
