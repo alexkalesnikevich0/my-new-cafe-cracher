@@ -49,6 +49,24 @@ model Table {
   id Int @id @default(autoincrement())
   number Int @unique
   capacity Int // 2, 4, 6, 8
+
+  // Позиция на схеме зала (проценты от контейнера 0–100). PR6 6.6
+  // posX/posY — центр стола, а не левый верхний угол.
+  posX  Int @default(50)
+  posY  Int @default(50)
+
+  // Форма стола на виде сверху: PR6 6.6
+  // round | square | rect-wide | rect-large
+  // Форма стола на виде сверху:
+  // round      — круглый    (2 места)
+  // square     — квадратный (4 места)
+  // rect-wide  — вытянутый  (6 мест)
+  // rect-large — большой    (8 мест)
+  shape String  @default("react-wide")
+
+  // Поворот в градусах: 0 | 90 | 180 | 270 PR6 6.6
+  rotation Int  @default(0)
+
   bookings Booking[]
 
   @@index([capacity])

@@ -40,8 +40,15 @@ export async function GET(request: NextRequest) {
 		const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
 		// 4. Все столы
-		const tables: { id: number; number: number; capacity: number }[] =
-			await prisma.table.findMany({ orderBy: { number: 'asc' } })
+		const tables: {
+			id: number
+			number: number
+			capacity: number
+			posX: number
+			posY: number
+			shape: string
+			rotation: number
+		}[] = await prisma.table.findMany({ orderBy: { number: 'asc' } })
 
 		// 5. Все брони на сегодня (кроме cancelled)
 		const dayBookings: {
@@ -89,6 +96,10 @@ export async function GET(request: NextRequest) {
 				capacity: table.capacity,
 				occupied,
 				status,
+				posX: table.posX,
+				posY: table.posY,
+				shape: table.shape,
+				rotation: table.rotation,
 			}
 		})
 
@@ -98,6 +109,79 @@ export async function GET(request: NextRequest) {
 		console.error('API /api/tables/ error:', error)
 		return NextResponse.json(
 			{ error: 'Failed to fetch tables' },
+			{ status: 500 },
+		)
+	}
+}
+
+/**
+ * PATCH /api/tables
+ *
+ * Массовое обновление позиций столов на схеме зала (PR 6.6.7).
+ *
+ * Body:
+ * {
+ *   positions: [{ id: number, posX: number, posY: number }, ...]
+ * }
+ *
+ * Возвращает:
+ * { ok: true, updated: number }
+ */
+export async function PATCH(request: NextRequest) {
+	try {
+		const body = await request.json()
+
+		// 1. Валидация
+		if (!body || !Array.isArray(body.positions)) {
+			return NextResponse.json(
+				{ error: 'positions must be an array' },
+				{ status: 400 },
+			)
+		}
+
+		const positions: { id: number; posX: number; posY: number }[] =
+			body.positions
+
+		if (positions.length === 0) {
+			return NextResponse.json({ error: 'positions is empty' }, { status: 400 })
+		}
+
+		// 2. Проверка каждой записи
+		for (const p of positions) {
+			if (
+				typeof p.id !== 'number' ||
+				typeof p.posX !== 'number' ||
+				typeof p.posY !== 'number'
+			) {
+				return NextResponse.json(
+					{ error: 'each position must have id, posX, posY (numbers)' },
+					{ status: 400 },
+				)
+			}
+
+			if (p.posX < 0 || p.posX > 100 || p.posY < 0 || p.posY > 100) {
+				return NextResponse.json(
+					{ error: 'posX and posY must be between 0 and 100' },
+					{ status: 400 },
+				)
+			}
+		}
+
+		// 3. Транзакция — все апдейты или ни одного
+		await prisma.$transaction(
+			positions.map(p =>
+				prisma.table.update({
+					where: { id: p.id },
+					data: { posX: p.posX, posY: p.posY },
+				}),
+			),
+		)
+
+		return NextResponse.json({ ok: true, updated: positions.length })
+	} catch (error) {
+		console.error('PATCH /api/tables error:', error)
+		return NextResponse.json(
+			{ error: 'Failed to update table positions' },
 			{ status: 500 },
 		)
 	}

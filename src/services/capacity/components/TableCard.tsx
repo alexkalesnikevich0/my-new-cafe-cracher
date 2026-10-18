@@ -1,64 +1,273 @@
 /**
  * ФАЙЛ: services/capacity/components/TableCard.tsx
  *
- * КАРТОЧКА ОДНОГО СТОЛА (PR 6.5.2).
- * SVG-круг с номером + подпись с вместимостью.
- * Цвет зависит от статуса (free/busy).
+ * КАРТОЧКА ОДНОГО СТОЛА — ВИД СВЕРХУ + DRAG (PR 6.6.3 / 6.6.7.2).
  */
-
 'use client'
 
-// ==
+import { useRef } from 'react'
+
+// ============================================================
 // ТИПЫ
-// ==
+// ============================================================
+
 interface TableData {
 	id: number
 	number: number
 	capacity: number
 	occupied: number
 	status: 'free' | 'busy'
+	posX: number
+	posY: number
+	shape: string
+	rotation: number
 }
 
 interface TableCardProps {
 	table: TableData
 	onClick: (table: TableData) => void
+	editMode?: boolean
+	onDragMove?: (id: number, xPercent: number, yPercent: number) => void
 }
 
-// ==
+// ============================================================
+// КОНФИГ ФОРМ
+// ============================================================
+
+const CHAIR_RADIUS: Record<string, number> = {
+	round: 9,
+	square: 8,
+	'rect-wide': 7,
+	'rect-large': 7,
+}
+
+const TABLE_VIEWBOX: Record<string, string> = {
+	round: '-4 -4 108 108',
+	square: '0 0 110 110',
+	'rect-wide': '-5 -5 110 110',
+	'rect-large': '-8 -8 116 116',
+}
+
+const TABLE_SIZES: Record<string, number> = {
+	round: 72,
+	square: 72,
+	'rect-wide': 96,
+	'rect-large': 120,
+}
+
+const CHAIRS_BY_SHAPE: Record<string, [number, number][]> = {
+	round: [
+		[6, 50],
+		[94, 50],
+	],
+	square: [
+		[53, 11],
+		[92, 50],
+		[53, 90],
+		[14, 50],
+	],
+	'rect-wide': [
+		[28, 18],
+		[50, 18],
+		[72, 18],
+		[28, 82],
+		[50, 82],
+		[72, 82],
+	],
+	'rect-large': [
+		[30, 10],
+		[50, 10],
+		[70, 10],
+		[30, 90],
+		[50, 90],
+		[70, 90],
+		[0, 50],
+		[100, 50],
+	],
+}
+
+// ============================================================
 // КОМПОНЕНТ
-// ==
+// ============================================================
 
-export default function TableCard({ table, onClick }: TableCardProps) {
-	// Цвет в зависимости от статуса
+export default function TableCard({
+	table,
+	onClick,
+	editMode = false,
+	onDragMove,
+}: TableCardProps) {
+	const wrapperRef = useRef<HTMLDivElement>(null)
 
+	const dragRef = useRef<{
+		isDragging: boolean
+		offsetX: number
+		offsetY: number
+		parentRect: DOMRect | null
+	}>({
+		isDragging: false,
+		offsetX: 0,
+		offsetY: 0,
+		parentRect: null,
+	})
+
+	// === Вычисления ===
+	const size = TABLE_SIZES[table.shape] ?? TABLE_SIZES['rect-wide']
+	const chairs = CHAIRS_BY_SHAPE[table.shape] ?? CHAIRS_BY_SHAPE['rect-wide']
+	const visibleChairs = chairs.slice(0, Math.min(table.capacity, chairs.length))
+
+	const isFree = table.status === 'free'
+	const tableFill = isFree ? '#dcfce7' : '#fee2e2'
+	const tableStroke = isFree ? '#16a34a' : '#dc2626'
+	const chairFill = isFree ? '#86efac' : '#fca5a5'
+
+	// === Drag handlers ===
+	const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+		if (!editMode) return
+
+		const el = wrapperRef.current
+		if (!el) return
+
+		const parentEl = el.parentElement
+		if (!parentEl) return
+
+		const rect = el.getBoundingClientRect()
+		dragRef.current = {
+			isDragging: true,
+			offsetX: e.clientX - rect.left - rect.width / 2,
+			offsetY: e.clientY - rect.top - rect.height / 2,
+			parentRect: parentEl.getBoundingClientRect(),
+		}
+
+		el.setPointerCapture(e.pointerId)
+	}
+
+	const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+		if (!dragRef.current.isDragging) return
+		if (!onDragMove) return
+		if (!dragRef.current.parentRect) return
+
+		const parentRect = dragRef.current.parentRect
+		const centerX = e.clientX - parentRect.left - dragRef.current.offsetX
+		const centerY = e.clientY - parentRect.top - dragRef.current.offsetY
+
+		const xPercent = (centerX / parentRect.width) * 100
+		const yPercent = (centerY / parentRect.height) * 100
+
+		const clampedX = Math.max(0, Math.min(100, xPercent))
+		const clampedY = Math.max(0, Math.min(100, yPercent))
+
+		onDragMove(table.id, Math.round(clampedX), Math.round(clampedY))
+	}
+
+	const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+		dragRef.current.isDragging = false
+		const el = wrapperRef.current
+		if (el) el.releasePointerCapture(e.pointerId)
+	}
+
+	// === Click ===
+	const handleClick = () => {
+		if (editMode) return
+		onClick(table)
+	}
+
+	// === JSX ===
 	return (
-		<button
-			type='button'
-			onClick={() => onClick(table)}
-			className='flex-flex-col items-center gap-2 cursor-pointer transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2'
-			aria-label={`Table ${table.number}, capacity ${table.number}, ${table.status === 'free' ? 'free' : 'busy'}`}
+		<div
+			ref={wrapperRef}
+			onPointerDown={handlePointerDown}
+			onPointerMove={handlePointerMove}
+			onPointerUp={handlePointerUp}
+			onPointerCancel={handlePointerUp}
+			className='absolute'
+			style={{
+				left: `${table.posX}%`,
+				top: `${table.posY}%`,
+				transform: `translate(-50%, -50%) rotate(${table.rotation}deg)`,
+				cursor: editMode ? 'grab' : 'pointer',
+				touchAction: editMode ? 'none' : 'auto',
+				zIndex: dragRef.current.isDragging ? 100 : 1,
+			}}
 		>
-			{/* SVG С НОМЕРОМ */}
-			<div>
+			<button
+				type='button'
+				onClick={handleClick}
+				className='flex flex-col items-center gap-1 cursor-pointer duration-700 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1'
+				aria-label={`Стол ${table.number}, мест: ${table.capacity}, ${
+					isFree ? 'свободен' : 'занят'
+				}`}
+			>
 				<svg
-					width='70'
-					height='70'
-					fill='currentColor'
-					viewBox='0 0 512 512'
-					enableBackground='new 0 0 512 512'
+					width={size}
+					height={size}
+					viewBox={TABLE_VIEWBOX[table.shape] ?? '0 0 100 100'}
+					xmlns='http://www.w3.org/2000/svg'
 				>
-					<path
-						d='M448.277,189.944h-1.727v-48.459c0-19.586-15.939-35.521-35.533-35.521H101.283  c-19.586,0-35.52,15.935-35.52,35.521v50.939h-2.039c-19.125,0-34.686,15.56-34.686,34.686v65.22h0.323v74.242  c0,8.568,6.972,15.539,15.541,15.539h10.894v14.557c0,5.165,4.202,9.367,9.366,9.367h8.4c5.164,0,9.365-4.202,9.365-9.367v-14.557  h346.457v14.557c0,5.165,4.201,9.367,9.365,9.367h8.4c5.164,0,9.367-4.202,9.367-9.367v-14.557h10.906  c8.568,0,15.537-6.971,15.537-15.539v-74.161v-7.28V224.63C482.961,205.504,467.402,189.944,448.277,189.944z M72.963,141.485  c0-15.616,12.704-28.32,28.319-28.32h309.735c15.623,0,28.334,12.704,28.334,28.32v48.459h-5.684  c-9.695,0-17.584,7.889-17.584,17.586v28.513c-33.221-21.594-69.889-35.985-109.111-42.784  c-33.758-5.854-67.955-5.787-101.646,0.194c-40.06,7.097-77.369,22.082-111.014,44.547v-27.99c0-9.696-7.889-17.585-17.585-17.585  h-3.765V141.485z M416.084,244.683v40.444H309.963v-83.985C348.17,208.345,383.842,222.975,416.084,244.683z M205.056,200.834  c0.511-0.093,1.016-0.201,1.527-0.291c32.865-5.837,66.229-5.901,99.159-0.189c0.863,0.149,1.715,0.324,2.574,0.48h-5.553v84.293  h-93.209v-84.293H205.056z M202.354,201.351v83.776H94.313v-38.414C126.981,224.104,163.299,208.862,202.354,201.351z   M36.239,227.11c0-15.155,12.329-27.485,27.485-27.485h13.004c5.728,0,10.386,4.659,10.386,10.385v75.121H36.239V227.11z   M75.728,396.668c0,1.195-0.971,2.166-2.165,2.166h-8.4c-1.195,0-2.166-0.971-2.166-2.166v-13.913h12.731V396.668z M449.318,396.668  c0,1.195-0.973,2.166-2.168,2.166h-8.4c-1.195,0-2.166-0.971-2.166-2.166v-13.913h12.734V396.668z M475.762,366.572  c0,4.599-3.74,8.34-8.338,8.34H44.903c-4.599,0-8.341-3.741-8.341-8.34V292.33h57.751h7.087h309.526h5.158v0.081h59.678V366.572z   M475.762,285.131h-52.479V207.53c0-5.727,4.658-10.386,10.385-10.386h14.609c15.156,0,27.484,12.33,27.484,27.485V285.131z'
-						id='couch'
-					/>
+					{table.shape === 'round' ? (
+						<circle
+							cx={50}
+							cy={50}
+							r={28}
+							fill={tableFill}
+							stroke={tableStroke}
+							strokeWidth={3}
+						/>
+					) : (
+						<rect
+							x={
+								table.shape === 'square'
+									? 28
+									: table.shape === 'rect-wide'
+										? 15
+										: 12
+							}
+							y={
+								table.shape === 'square'
+									? 25
+									: table.shape === 'rect-wide'
+										? 30
+										: 22
+							}
+							width={
+								table.shape === 'square'
+									? 50
+									: table.shape === 'rect-wide'
+										? 70
+										: 76
+							}
+							height={
+								table.shape === 'square'
+									? 50
+									: table.shape === 'rect-wide'
+										? 40
+										: 56
+							}
+							rx={table.shape === 'square' ? 6 : 8}
+							fill={tableFill}
+							stroke={tableStroke}
+							strokeWidth={3}
+						/>
+					)}
+
+					{visibleChairs.map(([cx, cy], i) => (
+						<circle
+							key={i}
+							cx={cx}
+							cy={cy}
+							r={CHAIR_RADIUS[table.shape] ?? 7}
+							fill={chairFill}
+							stroke={tableStroke}
+							strokeWidth={2}
+						/>
+					))}
 				</svg>
-			</div>
-			<div className='text-xs md:text-sm text-gray-700 text-center'>
-				<p className='font-bold'>{table.capacity} seats</p>
-				<p className='text-gray-500 text-[10px] md:text-xs'>
-					{table.status === 'free' ? 'Free' : 'Busy'}
-				</p>
-			</div>
-		</button>
+
+				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70'>
+					<span className='text-[10px] p-1 md:text-xs text-white/70 font-medium whitespace-nowrap'>
+						{table.capacity} seats
+					</span>
+				</div>
+			</button>
+		</div>
 	)
 }
