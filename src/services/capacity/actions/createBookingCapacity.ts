@@ -1,29 +1,9 @@
 'use server'
 
-/**
- * ФАЙЛ: services/capacity/actions/createBookingCapacity.ts
- *
- * SERVER ACTION (PR 6).
- * Создаёт бронь с проверкой capacity и транзакцией.
- *
- * РЕШАЕТ ПРОБЛЕМУ RACE CONDITION:
- * - Два клиента одновременно бронируют последнее место.
- * - Транзакция + isolationLevel Serializable предотвращает это.
- * - Вторая транзакция видит обновлённые данные.
- *
- * ВОЗВРАЩАЕТ:
- * - { success: 'message' } — успех.
- * - { error: 'message' } — ошибка.
- */
-
 import prisma from '@/app/booking/lib/prisma'
 import { Prisma } from '@prisma/client'
 
-import {
-	toMinutes,
-	isOverlapping,
-	DEFAULT_DURATION,
-} from '../lib/capacity'
+import { toMinutes, isOverlapping, DEFAULT_DURATION } from '../lib/capacity'
 
 // local type
 type BookingSummary = {
@@ -54,16 +34,20 @@ export async function createBookingCapacity(
 		const dateRaw = formData.get('date')
 		const timeRaw = formData.get('time')
 		const emailRaw = formData.get('email')
+		const tableIdRaw = formData.get('tableId') // PR6 6.8 получаем tableId
+
 		// ==
 		// 2. ВАЛИДАЦИЯ ПРОСТЫХ ПОЛЕЙ
 		// ==
 		if (!guestsRaw || !dateRaw || !timeRaw || !emailRaw) {
 			return { error: 'All fields are required' }
 		}
+
 		const guests = Number(guestsRaw)
 		const date = String(dateRaw)
 		const time = String(timeRaw)
 		const email = String(emailRaw)
+		const tableId = tableIdRaw ? Number(tableIdRaw) : null // PR6 6.8
 
 		if (!Number.isInteger(guests) || guests < 1 || guests > 8) {
 			return { error: 'Guests must be a whole number between 1 and 8' }
@@ -75,27 +59,25 @@ export async function createBookingCapacity(
 		// ==
 		// 3. ТРАНЗАКЦИЯ С ПРОВЕРКОЙ CAPACITY
 		// ===
-		//
-		// Ключевое: транзакция + isolationLevel 'Serializable'.
-		// Это гарантирует, что проверка capacity и создание брони
-		// выполняются АТОМАРНО.
-		//
-		// Если два запроса одновременно:
-		// - Первый захватывает транзакцию.
-		// - Второй ждёт.
-		// - Первый создаёт бронь, коммитит.
-		// - Второй видит обновлённые данные.
-		// - Второй получает отказ, если мест нет.
-		// ===
 
 		const booking = await prisma.$transaction(
 			async (tx: Prisma.TransactionClient) => {
-				const canBook = await hasCapacityWithTx(tx, date, time, guests)
+				// 2. выбираем логику проверки: для стола или для всего зала PR6 6.8
+				let canBook = false
+
+				if (tableId) {
+					// ВАЖНО: используем hasCapacityForTable, а не WithTx!
+					canBook = await hasCapacityForTable(tx, tableId, date, time, guests)
+				} else {
+					canBook = await hasCapacityWithTx(tx, date, time, guests)
+				}
 
 				if (!canBook) {
 					throw new Error('Not_enough_capacity')
 				}
-				const newBooking = await tx.booking.create({
+
+				// 3. создаем бронь с tableId PR6 6.8
+				return await tx.booking.create({
 					data: {
 						guests,
 						date,
@@ -103,10 +85,10 @@ export async function createBookingCapacity(
 						duration: 120,
 						email,
 						status: 'new',
+						tableId,
 					},
 				})
 
-				return newBooking
 			},
 			{
 				isolationLevel: 'Serializable',
@@ -135,15 +117,40 @@ export async function createBookingCapacity(
 	}
 }
 
+// Новая функция: проверка для конкретного стола PR6 6.8
+async function hasCapacityForTable(
+	tx: Prisma.TransactionClient,
+	tableId: number,
+	date: string,
+	time: string,
+	guests: number,
+) {
+	const table = await tx.table.findUnique({ where: { id: tableId } })
+	if (!table) return false
+
+	const bookings = await tx.booking.findMany({
+		where: { date, tableId, status: { not: 'cancelled' } },
+		select: { guests: true, time: true, duration: true },
+	})
+
+	const requestedStart = toMinutes(time)
+	const usedSeats = bookings
+		.filter(b =>
+			isOverlapping(
+				requestedStart,
+				120,
+				toMinutes(b.time),
+				b.duration || DEFAULT_DURATION,
+			),
+		)
+		.reduce((sum, b) => sum + b.guests, 0)
+
+	return usedSeats + guests <= table.capacity
+}
+
 // ============================================================
-// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ТРАНЗАКЦИИ
+// Старая функция (для общего зала)
 // ============================================================
-//
-// Аналог hasCapacity, но принимает tx (транзакцию),
-// а не глобальный prisma.
-//
-// Это важно: внутри транзакции все запросы должны идти через tx,
-// иначе не получится атомарность.
 
 async function hasCapacityWithTx(
 	tx: Prisma.TransactionClient,
@@ -161,6 +168,7 @@ async function hasCapacityWithTx(
 	})
 
 	const requestedStart = toMinutes(time)
+
 	const usedSeats = dayBookings
 		.filter((b: BookingSummary) => {
 			const bookingStart = toMinutes(b.time)

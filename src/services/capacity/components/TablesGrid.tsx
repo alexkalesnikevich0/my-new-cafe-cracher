@@ -205,6 +205,12 @@ export default function TablesGrid() {
 				<TableModal
 					table={selectedTable}
 					onClose={() => setSelectedTable(null)}
+					// PR6.8 передаем callback для обновления данных
+					onSaved={() => {
+						fetch('/api/tables')
+							.then(res => res.json())
+							.then((data: TableData[]) => setTables(data))
+					}}
 				/>
 			)}
 		</div>

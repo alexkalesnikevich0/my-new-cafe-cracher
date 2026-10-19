@@ -248,7 +248,7 @@ export default function TableCard({
 							strokeWidth={3}
 						/>
 					)}
-
+					{/** Стулья */}
 					{visibleChairs.map(([cx, cy], i) => (
 						<circle
 							key={i}
@@ -260,6 +260,18 @@ export default function TableCard({
 							strokeWidth={2}
 						/>
 					))}
+
+					<text
+						x={50}
+						y={50}
+						textAnchor='middle'
+						dominantBaseline='central'
+						fontSize={22}
+						fontWeight='bold'
+						fill={tableStroke}
+					>
+						{table.number}
+					</text>
 				</svg>
 
 				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70'>
