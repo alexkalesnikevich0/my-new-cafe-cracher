@@ -7,10 +7,12 @@ export default function AdminPage() {
 				admin page
 			</h1>
 			<div className='flex justify-center mb-4'>
-				<a href='/admin/tables'
-				className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium
-				hover:bg-blue-700 transition-colors'>
-					Управление столами
+				<a
+					href='/admin/tables'
+					className='bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium
+				hover:bg-blue-700 transition-colors'
+				>
+					Table management
 				</a>
 			</div>
 			<PaginationBooking />

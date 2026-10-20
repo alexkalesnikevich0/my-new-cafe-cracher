@@ -11,7 +11,7 @@ import TablesGrid from '@/services/capacity/components/TablesGrid'
 
 export default function TablesPage() {
 	return (
-		<div className='py-10 px-4 sm:px-6 lg:px-8 text-center'>
+		<div className='py-10 px-4 sm:px-6 lg:px-8 text-center bg-orange-300/80'>
 			<div className='max-w-7xl mx-auto'>
 				<h1 className='text-3xl font-extrabold text-gray-900 mb-4 pt-20'>
 					Table management
