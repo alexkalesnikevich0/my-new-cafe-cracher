@@ -23,188 +23,119 @@ export default function PaginationBooking() {
 	const [allbookings, setAllBookings] = useState([])
 
 	// ОШИБКА ЗАГРУЗКИ (PR4 tg 4.1)
-	// null — ошибки нет
-	// строка — текст ошибки для показа пользователю
 	const [error, setError] = useState(null)
 
-	// ХРАНИТ ПРЕДЫДУЩЕЕ КОЛИЧЕСТВО БРОНЕЙ ДЛЯ ЗВУКОВОГО УВЕДОМЛЕНИЯ
-	const prevCountRef = useRef(0)
-
 	// ХРАНИТ, БЫЛА ЛИ ПЕРВАЯ ЗАГРУЗКА (PR4 tg 4.5)
-	// true — первая загрузка (показываем скелетон)
-	// false — обновление (без скелетона)
 	const isFirstLoadRef = useRef(true)
 
 	// ЗАГРУЗКА БРОНЕЙ ИЗ API
-	// ============================================================
-	// НОВОЕ ИЗМЕНЕНИЕ: Защита от пустого ответа (bug fix)
-	// ошибка в админке
-	//
-	// ПРОБЛЕМА:
-	// Если сервер вернёт ошибку 500 без тела — res.json() падает.
-	//
-	// РЕШЕНИЕ:
-	// 1. Проверяем res.ok.
-	// 2. Если ошибка — показываем сообщение и выходим.
-	// 3. Если 401 — редирект на /admin/login.
-	// ============================================================
 	const loadBookings = useCallback(async () => {
-		// PR 4.5 tg 2 changes - cкелетон только при первой загрузке
-		if (isFirstLoadRef.current) setLoading(true) // PR4 tg 4.1 tg 2 changes
-		setError(null) // PR4 tg 2 changes 4.1 - сброс ошибки перед каждой загрузкой
+		if (isFirstLoadRef.current) setLoading(true)
+		setError(null)
 		try {
 			const res = await fetch('/booking/api')
 
-			// ЕСЛИ НЕ 200 — ОБРАБАТЫВАЕМ ОШИБКУ
 			if (!res.ok) {
-				// ЕСЛИ 401 — НЕ АВТОРИЗОВАН → РЕДИРЕКТ НА ЛОГИН
 				if (res.status === 401) {
 					window.location.href = '/admin/login'
 					return
 				}
 				console.error(`Ошибка загрузки броней: ${res.status}`)
-				setError('Failed to load bookings') // PR4 tg 2 changes 4.1
+				setError('Failed to load bookings')
 				return
 			}
+
 			const data = await res.json()
 
-			if (data.length > prevCountRef.current) {
+			// ============================================================
+			// ЛОГИКА ЗВУКА: Проверяем непрочитанные брони (isRead === false)
+			// ============================================================
+			const unreadBookings = data.filter(b => b.isRead === false)
+
+			if (unreadBookings.length > 0) {
+				// Играем звук
 				const audio = new Audio('/notification.mp3')
 				audio.play().catch(() => {})
+
+				// Отправляем запрос на сервер, чтобы отметить их как прочитанные
+				const unreadIds = unreadBookings.map(b => b.id)
+				fetch('/booking/api/mark-read', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ ids: unreadIds }),
+				}).catch(err => console.error('Failed to mark read', err))
 			}
-			prevCountRef.current = data.length
+			// ============================================================
+
 			setAllBookings(data)
 		} catch (error) {
 			console.error('Ошибка загрузки:', error)
-			setError('Failed to load bookings') // PR4 tg 2 changes 4.1
+			setError('Failed to load bookings')
 		} finally {
-			setLoading(false) // PR4 tg 2 changes 4.1
-			isFirstLoadRef.current = false // PR4 4.5 tg 2 changes
+			setLoading(false)
+			isFirstLoadRef.current = false
 		}
 	}, [])
+
 	// АВТООБНОВЛЕНИЕ КАЖДЫЕ 60 СЕКУНД
 	useEffect(() => {
 		loadBookings()
 		const interval = setInterval(loadBookings, 60000)
-		return () => clearInterval(interval) // ОЧИСТКА ПРИ УХОДЕ СО СТРАНИЦЫ
+		return () => clearInterval(interval)
 	}, [loadBookings])
 
-	// СТАТИСТИКА НА СЕГОДНЯ (ГОСТИ + КОЛИЧЕСТВО БРОНЕЙ)
+	// СТАТИСТИКА НА СЕГОДНЯ
 	const getTodayStats = () => {
 		const now = new Date()
-		// ЛОКАЛЬНАЯ ДАТА (МИНСК), А НЕ UTC
 		const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
 		const todayBookings = allbookings.filter(
-			b => b.date === today && b.status !== 'cancelled', // ИСКЛЮЧАЕМ ОТМЕНЁННЫЕ
+			b => b.date === today && b.status !== 'cancelled',
 		)
 		return {
-			guests: todayBookings.reduce((sum, b) => sum + b.guests, 0), // СУММА ГОСТЕЙ
-			count: todayBookings.length, // КОЛИЧЕСТВО БРОНЕЙ
+			guests: todayBookings.reduce((sum, b) => sum + b.guests, 0),
+			count: todayBookings.length,
 		}
 	}
 	const todayStats = getTodayStats()
 
-	// КОЛИЧЕСТВО БРОНЕЙ СО СТАТУСОМ 'new' (ОЖИДАЮТ ПОДТВЕРЖДЕНИЯ)
+	// КОЛИЧЕСТВО БРОНЕЙ СО СТАТУСОМ 'new'
 	const pendingCount = allbookings.filter(b => b.status === 'new').length
 
 	// ФИЛЬТР ПО ДАТЕ
 	const [filterDate, setFilterDate] = useState('')
 
-	// ФИЛЬТР ПО СТАТУСУ --- НОВОЕ PR4 ---
-	const [filterStatus, setFilterStatus] = useState('all') // 'all', 'new', 'confirmed', 'cancelled' 1. новое состояние
+	// ФИЛЬТР ПО СТАТУСУ
+	const [filterStatus, setFilterStatus] = useState('all')
 
-	// НОВОЕ
-	// after change telegram
-
-	// СОСТОЯНИЕ ДЛЯ ПОИСКА (ЧТО ВВЕЛ ПОЛЬЗОВАТЕЛЬ)
+	// СОСТОЯНИЕ ДЛЯ ПОИСКА
 	const [searchQuery, setSearchQuery] = useState('')
-
-	// СОСТОЯНИЕ ДЛЯ ТЕКУЩЕГО ПОИСКА
-	// (ПРИМЕНЯЕТСЯ ТОЛЬКО ПОСЛЕ ENTER)
 	const [appliedQuery, setAppliedQuery] = useState('')
 
-	// ЕСТЬ ЛИ АКТИВНЫЙ ФИЛЬТР (PR4 tg 4.3) =>
-	// tg 2 changes
-	// true — хотя бы один фильтр активен
-	// false — фильтров нет
 	const hasFilter =
 		filterDate !== '' || filterStatus !== 'all' || appliedQuery !== ''
 
-	// СБРОС ВСЕХ ФИЛЬТРОВ (PR4 tg 4.3) =>
-	// Вызывается из BookingTableV2 при клике на 'Clear filters'
-	// tg 2 changes
 	const handleClearFilters = () => {
 		setFilterDate('')
 		setFilterStatus('all')
 		setSearchQuery('')
 		setAppliedQuery('')
-		setCurrentPage(1) // PR4 4.5 tg 2 changes  сброс на 1 страницу
+		setCurrentPage(1)
 	}
 
-	// СОРТИРОВКА (PR4 tg 4.4) ======>
-	// tg 2 changes
-	// Колонка, по которой сортируем
+	// СОРТИРОВКА
 	const [sortColumn, setSortColumn] = useState('id')
-	// Направление: 'asc' (↑) или 'desc' (↓)
 	const [sortDirection, setSortDirection] = useState('desc')
 
-	// ПАГИНАЦИЯ (PR4 tg 4.5) ====>
-	// tg 2 changes
-	// Текущая страница (1, 2, 3...)
+	// ПАГИНАЦИЯ
 	const [currentPage, setCurrentPage] = useState(1)
-	// Сколько записей на страницу
 	const [perPage, setPerPage] = useState(8)
-	// <====
 
-	// ФИЛЬТР ПО ДАТЕ И СТАТУСУ --- НОВОЕ PR4 --- 2. логика фильтрации
+	// ФИЛЬТРАЦИЯ И СОРТИРОВКА
 	const filteredBookings = allbookings
 		.filter(b => {
-			// ФИЛЬТР ПО ДАТЕ
 			if (filterDate && b.date !== filterDate) return false
-			// ФИЛЬТР ПО СТАТУСУ
 			if (filterStatus !== 'all' && b.status !== filterStatus) return false
-			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
-			/**
- 
-
-					// ============================================================
-					// НОВОЕ ИЗМЕНЕНИЕ: Поиск (фильтрация) по тексту
-					// ДАТА: Сентябрь 2026
-					//
-					// ЕСЛИ appliedQuery НЕ ПУСТОЙ:
-					//   if (appliedQuery) — проверяем, есть ли введённый текст.
-					//   Если пусто — фильтр пропускается, показываются все брони.
-					//
-					// ЧТО ДЕЛАЕТ `const q = appliedQuery.toLowerCase()`:
-					//   Приводит введённый текст к нижнему регистру.
-					//   Зачем: чтобы поиск был нечувствителен к регистру.
-					//   Пример: если ввести "TEST@MAIL.COM", оно найдёт "test@mail.com".
-					//
-					// ЧТО ТАКОЕ `match`:
-					//   Это переменная, которая хранит true/false — совпало ли что-то.
-					//   Если хотя бы одно условие верно → match = true.
-					//   Если ничего не совпало → match = false, и бронь скрывается.
-					//
-					// ПОЧЕМУ `b.id.toString().includes(q)`:
-					//   b.id — это число (например, 12), а q — это строка ("12").
-					//   Числа в JavaScript не имеют метода .includes().
-					//   Поэтому мы вызываем .toString(), чтобы превратить число в строку.
-					//   И уже у строки вызываем .includes(q) — проверяем, есть ли в ней q.
-					//
-					// ЧТО ТАКОЕ `.includes(q)`:
-					//   Это метод строки, который проверяет, содержится ли q внутри строки.
-					//   Пример: "test@mail.com".includes("mail") → true
-					//           "test@mail.com".includes("xyz") → false
-					//
-					// ПОЛЯ, ПО КОТОРЫМ ИЩЕТ ПОИСК:
-					//   - b.id → ID брони
-					//   - b.email → почта гостя
-					//   - b.date → дата брони
-					//   - b.time → время брони
-					//   - b.guests → количество гостей
-					// ============================================================
-					*/
 
 			if (appliedQuery) {
 				const q = appliedQuery.toLowerCase()
@@ -216,44 +147,24 @@ export default function PaginationBooking() {
 					b.guests.toString().includes(q)
 				if (!match) return false
 			}
-			// ФИЛЬТР ПО ТЕКСТУ НОВОЕ after change - кнопка поиск брони - <>
 			return true
 		})
-		// СОРТИРОВКА ПО ВЫБРАННОЙ КОЛОНКЕ (PR4 tg 4.4) =====>
-		// tg 2 changes
-		// ИЗМЕНЕНИЕ СОРТИРОВКА ПО ID
-		// - БЕРЕМ ДВА ОБЪЕКТА (a и b)
-		// - СРАВНИВАЕМ ИХ ID
-		// - ЕСЛИ b.id = a.id > 0, то b идет раньше (то есть новые сверху)
-		// - ЧТОБЫ НОВЫЕ БРОНИ БЫЛИ В САМОМ ВЕРХУ ТАБЛИЦЫ
 		.sort((a, b) => {
 			const aVal = a[sortColumn]
 			const bVal = b[sortColumn]
-
-			// Если равны — порядок не меняем
 			if (aVal === bVal) return 0
 
 			let result
-
-			// Для чисел (id, guests)
 			if (typeof aVal === 'number' && typeof bVal === 'number') {
 				result = aVal - bVal
 			} else if (sortColumn === 'createdAt') {
-				// Для даты создания — сравниваем как timestamp
 				result = new Date(aVal).getTime() - new Date(bVal).getTime()
 			} else {
-				// Для строк (date, time, status) — localeCompare
 				result = String(aVal).localeCompare(String(bVal))
 			}
-
-			// Инвертируем для 'desc'
 			return sortDirection === 'asc' ? result : -result
 		})
-	// СОРТИРОВКА ПО ВЫБРАННОЙ КОЛОНКЕ (PR4 tg 4.4) <=====
 
-	// ОБРАБОТЧИК КЛИКА ПО ЗАГОЛОВКУ (PR4 tg 4.4) ====>
-	// Если кликнули по той же колонке — меняем направление
-	// Если по новой — ставим asc
 	const handleSort = column => {
 		if (sortColumn === column) {
 			setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
@@ -261,29 +172,22 @@ export default function PaginationBooking() {
 			setSortColumn(column)
 			setSortDirection('asc')
 		}
-		setCurrentPage(1) // PR4 4.5 tg 2 changes сброс на 1 страницу
+		setCurrentPage(1)
 	}
-	// 4.4 <======
 
-	// ПАГИНАЦИЯ (PR4 tg 4.5) tg 2 changes ======>
-	// Вычисляем диапазон записей для текущей страницы
+	// ПАГИНАЦИЯ
 	const StartIndex = (currentPage - 1) * perPage
 	const EndIndex = StartIndex + perPage
-
-	// Общее количество страниц
 	const totalPages = Math.ceil(filteredBookings.length / perPage)
-
-	// Показываем только записи текущей страницы
 	const displayedBookings = filteredBookings.slice(StartIndex, EndIndex)
-	// <====== PR4 4.5
 
-	// СОСТОЯНИЕ ЗАГРУЗКИ ДЛЯ СКЕЛЕТОН-АНИМАЦИИ
+	// СОСТОЯНИЕ ЗАГРУЗКИ
 	const [loading, setLoading] = useState(true)
 
 	return (
 		<div className='py-10'>
 			<div className='max-w-7xl mx-auto'>
-				{/* ВЕРХНЯЯ ПАНЕЛЬ: ЗАГОЛОВОК + СЧЁТЧИКИ + КНОПКИ */}
+				{/* ВЕРХНЯЯ ПАНЕЛЬ */}
 				<div className='w-95 mx-auto md:w-full md:px-20'>
 					<div className='mt-0 flex flex-col md:flex-row justify-between items-center bg-white/70 p-6 rounded-md border-gray-700/80 border-3 shadow-xl'>
 						{/* СЧЁТЧИКИ СЛЕВА */}
@@ -297,7 +201,7 @@ export default function PaginationBooking() {
 							<TodayCounter total={todayStats.count} label='reservations' />
 						</div>
 
-						{/* ФИЛЬТР ПО ДАТЕ И СТАТУСУ (ПО ЦЕНТРУ) */}
+						{/* ФИЛЬТР ПО ДАТЕ И СТАТУСУ */}
 						<div className='flex flex-col items-center gap-2 mb-4 mt-5'>
 							<div className='flex flex-col md:flex-row items-center gap-4'>
 								<label className='text-base font-medium text-gray-700'>
@@ -308,17 +212,16 @@ export default function PaginationBooking() {
 										value={filterDate}
 										onChange={e => {
 											setFilterDate(e.target.value)
-											setCurrentPage(1) // PR4 4.5 tg 2 changes
+											setCurrentPage(1)
 										}}
 										className='ml-2 border-2 border-gray-900 rounded-sm px-2 py-1 text-base'
 									/>
 								</label>
-								{/* КНОПКА СБРОСА ФИЛЬТРА (ПОЯВЛЯЕТСЯ ТОЛЬКО КОГДА ФИЛЬТР АКТИВЕН) */}
 								{filterDate && (
 									<button
 										onClick={() => {
 											setFilterDate('')
-											setCurrentPage(1) // PR4 4.5 tg 2 changes
+											setCurrentPage(1)
 										}}
 										className='text-sm text-blue-600 border-2 bg-blue-600/90 text-white/80 border-gray-700/80 px-2.5 py-1.5 rounded-2xl cursor-pointer
                      hover:text-white hover:bg-blue-700 hover:border-gray-800'
@@ -327,11 +230,10 @@ export default function PaginationBooking() {
 									</button>
 								)}
 							</div>
-							{/* ФИЛЬТР ПО СТАТУСУ  ! НОВОЕ PR4 !  3. Кнопки фильтров в интерфейсе */}
 							<div
 								className='flex items-center gap-2 mt-2 p-2'
-								role='group' // PR5
-								aria-label='Filter by status' // PR5
+								role='group'
+								aria-label='Filter by status'
 							>
 								<span className='text-sm font-medium text-gray-700 mr-1'>
 									Status:
@@ -341,11 +243,11 @@ export default function PaginationBooking() {
 										key={status}
 										onClick={() => {
 											setFilterStatus(status)
-											setCurrentPage(1) // PR4 4.5 tg 2 changes
+											setCurrentPage(1)
 										}}
-										aria-pressed={filterStatus === status} // PR5
+										aria-pressed={filterStatus === status}
 										className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-800 
-									${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
+                  ${filterStatus === status ? 'bg-blue-700 text-white' : 'bg-gray-200 text-gray-700 cursor-pointer border-2 hover:bg-blue-200 hover:border-blue-600'}`}
 									>
 										{status === 'all'
 											? 'All'
@@ -375,48 +277,9 @@ export default function PaginationBooking() {
 						</div>
 					</div>
 				</div>
+
+				{/* ПОИСК */}
 				<div className='flex justify-center mt-6 mb-4'>
-					{/** НОВОЕ after change - кнопка поиск брони -
-					 * // ============================================================
-// ЧТО ТАКОЕ `searchQuery`:
-//   Это состояние (state), которое хранит то, что пользователь
-//   печатает в поле прямо сейчас (побуквенно).
-//
-// ЧТО ТАКОЕ `appliedQuery`:
-//   Это состояние, которое хранит уже применённый поиск.
-//   Оно обновляется ТОЛЬКО когда пользователь нажмёт Enter.
-//   Зачем так сделано: чтобы фильтрация не запускалась на каждую букву,
-//   а срабатывала только когда пользователь закончил вводить.
-//
-// ЧТО ДЕЛАЕТ `value={searchQuery}`:
-//   Привязывает значение инпута к состоянию searchQuery.
-//   То есть: что в searchQuery → то и в поле.
-//   Это называется "контролируемый инпут".
-//
-// ЧТО ДЕЛАЕТ `onChange={e => setSearchQuery(e.target.value)}`:
-//   Срабатывает при каждом изменении текста в поле.
-//   `e` — это объект события (event), который содержит всю информацию
-//   о том, что произошло (какая клавиша, где курсор и т.д.).
-//   `e.target` — это сам элемент input.
-//   `e.target.value` — текущий текст в поле.
-//   `setSearchQuery(...)` — обновляет состояние новым текстом.
-//
-// ЧТО ДЕЛАЕТ `onKeyDown`:
-//   Срабатывает при нажатии ЛЮБОЙ клавиши в поле.
-//   Мы проверяем: если нажата клавиша Enter (e.key === 'Enter'),
-//   то копируем текущий searchQuery в appliedQuery.
-//   Это и есть момент, когда поиск "применяется".
-//
-// ЧТО ДЕЛАЕТ `e.key === 'Enter'`:
-//   `e.key` — это название нажатой клавиши.
-//   Если это 'Enter' → применяем поиск.
-//
-// ЧТО ДЕЛАЕТ `setAppliedQuery(searchQuery.trim())`:
-//   `.trim()` убирает лишние пробелы в начале и конце текста.
-//   Пример: "  test  " → "test"
-//   Зачем: чтобы случайный пробел не сломал поиск.
-// ============================================================
-					 */}
 					<div className='relative w-full max-w-80'>
 						<label htmlFor='search-bookings' className='sr-only'>
 							Search bookings
@@ -429,26 +292,12 @@ export default function PaginationBooking() {
 							onChange={e => setSearchQuery(e.target.value)}
 							onKeyDown={e => {
 								if (e.key === 'Enter') setAppliedQuery(searchQuery.trim())
-								setCurrentPage(1) // PR4 4.5 tg 2 changes
+								setCurrentPage(1)
 							}}
 							placeholder='Поиск по ID, email, дате...'
 							className='w-full mx-auto flex pr-5 justify-center border-2 border-gray-600 bg-gray-300 rounded-full px-5 py-2 text-sm
-							focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all duration-500'
+              focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300 transition-all duration-500'
 						/>
-						{/** НОВОЕ after change - кнопка поиск брони -
-						 * крестик в правой части строки чтобы убрать внесенное
-						 * // ============================================================
-							 // ЧТО ДЕЛАЕТ:
-							 //   При клике сбрасывает оба состояния:
-							 //   - searchQuery = '' (очищает поле ввода)
-							 //   - appliedQuery = '' (сбрасывает фильтр)
-							 //   После этого таблица снова показывает все брони.
-							 //
-							 // ПОЧЕМУ `{searchQuery && (...)}`:
-							 //   Кнопка показывается ТОЛЬКО если в поле что-то введено.
-							 //   Если поле пустое — крестик не отображается.
-							 // ============================================================
-						 */}
 						{searchQuery && (
 							<button
 								onClick={() => {
@@ -457,7 +306,7 @@ export default function PaginationBooking() {
 								}}
 								aria-label='Clear search'
 								className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors
-								hover:text-red-600 cursor-pointer'
+                hover:text-red-600 cursor-pointer'
 								title='Clear search'
 							>
 								<svg
@@ -473,20 +322,22 @@ export default function PaginationBooking() {
 						)}
 					</div>
 				</div>
-				{/** КРАСНЫЙ БАННЕР ОШИБКИ (PR4 tg 2 changes 4.1) */}
+
+				{/* ОШИБКА */}
 				{error && (
 					<div className='bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-md mt-4 flex items-center mx-auto w-90 justify-between'>
 						<span className='font-medium'>{error}</span>
 						<button
 							onClick={loadBookings}
 							className='bg-red-600 text-white px-4 py-2 rounded-md text-sm font-semibold cursor-pointer transition-colors duration-500
-						hover:bg-red-700'
+            hover:bg-red-700'
 						>
 							Retry
 						</button>
 					</div>
 				)}
-				{/* СКЕЛЕТОН-ЗАГРУЗКА (ПОКА ДАННЫЕ ГРУЗЯТСЯ) ИЛИ ТАБЛИЦА */}
+
+				{/* ТАБЛИЦА / СКЕЛЕТОН */}
 				{loading ? (
 					<div className='space-y-3 animate-pulse mt-4'>
 						<div className='h-10 bg-gray-200 rounded w-full'></div>
@@ -496,7 +347,6 @@ export default function PaginationBooking() {
 					</div>
 				) : (
 					<>
-						{/* ТАБЛИЦА — только на больших экранах (lg+) PR4 tg 4.6 */}
 						<div className='hidden lg:block px-10'>
 							<BookingTableV2
 								bookings={displayedBookings}
@@ -509,7 +359,6 @@ export default function PaginationBooking() {
 							/>
 						</div>
 
-						{/* КАРТОЧКИ — на мобилке и планшете (< lg) PR4 tg 4.6 */}
 						<div className='block lg:hidden space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 p-10'>
 							{displayedBookings.length === 0 ? (
 								<div className='bg-white/90 shadow-lg rounded-xl p-8 text-center col-span-full'>
@@ -577,7 +426,8 @@ export default function PaginationBooking() {
 						</div>
 					</>
 				)}
-				{/** ПАГИНАЦИЯ (PR4 tg 2 changes 4.5) */}
+
+				{/* ПАГИНАЦИЯ */}
 				{filteredBookings.length > 0 && (
 					<PaginationControls
 						currentPage={currentPage}

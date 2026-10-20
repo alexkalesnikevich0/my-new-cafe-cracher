@@ -161,7 +161,7 @@ export default function TablesGrid() {
 					<button
 						type='button'
 						onClick={() => setEditMode(true)}
-						className='px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
+						className='px-8 py-2 cursor-pointer text-sm font-medium bg-blue-600 text-white/70 hover:text-white rounded-lg hover:bg-blue-700 transition-colors'
 					>
 						Edit
 					</button>
@@ -186,7 +186,7 @@ export default function TablesGrid() {
 						type='button'
 						onClick={handleCancel}
 						disabled={saving}
-						className='px-4 py-2 text-sm font-medium bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50'
+						className='px-4 py-2 text-sm font-medium cursor-pointer bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50'
 					>
 						Cancel
 					</button>
@@ -194,7 +194,7 @@ export default function TablesGrid() {
 						type='button'
 						onClick={handleSave}
 						disabled={saving}
-						className='px-4 py-2 text-sm font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50'
+						className='px-4 py-2 text-sm font-medium cursor-pointer bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50'
 					>
 						{saving ? 'Saving...' : 'Save'}
 					</button>
