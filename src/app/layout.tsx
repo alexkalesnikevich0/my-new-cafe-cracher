@@ -7,6 +7,8 @@ import Navigation from '@/components/beer/assets/navigation'
 import ScrollToTop from '@/app/booking/components/scroll/scrollToTop'
 import { Toaster } from 'react-hot-toast'
 
+import { LanguageProvider } from './lib/i18n/LanguageContext'
+
 const geistSans = Geist({
 	variable: '--font-geist-sans',
 	subsets: ['latin'],
@@ -65,29 +67,32 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<a
-					href='#main-content'
-					className='sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:bg-orange-950 
+				{/** NEW PR6 */}
+				<LanguageProvider>
+					<a
+						href='#main-content'
+						className='sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] focus:bg-orange-950 
 					focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:font-medium'
-				>
-					Zum Inhalt springen
-				</a>
-				<div className=''>
-					<header>
-						<Navbar />
-					</header>
-					<main className='pt-15' id='main-content'>
-						{children}
-					</main>
-					<footer>
-						<Navigation />
-						<div id='footer'>
-							<Footer />
-						</div>
-					</footer>
-				</div>
-				<ScrollToTop />
-				<Toaster position='bottom-right' />
+					>
+						Zum Inhalt springen
+					</a>
+					<div className=''>
+						<header>
+							<Navbar />
+						</header>
+						<main className='pt-15' id='main-content'>
+							{children}
+						</main>
+						<footer>
+							<Navigation />
+							<div id='footer'>
+								<Footer />
+							</div>
+						</footer>
+					</div>
+					<ScrollToTop />
+					<Toaster position='bottom-right' />
+				</LanguageProvider>
 			</body>
 		</html>
 	)
