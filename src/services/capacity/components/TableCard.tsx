@@ -49,7 +49,7 @@ const TABLE_VIEWBOX: Record<string, string> = {
 }
 
 const TABLE_SIZES: Record<string, number> = {
-	round: 72,
+	round: 70,
 	square: 72,
 	'rect-wide': 96,
 	'rect-large': 120,
@@ -57,14 +57,14 @@ const TABLE_SIZES: Record<string, number> = {
 
 const CHAIRS_BY_SHAPE: Record<string, [number, number][]> = {
 	round: [
-		[6, 50],
+		[8, 50],
 		[94, 50],
 	],
 	square: [
-		[53, 11],
-		[92, 50],
-		[53, 90],
-		[14, 50],
+		[51, 11],
+		[91, 50],
+		[51, 90],
+		[12, 50],
 	],
 	'rect-wide': [
 		[28, 18],
@@ -205,8 +205,8 @@ export default function TableCard({
 				>
 					{table.shape === 'round' ? (
 						<circle
-							cx={50}
-							cy={50}
+							cx={51}
+							cy={51}
 							r={28}
 							fill={tableFill}
 							stroke={tableStroke}
@@ -216,7 +216,7 @@ export default function TableCard({
 						<rect
 							x={
 								table.shape === 'square'
-									? 28
+									? 26
 									: table.shape === 'rect-wide'
 										? 15
 										: 12
@@ -262,7 +262,7 @@ export default function TableCard({
 					))}
 
 					<text
-						x={50}
+						x={51}
 						y={50}
 						textAnchor='middle'
 						dominantBaseline='central'
@@ -273,8 +273,8 @@ export default function TableCard({
 						{table.number}
 					</text>
 				</svg>
-
-				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70'>
+				{/** подпись под столом сколько мест */}
+				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70 hidden md:block'>
 					<span className='text-[10px] p-1 md:text-xs text-white/70 font-medium whitespace-nowrap'>
 						{table.capacity} seats
 					</span>

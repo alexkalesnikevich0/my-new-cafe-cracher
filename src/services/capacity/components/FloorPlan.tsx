@@ -15,8 +15,8 @@ interface FloorPlanProps {
 
 export default function FloorPlan({ children }: FloorPlanProps) {
 	return (
-		<div className='w-full'>
-			<div className='relative w-full aspect-[16/10] bg-black/80 rounded-2xl border-2 border-black overflow-hidden shadow-inner'>
+		<div className='w-full overflow-x-auto'>
+			<div className='relative w-full min-w-[800px] aspect-[16/10] bg-black/80 rounded-2xl border-2 border-black overflow-hidden shadow-inner'>
 				{/* ПРОХОД ОТ ВХОДА К БАРУ (светлая полоса по центру) */}
 				<div className='absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[20%] bg-red-950/60 border-x-2 border-dashed border-black z-0' />
 
