@@ -274,7 +274,7 @@ export default function TableCard({
 					</text>
 				</svg>
 				{/** подпись под столом сколько мест */}
-				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70 hidden md:block'>
+				<div className='rounded-lg pb-1 bg-orange-300/40 border border-black/70 hidden xl:block'>
 					<span className='text-[10px] p-1 md:text-xs text-white/70 font-medium whitespace-nowrap'>
 						{table.capacity} seats
 					</span>
