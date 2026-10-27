@@ -1,14 +1,23 @@
-import { NextResponse } from 'next/server'
-
+import { NextResponse, NextRequest } from 'next/server' // Добавили NextRequest
 import prisma from '@/app/booking/lib/prisma'
 
-export async function GET() {
+//  Добавили request в аргументы
+export async function GET(request: NextRequest) {
 	try {
-		const today = new Date().toISOString().split('T')[0]
+		// 1. Получаем дату из URL
+		const { searchParams } = new URL(request.url)
+		let dateParam = searchParams.get('date')
 
+		// Если дата не передана, берем сегодняшнюю
+		if (!dateParam) {
+			const now = new Date()
+			dateParam = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+		}
+
+		// 2. Ищем висячие брони на эту дату
 		const pendingBookings = await prisma.booking.findMany({
 			where: {
-				date: today,
+				date: dateParam, //  Используем дату из URL
 				tableId: null,
 				status: { not: 'cancelled' },
 			},

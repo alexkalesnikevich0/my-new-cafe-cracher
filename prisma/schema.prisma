@@ -68,6 +68,8 @@ model Table {
   // Поворот в градусах: 0 | 90 | 180 | 270 PR6 6.6
   rotation Int  @default(0)
 
+  isBlocked Boolean @default(false) // NEW
+
   bookings Booking[]
 
   @@index([capacity])

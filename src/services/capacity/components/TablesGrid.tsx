@@ -1,13 +1,7 @@
 /**
  * ФАЙЛ: services/capacity/components/TablesGrid.tsx
  *
- * СЕТКА СТОЛОВ (PR 6.5.3) + РЕЖИМ РЕДАКТИРОВАНИЯ (6.6.4).
- * Загружает столы из API, показывает TableCard для каждого. 6.5.3
- *
- *  6.6.4
- * обычный режим: столы кликаются -> открывается модалка
- * режим редактирования: столы перетаскиваются мышкой
- * внизу появляется панель Сохранить/Отменить
+ * СЕТКА СТОЛОВ (PR 6.5.3) + РЕЖИМ РЕДАКТИРОВАНИЯ (6.6.4) + ВЫБОР ДАТЫ.
  */
 
 'use client'
@@ -19,21 +13,20 @@ import FloorPlan from './FloorPlan'
 
 import toast from 'react-hot-toast'
 
-// ============================================================
+// =
 // ТИПЫ
-// ============================================================
-
+// ==
 interface TableData {
 	id: number
 	number: number
 	capacity: number
 	occupied: number
-	status: 'free' | 'busy'
-	// 6.6.6 новые поля из API
+	status: 'free' | 'busy' | 'blocked'
 	posX: number
 	posY: number
 	shape: string
 	rotation: number
+	isBlocked: boolean
 }
 
 // ===
@@ -46,13 +39,18 @@ export default function TablesGrid() {
 	const [error, setError] = useState<string | null>(null)
 	const [selectedTable, setSelectedTable] = useState<TableData | null>(null)
 
-	// == режим редактирования ==
+	// == Режим редактирования ==
 	const [editMode, setEditMode] = useState(false)
 	const [saving, setSaving] = useState(false)
 
-	// Загрузка столов из API
+	// == Выбор даты (по умолчанию сегодня) ==
+	const today = new Date().toISOString().split('T')[0]
+	const [selectedDate, setSelectedDate] = useState(today)
+
+	// Загрузка столов из API (зависит от выбранной даты)
 	useEffect(() => {
-		fetch('/api/tables')
+		setLoading(true)
+		fetch(`/api/tables?date=${selectedDate}`) //  ПЕРЕДАЕМ ДАТУ
 			.then(res => {
 				if (!res.ok) throw new Error('Failed to fetch')
 				return res.json()
@@ -60,7 +58,7 @@ export default function TablesGrid() {
 			.then((data: TableData[]) => setTables(data))
 			.catch(() => setError('Failed to load tables'))
 			.finally(() => setLoading(false))
-	}, [])
+	}, [selectedDate]) // ПЕРЕЗАГРУЖАЕМ ПРИ СМЕНЕ ДАТЫ
 
 	// ===
 	// Drag
@@ -104,7 +102,7 @@ export default function TablesGrid() {
 	const handleCancel = async () => {
 		setLoading(true)
 		try {
-			const res = await fetch('/api/tables')
+			const res = await fetch(`/api/tables?date=${selectedDate}`) //  ДАТА
 			if (!res.ok) throw new Error('Failed to reload')
 			const data: TableData[] = await res.json()
 			setTables(data)
@@ -151,22 +149,45 @@ export default function TablesGrid() {
 	return (
 		<div className='relative'>
 			{/** Control Panel */}
-			<div className='flex items-center justify-between mb-4'>
+			<div className='flex flex-col md:flex-row items-center justify-between mb-4 gap-4'>
 				<div className='text-sm text-gray-600'>
 					{editMode
 						? 'Drag tables with mouse. Then click save'
 						: 'Click on table to open details'}
 				</div>
-				{!editMode && (
-					<button
-						type='button'
-						onClick={() => setEditMode(true)}
-						className='px-8 py-2 cursor-pointer text-sm font-medium bg-blue-600 text-white/70 hover:text-white rounded-lg hover:bg-blue-700 transition-colors'
-					>
-						Edit
-					</button>
-				)}
+
+				<div className='flex items-center gap-4'>
+					{/*  КАЛЕНДАРИК ВЫБОРА ДАТЫ */}
+					{!editMode && (
+						<div className='flex items-center gap-2 '>
+							<label
+								htmlFor='date-picker'
+								className='text-sm font-medium text-gray-700'
+							>
+								Date:
+							</label>
+							<input
+								type='date'
+								id='date-picker'
+								value={selectedDate}
+								onChange={e => setSelectedDate(e.target.value)}
+								className='border border-gray-500 cursor-pointer rounded-md bg-stone-200 px-3 py-1.5 text-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900'
+							/>
+						</div>
+					)}
+
+					{!editMode && (
+						<button
+							type='button'
+							onClick={() => setEditMode(true)}
+							className='px-8 py-2 cursor-pointer text-sm font-medium bg-blue-600 text-white/70 hover:text-white rounded-lg hover:bg-blue-700 transition-colors'
+						>
+							Edit
+						</button>
+					)}
+				</div>
 			</div>
+
 			{/** схема */}
 			<FloorPlan>
 				{tables.map(table => (
@@ -179,6 +200,7 @@ export default function TablesGrid() {
 					/>
 				))}
 			</FloorPlan>
+
 			{/** Saving panel (only in edit mode) */}
 			{editMode && (
 				<div className='fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-white border-2 border-gray-200 shadow-2xl rounded-xl px-4 py-3 flex items-center gap-3'>
@@ -200,14 +222,15 @@ export default function TablesGrid() {
 					</button>
 				</div>
 			)}
+
 			{/** Modal */}
 			{!editMode && (
 				<TableModal
 					table={selectedTable}
+					selectedDate={selectedDate} //  ПЕРЕДАЕМ ДАТУ В МОДАЛКУ
 					onClose={() => setSelectedTable(null)}
-					// PR6.8 передаем callback для обновления данных
 					onSaved={() => {
-						fetch('/api/tables')
+						fetch(`/api/tables?date=${selectedDate}`) // ПРИ ОБНОВЛЕНИИ ТОЖЕ ДАТА
 							.then(res => res.json())
 							.then((data: TableData[]) => setTables(data))
 					}}

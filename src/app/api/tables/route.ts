@@ -1,16 +1,8 @@
 /**
  * ФАЙЛ: app/api/tables/route.ts
  *
- * API-РОУТ ДЛЯ ПОЛУЧЕНИЯ СПИСКА СТОЛОВ (PR 6.5).
- *
- * GET /api/tables
- * GET /api/tables?time=19:00
- *
- * Возвращает массив столов с текущим статусом:
- * [
- *   { id, number, capacity, occupied, status },
- *   ...
- * ]
+ * API-РОУТ ДЛЯ ПОЛУЧЕНИЯ СПИСКА СТОЛОВ.
+ * GET /api/tables?date=2026-10-28&time=19:00
  */
 
 import { NextResponse, NextRequest } from 'next/server'
@@ -29,6 +21,7 @@ export async function GET(request: NextRequest) {
 		const { searchParams } = new URL(request.url)
 
 		const timeParam = searchParams.get('time')
+		const dateParam = searchParams.get('date') //  Читаем дату из URL
 
 		// 2. Текущее время или переданное
 		const now = new Date()
@@ -36,8 +29,10 @@ export async function GET(request: NextRequest) {
 			? timeParam
 			: `${String(now.getHours()).padStart(2, '0')}:00`
 
-		// 3. Сегодняшняя дата
-		const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+		// 3. Дата: выбранная или сегодняшняя
+		const targetDate = dateParam
+			? dateParam
+			: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
 		// 4. Все столы
 		const tables: {
@@ -48,9 +43,10 @@ export async function GET(request: NextRequest) {
 			posY: number
 			shape: string
 			rotation: number
+			isBlocked: boolean
 		}[] = await prisma.table.findMany({ orderBy: { number: 'asc' } })
 
-		// 5. Все брони на сегодня (кроме cancelled)
+		// 5. Все брони на ВЫБРАННУЮ ДАТУ (кроме cancelled)
 		const dayBookings: {
 			guests: number
 			time: string
@@ -58,7 +54,7 @@ export async function GET(request: NextRequest) {
 			tableId: number | null
 		}[] = await prisma.booking.findMany({
 			where: {
-				date: today,
+				date: targetDate, //  Используем выбранную дату
 				status: { not: 'cancelled' },
 			},
 			select: {
@@ -74,7 +70,6 @@ export async function GET(request: NextRequest) {
 		const result = tables.map(table => {
 			const occupied = dayBookings
 				.filter(b => {
-					// Только брони, назначенные на этот стол
 					if (b.tableId !== table.id) return false
 					const bookingStart = toMinutes(b.time)
 					const bookingDuration = b.duration || DEFAULT_DURATION
@@ -88,7 +83,11 @@ export async function GET(request: NextRequest) {
 				})
 				.reduce((sum, b) => sum + b.guests, 0)
 
-			const status = occupied >= table.capacity ? 'busy' : 'free'
+			const status = table.isBlocked
+				? 'blocked'
+				: occupied >= table.capacity
+					? 'busy'
+					: 'free'
 
 			return {
 				id: table.id,
@@ -100,6 +99,7 @@ export async function GET(request: NextRequest) {
 				posY: table.posY,
 				shape: table.shape,
 				rotation: table.rotation,
+				isBlocked: table.isBlocked,
 			}
 		})
 
@@ -118,20 +118,11 @@ export async function GET(request: NextRequest) {
  * PATCH /api/tables
  *
  * Массовое обновление позиций столов на схеме зала (PR 6.6.7).
- *
- * Body:
- * {
- *   positions: [{ id: number, posX: number, posY: number }, ...]
- * }
- *
- * Возвращает:
- * { ok: true, updated: number }
  */
 export async function PATCH(request: NextRequest) {
 	try {
 		const body = await request.json()
 
-		// 1. Валидация
 		if (!body || !Array.isArray(body.positions)) {
 			return NextResponse.json(
 				{ error: 'positions must be an array' },
@@ -146,7 +137,6 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'positions is empty' }, { status: 400 })
 		}
 
-		// 2. Проверка каждой записи
 		for (const p of positions) {
 			if (
 				typeof p.id !== 'number' ||
@@ -167,7 +157,6 @@ export async function PATCH(request: NextRequest) {
 			}
 		}
 
-		// 3. Транзакция — все апдейты или ни одного
 		await prisma.$transaction(
 			positions.map(p =>
 				prisma.table.update({

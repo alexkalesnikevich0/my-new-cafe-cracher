@@ -19,13 +19,25 @@ export async function GET(
 			return NextResponse.json({ error: 'Invalid table ID' }, { status: 400 })
 		}
 
-		// ВОТ ОНИ: findUnique и include
+		// получаем дату из URL (если не передали, берем сегодня)
+		const { searchParams } = new URL(request.url)
+		let dateParam = searchParams.get('date')
+
+		if (!dateParam) {
+			const now = new Date()
+			dateParam = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+		}
+
+		// ВОТ ОНИ: findUnique и include ищем стол и ТОЛЬКО его брони на эту дату
 		const table = await prisma.table.findUnique({
 			where: { id: id },
 			include: {
 				bookings: {
-					orderBy: [{ date: 'asc' }, { time: 'asc' }],
-					where: { status: { not: 'cancelled' } },
+					orderBy: [{ time: 'asc' }],
+					where: {
+						date: dateParam, // filter by date
+						status: { not: 'cancelled' },
+					},
 				},
 			},
 		})

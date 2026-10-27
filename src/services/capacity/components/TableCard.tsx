@@ -16,11 +16,12 @@ interface TableData {
 	number: number
 	capacity: number
 	occupied: number
-	status: 'free' | 'busy'
+	status: 'free' | 'busy' | 'blocked' // добавили isBlocked
 	posX: number
 	posY: number
 	shape: string
 	rotation: number
+	isBlocked: boolean
 }
 
 interface TableCardProps {
@@ -115,10 +116,12 @@ export default function TableCard({
 	const chairs = CHAIRS_BY_SHAPE[table.shape] ?? CHAIRS_BY_SHAPE['rect-wide']
 	const visibleChairs = chairs.slice(0, Math.min(table.capacity, chairs.length))
 
-	const isFree = table.status === 'free'
-	const tableFill = isFree ? '#dcfce7' : '#fee2e2'
-	const tableStroke = isFree ? '#16a34a' : '#dc2626'
-	const chairFill = isFree ? '#86efac' : '#fca5a5'
+
+	const isBlocked = table.isBlocked 
+	const isFree = table.status === 'free' && !isBlocked
+	const tableFill = isBlocked ? '#e5e7eb' : isFree ? '#dcfce7' : '#fee2e2'
+	const tableStroke = isBlocked ? '#4b5563' : isFree ? '#16a34a' : '#dc2626'
+	const chairFill = isBlocked ? '#9ca3af' : isFree ? '#86efac' : '#fca5a5'
 
 	// === Drag handlers ===
 	const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {

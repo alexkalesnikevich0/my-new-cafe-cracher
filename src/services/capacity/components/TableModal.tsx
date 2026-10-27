@@ -1,8 +1,7 @@
 /**
  * ФАЙЛ: services/capacity/components/TableModal.tsx
  *
- * МОДАЛКА СТОЛА (PR 6.5.4 / 6.7 / 6.8 / 6.9).
- * Три колонки: Инфо+Форма | Брони стола | Ожидающие брони.
+ * МОДАЛКА СТОЛА (PR 6.5.4 / 6.7 / 6.8 / 6.9 / ВЫБОР ДАТЫ).
  */
 
 'use client'
@@ -12,12 +11,15 @@ import { createBookingCapacity } from '../actions/createBookingCapacity'
 import { assignBookingToTable } from '../actions/assignBookingToTable'
 import toast from 'react-hot-toast'
 
+import { toggleTableBlock } from '../actions/toggleTableBlock'
+
 interface TableData {
 	id: number
 	number: number
 	capacity: number
 	occupied: number
-	status: 'free' | 'busy'
+	status: 'free' | 'busy' | 'blocked'
+	isBlocked: boolean
 }
 
 interface BookingData {
@@ -29,12 +31,14 @@ interface BookingData {
 
 interface TableModalProps {
 	table: TableData | null
+	selectedDate: string // 👈 ДОБАВИЛИ ДАТУ ИЗ РОДИТЕЛЯ
 	onClose: () => void
 	onSaved: () => void
 }
 
 export default function TableModal({
 	table,
+	selectedDate,
 	onClose,
 	onSaved,
 }: TableModalProps) {
@@ -43,8 +47,6 @@ export default function TableModal({
 	const [pendingBookings, setPendingBookings] = useState<BookingData[]>([])
 	const [bookings, setBookings] = useState<BookingData[]>([])
 	const [isLoadingBookings, setIsLoadingBookings] = useState(true)
-
-	const today = new Date().toISOString().split('T')[0]
 
 	useEffect(() => {
 		function handleEsc(e: KeyboardEvent) {
@@ -58,16 +60,18 @@ export default function TableModal({
 		if (!table) return
 
 		setIsLoadingBookings(true)
-		fetch(`/api/tables/${table.id}`)
+		// 👈 Передаем selectedDate в запрос броней стола (исправили опечатку с ?date=)
+		fetch(`/api/tables/${table.id}?date=${selectedDate}`)
 			.then(res => res.json())
 			.then(data => setBookings(data.bookings || []))
 			.catch(() => toast.error('Failed to load bookings'))
 			.finally(() => setIsLoadingBookings(false))
 
-		fetch('/api/bookings/pending')
+		// 👈 Передаем дату и в висячие брони, чтобы они фильтровались по нужному дню
+		fetch(`/api/bookings/pending?date=${selectedDate}`)
 			.then(res => res.json())
 			.then(data => setPendingBookings(data || []))
-	}, [table])
+	}, [table, selectedDate]) // 👈 Добавили selectedDate в зависимости
 
 	if (!table) return null
 
@@ -98,13 +102,30 @@ export default function TableModal({
 			toast.error(result.error)
 		} else {
 			toast.success('Booking assigned to table!')
-			fetch(`/api/tables/${table.id}`)
+			// 👈 При обновлении после привязки тоже запрашиваем по дате
+			fetch(`/api/tables/${table.id}?date=${selectedDate}`)
 				.then(res => res.json())
 				.then(data => setBookings(data.bookings || []))
-			fetch('/api/bookings/pending')
+
+			fetch(`/api/bookings/pending?date=${selectedDate}`)
 				.then(res => res.json())
 				.then(data => setPendingBookings(data || []))
+
 			if (onSaved) onSaved()
+		}
+	}
+
+	const handleToggleBlock = async () => {
+		if (!table) return
+		const newStatus = !table.isBlocked
+		const result = await toggleTableBlock(table.id, newStatus)
+
+		if (result.error) {
+			toast.error(result.error)
+		} else {
+			toast.success(newStatus ? 'Table blocked' : 'Table unblocked')
+			if (onSaved) onSaved()
+			onClose()
 		}
 	}
 
@@ -113,10 +134,6 @@ export default function TableModal({
 			className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4'
 			onClick={onClose}
 		>
-			{/* 
-        Модалка: max-w-6xl (очень широкая), чтобы влезли 3 колонки.
-        max-h-[90vh] и overflow-hidden, чтобы ограничить высоту экрана.
-      */}
 			<div
 				className='bg-white rounded-xl shadow-2xl border-1 border-black/70 w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden'
 				onClick={e => e.stopPropagation()}
@@ -135,12 +152,6 @@ export default function TableModal({
 					</button>
 				</div>
 
-				{/* 
-          ОСНОВНОЙ КОНТЕНТ (3 колонки)
-          На мобильных: 1 колонка (flex-col).
-          На больших экранах (lg): 3 колонки (lg:flex-row).
-          overflow-y-auto для всего контейнера.
-        */}
 				<div className='flex flex-col lg:flex-row flex-1 overflow-y-auto'>
 					{/* === КОЛОНКА 1: Информация и Форма === */}
 					<div className='w-full lg:w-1/3 p-6 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col'>
@@ -157,17 +168,30 @@ export default function TableModal({
 								<span className='font-semibold'>Status:</span>{' '}
 								<span
 									className={
-										table.status === 'free'
-											? 'text-green-600 font-bold'
-											: 'text-red-600 font-bold'
+										table.isBlocked
+											? 'text-gray-600 font-bold'
+											: table.status === 'free'
+												? 'text-green-600 font-bold'
+												: 'text-red-600 font-bold'
 									}
 								>
-									{table.status === 'free' ? 'Free' : 'Busy'}
+									{table.isBlocked
+										? 'Blocked'
+										: table.status === 'free'
+											? 'Free'
+											: 'Busy'}
 								</span>
 							</p>
 						</div>
 
-						{table.status === 'free' ? (
+						<button
+							onClick={handleToggleBlock}
+							className={`mb-6 w-full px-4 py-2 rounded-md font-bold cursor-pointer text-white transition-colors ${table.isBlocked ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
+						>
+							{table.isBlocked ? 'Unblock Table' : 'Block Table'}
+						</button>
+
+						{table.status === 'free' && !table.isBlocked ? (
 							<form
 								onSubmit={handleSubmit}
 								className='space-y-4 bg-gray-50 p-4 rounded-lg mt-auto'
@@ -175,7 +199,8 @@ export default function TableModal({
 								<h3 className='font-semibold text-gray-900 text-lg mb-2'>
 									Create booking
 								</h3>
-								<input type='hidden' name='date' value={today} />
+								{/* 👈 ТЕПЕРЬ ДАТА БЕРЕТСЯ ИЗ ВЫБРАННОГО ДНЯ */}
+								<input type='hidden' name='date' value={selectedDate} />
 								<input type='hidden' name='tableId' value={table.id} />
 
 								<div>
@@ -231,15 +256,17 @@ export default function TableModal({
 							</form>
 						) : (
 							<div className='bg-red-50 text-red-700 p-4 rounded-lg text-sm mt-auto'>
-								Table already booked. You can not book this table for this time.
+								{table.isBlocked
+									? 'This table is blocked for maintenance.'
+									: 'Table already booked. You can not book this table for this time.'}
 							</div>
 						)}
 					</div>
 
-					{/* === КОЛОНКА 2: Today's Bookings === */}
+					{/* === КОЛОНКА 2: Bookings === */}
 					<div className='w-full lg:w-1/3 p-6 border-b lg:border-b-0 lg:border-r border-gray-200 flex flex-col bg-white'>
 						<h3 className='font-semibold text-gray-900 mb-4 text-lg shrink-0'>
-							Today&apos;s bookings
+							Bookings {/* 👈 Изменили Today's на просто Bookings */}
 						</h3>
 
 						{isLoadingBookings ? (
@@ -249,7 +276,6 @@ export default function TableModal({
 								No bookings for this table
 							</p>
 						) : (
-							// Список со скроллом
 							<ul className='space-y-2 overflow-y-auto flex-1 pr-1'>
 								{bookings.map(b => (
 									<li
@@ -281,7 +307,6 @@ export default function TableModal({
 						{pendingBookings.length === 0 ? (
 							<p className='text-sm text-gray-500'>No pending bookings</p>
 						) : (
-							// Список со скроллом
 							<ul className='space-y-2 overflow-y-auto flex-1 pr-1'>
 								{pendingBookings.map(b => (
 									<li
@@ -297,7 +322,8 @@ export default function TableModal({
 										</div>
 										<button
 											onClick={() => handleAssign(b.id)}
-											className='w-full bg-blue-600 text-white cursor-pointer px-2 py-1.5 rounded text-xs hover:bg-blue-700 transition-colors font-medium mt-1'
+											disabled={table.isBlocked}
+											className='w-full bg-blue-600 text-white cursor-pointer px-2 py-1.5 rounded text-xs hover:bg-blue-700 transition-colors font-medium mt-1 disabled:opacity-50 disabled:cursor-not-allowed'
 										>
 											Assign to Table #{table.number}
 										</button>
